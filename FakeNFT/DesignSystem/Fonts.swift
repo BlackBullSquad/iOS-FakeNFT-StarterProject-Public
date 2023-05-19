@@ -1,19 +1,26 @@
 import UIKit
 
-extension UIFont {
-    // Ниже приведены примеры шрифтов, настоящие шрифты надо взять из фигмы
-
-    // Headline Fonts
-    static var headline1 = UIFont.systemFont(ofSize: 34, weight: .bold)
-    static var headline2 = UIFont.systemFont(ofSize: 28, weight: .bold)
-    static var headline3 = UIFont.systemFont(ofSize: 22, weight: .bold)
-    static var headline4 = UIFont.systemFont(ofSize: 20, weight: .bold)
-
-    // Body Fonts
-    static var bodyRegular = UIFont.systemFont(ofSize: 17, weight: .regular)
-    static var bodyBold = UIFont.systemFont(ofSize: 17, weight: .bold)
-
-    // Caption Fonts
-    static var caption1 = UIFont.systemFont(ofSize: 15, weight: .regular)
-    static var caption2 = UIFont.systemFont(ofSize: 13, weight: .regular)
+/// Пример использования: let font = TextStyle.bold17.apply
+enum TextStyle {
+    case medium10
+    case bold22
+    case bold17
+    case regular13
+    case regular15
+    case regular17
+    case bold34
+    case bold32
+    
+    var apply: UIFont {
+        switch self {
+        case .medium10: return .systemFont(ofSize: 10, weight: .medium)
+        case .bold22: return .boldSystemFont(ofSize: 22)
+        case .bold17: return .boldSystemFont(ofSize: 17)
+        case .regular13: return .systemFont(ofSize: 13)
+        case .regular15: return .systemFont(ofSize: 15)
+        case .regular17: return .systemFont(ofSize: 17)
+        case .bold34: return .boldSystemFont(ofSize: 34)
+        case .bold32:return.boldSystemFont(ofSize: 32)
+        }
+    }
 }
