@@ -1,7 +1,6 @@
 import UIKit
 
-/// Пример использования: let font = TextStyle.bold17.apply
-enum TextStyle {
+enum FontStyle {
     case medium10
     case bold22
     case bold17
@@ -10,9 +9,11 @@ enum TextStyle {
     case regular17
     case bold34
     case bold32
-    
-    var apply: UIFont {
-        switch self {
+}
+
+extension UIFont {
+    static func asset(_ textStyle: FontStyle) -> UIFont {
+        switch textStyle {
         case .medium10: return .systemFont(ofSize: 10, weight: .medium)
         case .bold22: return .boldSystemFont(ofSize: 22)
         case .bold17: return .boldSystemFont(ofSize: 17)
