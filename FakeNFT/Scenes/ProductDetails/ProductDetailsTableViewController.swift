@@ -1,4 +1,4 @@
- import UIKit
+import UIKit
 
 final class ProductDetailsTableViewController: UITableViewController {
     override func viewDidLoad() {
