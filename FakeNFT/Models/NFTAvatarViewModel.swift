@@ -8,6 +8,6 @@ enum NFTAvatarSize: CGFloat {
 struct NFTAvatarViewModel {
     let imageSize: NFTAvatarSize
     let imageURL: URL?
-    let isLiked: Bool
+    var isLiked: Bool
     let likeButtonAction: (() -> Void)
 }
