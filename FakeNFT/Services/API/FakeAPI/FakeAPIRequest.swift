@@ -27,7 +27,7 @@ extension FakeAPIRequest: NetworkRequest {
     var httpMethod: HttpMethod { requestMethod }
 }
 
-extension FakeAPIRequest {
+private extension FakeAPIRequest {
     static let baseURLString = "https://64411f3a792fe886a89efa72.mockapi.io"
 
     var urlString: String {

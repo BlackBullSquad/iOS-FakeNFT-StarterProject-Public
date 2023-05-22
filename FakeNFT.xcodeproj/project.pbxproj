@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		38BEBF9B2A1AB754007B1297 /* FakeNFTAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BEBF9A2A1AB754007B1297 /* FakeNFTAPI.swift */; };
+		38BEBF9B2A1AB754007B1297 /* FakeNftAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BEBF9A2A1AB754007B1297 /* FakeNftAPI.swift */; };
 		38BEBF9E2A1AB7D7007B1297 /* NftAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BEBF9D2A1AB7D7007B1297 /* NftAPI.swift */; };
 		38BEBFA02A1AB9E8007B1297 /* NftDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BEBF9F2A1AB9E8007B1297 /* NftDTO.swift */; };
 		38BEBFA22A1ABC06007B1297 /* CurrencyDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BEBFA12A1ABC06007B1297 /* CurrencyDTO.swift */; };
@@ -58,7 +58,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		38BEBF9A2A1AB754007B1297 /* FakeNFTAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeNFTAPI.swift; sourceTree = "<group>"; };
+		38BEBF9A2A1AB754007B1297 /* FakeNftAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeNftAPI.swift; sourceTree = "<group>"; };
 		38BEBF9D2A1AB7D7007B1297 /* NftAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftAPI.swift; sourceTree = "<group>"; };
 		38BEBF9F2A1AB9E8007B1297 /* NftDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftDTO.swift; sourceTree = "<group>"; };
 		38BEBFA12A1ABC06007B1297 /* CurrencyDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyDTO.swift; sourceTree = "<group>"; };
@@ -123,7 +123,7 @@
 		38BEBF992A1AB709007B1297 /* FakeAPI */ = {
 			isa = PBXGroup;
 			children = (
-				38BEBF9A2A1AB754007B1297 /* FakeNFTAPI.swift */,
+				38BEBF9A2A1AB754007B1297 /* FakeNftAPI.swift */,
 				38BEBFAB2A1AC35E007B1297 /* FakeAPIRequest.swift */,
 			);
 			path = FakeAPI;
@@ -446,7 +446,7 @@
 				3F68069729CBBAF100B4F915 /* AppDelegate.swift in Sources */,
 				3F68069929CBBAF100B4F915 /* SceneDelegate.swift in Sources */,
 				38BEBFAA2A1AC2D8007B1297 /* UserDTO.swift in Sources */,
-				38BEBF9B2A1AB754007B1297 /* FakeNFTAPI.swift in Sources */,
+				38BEBF9B2A1AB754007B1297 /* FakeNftAPI.swift in Sources */,
 				38BEBFA62A1ABECE007B1297 /* PaymentResultDTO.swift in Sources */,
 				38BEBFA22A1ABC06007B1297 /* CurrencyDTO.swift in Sources */,
 				8D883ABF2A15CB97000B7DA4 /* CatalogueVC.swift in Sources */,
