@@ -21,7 +21,7 @@ extension UIFont {
         case .regular15: return .systemFont(ofSize: 15)
         case .regular17: return .systemFont(ofSize: 17)
         case .bold34: return .boldSystemFont(ofSize: 34)
-        case .bold32:return.boldSystemFont(ofSize: 32)
+        case .bold32: return.boldSystemFont(ofSize: 32)
         }
     }
 }
