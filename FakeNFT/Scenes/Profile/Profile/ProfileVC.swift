@@ -4,6 +4,7 @@ import Kingfisher
 final class ProfileVC: UIViewController {
   
     private let nftApi: NftAPI = FakeNftAPI()
+    private var profile: ProfileDTO?
     private var nfts: [Int] = []
     private var likes: [Int] = []
     
@@ -56,15 +57,16 @@ final class ProfileVC: UIViewController {
 
     private func setNavBar() {
         // Additional bar button items
-        let button = UIBarButtonItem(image: UIImage(named: "editProfile"), style: .plain, target: self, action: #selector(self.editProfile))
-        button.tintColor = .label
+        let button = UIBarButtonItem(image: UIImage(named: "editProfile"), style: .plain, target: self, action: #selector(editProfile))
+        button.tintColor = UIColor.asset(Asset.main(.backround))
         navigationItem.setRightBarButtonItems([button], animated: true)
     }
     
     @objc private func editProfile() {
         print("Edit profile")
-        let editProfileVC = EditProfileViewController()
-        navigationController?.pushViewController(editProfileVC, animated: true)
+        guard let profile = profile else { return }
+        let editProfileVC = UINavigationController(rootViewController: EditProfileViewController(profile: profile, nftApi: nftApi))
+        present(editProfileVC, animated: true)
     }
     
     private func getProfile() {
@@ -76,6 +78,7 @@ final class ProfileVC: UIViewController {
                     self?.nfts = profile.nfts
                     self?.likes = profile.likes
                     self?.profileTableView.reloadData()
+                    self?.profile = profile
                 }
                 print(profile)
             case .failure(let error):
