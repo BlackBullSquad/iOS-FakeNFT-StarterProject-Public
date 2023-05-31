@@ -65,7 +65,7 @@ final class CatalogueCell: UITableViewCell {
 extension CatalogueCell {
     
     func configure(title: String, coverURL imageURL: URL?, nftCount: Int) {
-        titleLabel.text = ("\(title) \(nftCount)")
+        titleLabel.text = ("\(title) (\(nftCount))")
 
         let placeholder = UIImage(named: "placeholder")
         
