@@ -27,8 +27,10 @@ final class NFTAvatarView: UIView {
     // MARK: - Actions
 
     @objc private func likeButtonTapped() {
-        viewModel?.isLiked.toggle()
-        viewModel?.likeButtonAction()
+        guard let isLiked = viewModel?.isLiked else { return }
+
+        viewModel?.isLiked = !isLiked
+        viewModel?.likeButtonAction?()
     }
 
     // MARK: - Reset to default
@@ -100,7 +102,12 @@ extension NFTAvatarView {
 
         imageView.kf.setImage(with: viewModel.imageURL, placeholder: placeholder, options: [.scaleFactor(UIScreen.main.scale), .transition(.fade(1))])
 
-        likeButton.tintColor = viewModel.isLiked ? .asset(.main(.red)) : .asset(.main(.primary))
-        likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+        if let isLiked = viewModel.isLiked {
+            likeButton.isHidden = false
+            likeButton.tintColor = isLiked ? .asset(.main(.red)) : .asset(.main(.primary))
+            likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+        } else {
+            likeButton.isHidden = true
+        }
     }
 }

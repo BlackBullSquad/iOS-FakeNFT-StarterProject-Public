@@ -7,6 +7,15 @@ final class CartVC: UIViewController {
     let tableView = UITableView()
     private lazy var dataSource = makeDataSource()
 
+    private lazy var priceFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.maximumFractionDigits = 2
+        formatter.decimalSeparator = ","
+        formatter.groupingSeparator = ""
+        return formatter
+    }()
+
     init(deps: Dependencies) {
         self.deps = deps
         super.init(nibName: nil, bundle: nil)
@@ -33,13 +42,14 @@ private extension CartVC {
                 return UITableViewCell()
             }
 
+            cell.priceFormatter = self.priceFormatter
             cell.configure(self.viewModel.sortedItems[indexPath.row])
 
             return cell
         }
     }
 
-    private func updateSnapshot() {
+    func updateSnapshot() {
         var snapshot = SnapShot()
 
         snapshot.appendSections([0])
@@ -70,7 +80,6 @@ private extension CartVC {
 
     func setupTableView() {
         tableView.dataSource = dataSource
-        // tableView.delegate = self
         tableView.register(CartCell.self, forCellReuseIdentifier: CartCell.identifier)
         tableView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -114,6 +123,7 @@ extension CartVC {
     }
 
     func refreshView() {
+        print("refresh")
         dump(viewModel)
         updateSnapshot()
     }
