@@ -7,7 +7,7 @@ struct TabBarControllerBuilder {
         // MARK: - View Controllers
         let profileVC = ProfileVC()
         let catalogueVC = CatalogueVC()
-        let cartVC = CartVC()
+        let cartVC = CartVC(deps: .init(api: FakeNftAPI(), shoppingCart: FakeShoppingCart()))
 
         // MARK: - Navigation Controllers
         let profileNavController = createNavigationController(

@@ -1,12 +1,5 @@
-//
-//  FakeShoppingCart.swift
-//  FakeNFT
-//
-//  Created by Andrei Chenchik on 31/5/23.
-//
-
 final class FakeShoppingCart {
-    private var contents: Set<Nft.ID> = []
+    private var contents: Set<Nft.ID> = [0, 1, 2, 3]
 }
 
 extension FakeShoppingCart: ShoppingCart {
