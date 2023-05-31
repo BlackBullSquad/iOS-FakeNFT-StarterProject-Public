@@ -20,16 +20,20 @@ final class CartVC: UIViewController {
 // MARK: - DataSource
 
 private extension CartVC {
-    typealias DataSource = UITableViewDiffableDataSource<ViewModel, CartCell.ItemViewModel>
-    typealias SnapShot = NSDiffableDataSourceSnapshot<ViewModel, CartCell.ItemViewModel>
+    typealias DataSource = UITableViewDiffableDataSource<Int, CartCell.ItemViewModel>
+    typealias SnapShot = NSDiffableDataSourceSnapshot<Int, CartCell.ItemViewModel>
 
     func makeDataSource() -> DataSource {
-        DataSource(tableView: tableView) { tableView, indexPath, _ in
-            guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: CartCell.identifier, for: indexPath
-            ) as? CartCell else {
+        DataSource(tableView: tableView) { [weak self] tableView, indexPath, _ in
+            guard
+                let self,
+                let cell = tableView.dequeueReusableCell(
+                    withIdentifier: CartCell.identifier, for: indexPath
+                ) as? CartCell else {
                 return UITableViewCell()
             }
+
+            cell.configure(self.viewModel.sortedItems[indexPath.row])
 
             return cell
         }
@@ -38,9 +42,9 @@ private extension CartVC {
     private func updateSnapshot() {
         var snapshot = SnapShot()
 
-        snapshot.appendSections([viewModel])
+        snapshot.appendSections([0])
         for itemViewModel in viewModel.sortedItems {
-            snapshot.appendItems([itemViewModel], toSection: viewModel)
+            snapshot.appendItems([itemViewModel], toSection: 0)
         }
 
         dataSource.apply(snapshot, animatingDifferences: true)
@@ -159,6 +163,7 @@ private extension CartVC {
             self?.viewModel.items = items
         }
     }
+
     func reloadExternalData() {
         let ids = deps.shoppingCart.nfts
         deps.nftProvider.getNfts(Set(ids)) { [weak self] result in
