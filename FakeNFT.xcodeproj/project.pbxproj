@@ -23,6 +23,8 @@
 		38BEBFBA2A27D421007B1297 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BEBFB92A27D421007B1297 /* ViewModel.swift */; };
 		38BEBFBC2A27D4A1007B1297 /* ItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BEBFBB2A27D4A1007B1297 /* ItemViewModel.swift */; };
 		38BEBFBE2A27D7FB007B1297 /* CartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BEBFBD2A27D7FB007B1297 /* CartCell.swift */; };
+		38BEBFC02A27DF26007B1297 /* NftProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BEBFBF2A27DF26007B1297 /* NftProvider.swift */; };
+		38BEBFC32A27DF91007B1297 /* FakeNftProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BEBFC22A27DF91007B1297 /* FakeNftProvider.swift */; };
 		3F478ECF29DB474E00F6D39E /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F478ECE29DB474E00F6D39E /* Colors.swift */; };
 		3F478ED129DB476500F6D39E /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F478ED029DB476500F6D39E /* Fonts.swift */; };
 		3F603CCD29DB4A53000C43D7 /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 3F603CCC29DB4A53000C43D7 /* ProgressHUD */; };
@@ -83,6 +85,8 @@
 		38BEBFB92A27D421007B1297 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		38BEBFBB2A27D4A1007B1297 /* ItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemViewModel.swift; sourceTree = "<group>"; };
 		38BEBFBD2A27D7FB007B1297 /* CartCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartCell.swift; sourceTree = "<group>"; };
+		38BEBFBF2A27DF26007B1297 /* NftProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftProvider.swift; sourceTree = "<group>"; };
+		38BEBFC22A27DF91007B1297 /* FakeNftProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeNftProvider.swift; sourceTree = "<group>"; };
 		3F478ECE29DB474E00F6D39E /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		3F478ED029DB476500F6D39E /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
 		3F68069329CBBAF100B4F915 /* FakeNFT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FakeNFT.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -185,6 +189,15 @@
 			path = Cart;
 			sourceTree = "<group>";
 		};
+		38BEBFC12A27DF2B007B1297 /* NftsProvider */ = {
+			isa = PBXGroup;
+			children = (
+				38BEBFBF2A27DF26007B1297 /* NftProvider.swift */,
+				38BEBFC22A27DF91007B1297 /* FakeNftProvider.swift */,
+			);
+			path = NftsProvider;
+			sourceTree = "<group>";
+		};
 		3F478ECD29DB473000F6D39E /* DesignSystem */ = {
 			isa = PBXGroup;
 			children = (
@@ -252,6 +265,7 @@
 		3F6806C629CBBC4E00B4F915 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				38BEBFC12A27DF2B007B1297 /* NftsProvider */,
 				38BEBFAD2A27CF2F007B1297 /* ShoppingCart */,
 				38BEBF9C2A1AB7BD007B1297 /* API */,
 			);
@@ -486,6 +500,7 @@
 				38BEBFAC2A1AC35E007B1297 /* FakeAPIRequest.swift in Sources */,
 				38BEBFB12A27D024007B1297 /* Nft.swift in Sources */,
 				38BEBF9E2A1AB7D7007B1297 /* NftAPI.swift in Sources */,
+				38BEBFC02A27DF26007B1297 /* NftProvider.swift in Sources */,
 				3F478ECF29DB474E00F6D39E /* Colors.swift in Sources */,
 				38BEBFA82A1AC0B0007B1297 /* ProfileDTO.swift in Sources */,
 				3F478ED129DB476500F6D39E /* Fonts.swift in Sources */,
@@ -511,6 +526,7 @@
 				3F6806D729CBC50A00B4F915 /* CellsReusingUtils.swift in Sources */,
 				3F6806D329CBBE9600B4F915 /* NetworkRequest.swift in Sources */,
 				3F6806CB29CBBCC700B4F915 /* CollectionDTO.swift in Sources */,
+				38BEBFC32A27DF91007B1297 /* FakeNftProvider.swift in Sources */,
 				38BEBFA02A1AB9E8007B1297 /* NftDTO.swift in Sources */,
 				38BEBFA42A1ABD8A007B1297 /* OrderDTO.swift in Sources */,
 				3F6806D129CBBE6B00B4F915 /* NetworkClient.swift in Sources */,

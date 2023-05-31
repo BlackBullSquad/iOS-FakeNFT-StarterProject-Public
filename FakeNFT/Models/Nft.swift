@@ -12,6 +12,6 @@ struct Nft: Identifiable {
     let name: String
     let description: String
     let rating: Int
-    let images: [URL?]
+    let images: [URL]
     let price: Float
 }
