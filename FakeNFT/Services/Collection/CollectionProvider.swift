@@ -8,7 +8,7 @@ struct Collection {
     let id: Int
     let name: String
     let description: String
-    let cover: URL
+    let cover: URL?
     let nfts: [Nft]
     
     var nftCount: Int {
@@ -21,7 +21,7 @@ struct Nft {
     let name: String
     let description: String
     let rating: Int
-    let images: [URL]
+    let images: [URL?]
     let price: Float
 }
 
@@ -63,10 +63,12 @@ final class CollectionProvider {
                         let collections = collectionData.compactMap { Collection($0, nfts: nfts) }
                         handler(.success(collections))
                     case .failure(_):
+                        print("collectionData ERROR")
                         handler(.failure(.networkError(.requestFailed)))
                     }
                 }
             case .failure(_):
+                print("nftsData ERROR")
                 handler(.failure(.networkError(.requestFailed)))
             }
         }
@@ -99,8 +101,16 @@ final class CollectionProvider {
 private extension Nft {
     init?(_ dto: NftDTO) {
         guard let id = Int(dto.id) else { return nil }
-        
-        self.init(id: id, name: dto.name, description: dto.description, rating: dto.rating, images: dto.images, price: dto.price)
+        let imageUrls = dto.images.compactMap { URL(string: $0.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "") }
+
+        self.init(
+            id: id,
+            name: dto.name,
+            description: dto.description,
+            rating: dto.rating,
+            images: imageUrls,
+            price: dto.price
+        )
     }
 }
 
@@ -110,6 +120,12 @@ private extension Collection {
         
         let nfts = nfts.filter { dto.nfts.contains($0.id) }
         
-        self.init(id: id, name: dto.name, description: dto.description, cover: dto.cover, nfts: nfts)
+        self.init(
+            id: id,
+            name: dto.name,
+            description: dto.description,
+            cover: URL(string: dto.cover.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""),
+            nfts: nfts
+        )
     }
 }

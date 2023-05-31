@@ -224,7 +224,7 @@
 			children = (
 				3F6806C829CBBC8100B4F915 /* ProductDetails */,
 				8D883AC02A15CD8F000B7DA4 /* ProfileVC.swift */,
-				8D7720F42A2104610094049C /* Collections */,
+				8D7720F42A2104610094049C /* Collection */,
 				8D883AC22A15CDEB000B7DA4 /* CartVC.swift */,
 			);
 			path = Scenes;
@@ -290,13 +290,13 @@
 			path = Collection;
 			sourceTree = "<group>";
 		};
-		8D7720F42A2104610094049C /* Collections */ = {
+		8D7720F42A2104610094049C /* Collection */ = {
 			isa = PBXGroup;
 			children = (
 				8D7720FA2A2235570094049C /* Cells */,
 				8D7720F52A2104750094049C /* Catalogue */,
 			);
-			path = Collections;
+			path = Collection;
 			sourceTree = "<group>";
 		};
 		8D7720F52A2104750094049C /* Catalogue */ = {
