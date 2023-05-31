@@ -51,7 +51,6 @@ final class CatalogueCell: UITableViewCell {
         contentView.addSubview(vStack)
         
         NSLayoutConstraint.activate([
-            coverImage.widthAnchor.constraint(equalTo: contentView.widthAnchor),
             coverImage.heightAnchor.constraint(equalToConstant: 140),
 
             vStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -69,6 +68,6 @@ extension CatalogueCell {
 
         let placeholder = UIImage(named: "placeholder")
         
-        coverImage.kf.setImage(with: imageURL, placeholder: placeholder, options: [.scaleFactor(UIScreen.main.scale), .transition(.fade(4))])
+        coverImage.kf.setImage(with: imageURL, placeholder: placeholder, options: [.scaleFactor(UIScreen.main.scale), .transition(.fade(1))])
     }
 }

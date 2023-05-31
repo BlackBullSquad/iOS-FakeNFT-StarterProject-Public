@@ -38,12 +38,16 @@ final class CatalogueViewModel {
     }
     
     func sortModels(by option: SortOption) {
+        guard var viewModels = viewModels, let updateListener = updateListener else { return }
+        
         switch option {
         case .byName:
-            viewModels?.sort { $0.title < $1.title }
+            viewModels.sort { $0.title < $1.title }
         case .byNftCount:
-            viewModels?.sort { $0.nftsCount > $1.nftsCount }
+            viewModels.sort { $0.nftsCount > $1.nftsCount }
         }
-        updateListener?.didUpdateCollections()
+        
+        self.viewModels = viewModels
+        updateListener.didUpdateCollections()
     }
 }

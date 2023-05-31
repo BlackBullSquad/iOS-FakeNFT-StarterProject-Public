@@ -1,30 +1,5 @@
 import Foundation
 
-// MARK: - Models
-
-typealias Collections = [Collection]
-
-struct Collection {
-    let id: Int
-    let name: String
-    let description: String
-    let cover: URL?
-    let nfts: [Nft]
-    
-    var nftCount: Int {
-        nfts.count
-    }
-}
-
-struct Nft {
-    let id: Int
-    let name: String
-    let description: String
-    let rating: Int
-    let images: [URL?]
-    let price: Float
-}
-
 // MARK: - Errors
 
 enum ApplicationError: Error {
@@ -52,7 +27,6 @@ final class CollectionProvider {
     }
     
     func getCollections(handler: @escaping (Result<Collections, ApplicationError>) -> Void) {
-        
         api.getNfts { [weak self] result in
             switch result {
             case .success(let nftsData):
@@ -62,20 +36,19 @@ final class CollectionProvider {
                         let nfts = nftsData.compactMap(Nft.init)
                         let collections = collectionData.compactMap { Collection($0, nfts: nfts) }
                         handler(.success(collections))
-                    case .failure(_):
-                        print("collectionData ERROR")
+                    case .failure(let error):
+                        print("Failed to fetch collectionData: \(error)")
                         handler(.failure(.networkError(.requestFailed)))
                     }
                 }
-            case .failure(_):
-                print("nftsData ERROR")
+            case .failure(let error):
+                print("Failed to fetch nftsData: \(error)")
                 handler(.failure(.networkError(.requestFailed)))
             }
         }
     }
     
     func getCollection(_ id: Int, handler: @escaping (Result<Collection, ApplicationError>) -> Void) {
-        
         getCollections { result in
             switch result {
             case .success(let collections):
@@ -86,9 +59,11 @@ final class CollectionProvider {
                 }
             case .failure(let error):
                 switch error {
-                case .networkError(_):
+                case .networkError(let networkError):
+                    print("Failed to fetch collections: \(networkError)")
                     handler(.failure(.networkError(.requestFailed)))
-                case .dataError(_):
+                case .dataError(let dataError):
+                    print("Failed to fetch collections: \(dataError)")
                     handler(.failure(.dataError(.decodingError)))
                 }
             }

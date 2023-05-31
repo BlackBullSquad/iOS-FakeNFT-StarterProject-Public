@@ -2,13 +2,13 @@ import UIKit
 
 final class CatalogueVC: UIViewController {
     
-    let viewModel: CatalogueViewModel
+    let collectionViewModels: CatalogueViewModel
     let tableView = UITableView()
     
     private lazy var dataSource = makeDataSource()
     
     init(viewModel: CatalogueViewModel) {
-        self.viewModel = viewModel
+        self.collectionViewModels = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -25,8 +25,8 @@ final class CatalogueVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.updateListener = self
-        viewModel.loadCollections()
+        collectionViewModels.updateListener = self
+        collectionViewModels.loadCollections()
     }
 
     private func setupTableView() {
@@ -83,9 +83,9 @@ final class CatalogueVC: UIViewController {
     
     private func updateSnapshot() {
         var snapshot = NSDiffableDataSourceSnapshot<CatalogueVC.ViewModel, CatalogueVC.ViewModel>()
-        for viewModel in viewModel.viewModels ?? [] {
-            snapshot.appendSections([viewModel])
-            snapshot.appendItems([viewModel], toSection: viewModel)
+        for collectionViewModel in collectionViewModels.viewModels ?? [] {
+            snapshot.appendSections([collectionViewModel])
+            snapshot.appendItems([collectionViewModel], toSection: collectionViewModel)
         }
         dataSource.apply(snapshot, animatingDifferences: true)
     }
@@ -93,10 +93,10 @@ final class CatalogueVC: UIViewController {
     @objc func didTapSortButton() {
         let alert = UIAlertController(title: "Сортировать", message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "По названию", style: .default, handler: { _ in
-            self.viewModel.sortModels(by: .byName)
+            self.collectionViewModels.sortModels(by: .byName)
         }))
         alert.addAction(UIAlertAction(title: "По количеству NFT", style: .default, handler: { _ in
-            self.viewModel.sortModels(by: .byNftCount)
+            self.collectionViewModels.sortModels(by: .byNftCount)
         }))
         alert.addAction(UIAlertAction(title: "Закрыть", style: .cancel, handler: nil))
         present(alert, animated: true)
