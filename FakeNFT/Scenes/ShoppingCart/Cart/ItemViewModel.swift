@@ -1,9 +1,10 @@
 import Foundation
 
 extension CartVC {
-    struct ItemViewModel {
+    struct ItemViewModel: Hashable {
         var name: String
-        var price: String
+        var price: Float
+        var rating: Float
         var avatarUrl: URL?
     }
 }

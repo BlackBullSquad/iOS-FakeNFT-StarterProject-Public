@@ -1,14 +1,26 @@
 extension CartVC {
-    struct ViewModel {
-        var nftCount: String = ""
-        var totalPrice: String = ""
+    struct ViewModel: Hashable {
         var items: [ItemViewModel] = []
         var sortedBy: SortOrder = .byName
+
+        var nftCount: Int { items.count }
+        var totalPrice: Float { items.map(\.price).reduce(0, +) }
+
+        var sortedItems: [ItemViewModel] {
+            switch sortedBy {
+            case .byPrice:
+                return items.sorted { $0.price < $1.price }
+            case .byRating:
+                return items.sorted { $0.rating < $1.rating }
+            case .byName:
+                return items.sorted { $0.name < $1.name }
+            }
+        }
     }
 
-    enum SortOrder: String {
-        case byPrice = "По цене"
-        case byRating = "По рейтингу"
-        case byName = "По названию"
+    enum SortOrder: Hashable {
+        case byPrice
+        case byRating
+        case byName
     }
 }
