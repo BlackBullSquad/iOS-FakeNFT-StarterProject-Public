@@ -1,7 +1,14 @@
+//
+//  EditProfileViewController.swift
+//  FakeNFT
+//
+//  Created by MacBook on 31.05.2023.
+//
+
 import UIKit
 import Kingfisher
 
-final class ProfileVC: UIViewController {
+final class EditProfileViewController: UIViewController {
   
     private let nftApi: NftAPI = FakeNftAPI()
     private var nfts: [Int] = []
@@ -14,6 +21,14 @@ final class ProfileVC: UIViewController {
         return label
     }()
 
+    private let nameTextField: UITextField = {
+        let textField = UITextField()
+        textField.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+        textField.textColor = UIColor.asset(Asset.main(.backround))
+        textField.backgroundColor = UIColor.asset(Asset.main(.lightGray))
+        return textField
+    }()
+    
     private let descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
@@ -22,6 +37,14 @@ final class ProfileVC: UIViewController {
         return label
     }()
 
+    private let descriptionTextField: UITextField = {
+        let textField = UITextField()
+        textField.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+        textField.textColor = UIColor.asset(Asset.main(.backround))
+        textField.backgroundColor = UIColor.asset(Asset.main(.lightGray))
+        return textField
+    }()
+    
     private let profileImage: UIImageView = {
         let image = UIImageView()
         image.layer.cornerRadius = 70/2
@@ -31,21 +54,19 @@ final class ProfileVC: UIViewController {
 
     private let urlLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 15, weight: .regular)
+        label.font = UIFont.systemFont(ofSize: 22, weight: .bold)
         label.textColor = UIColor.asset(Asset.main(.backround))
         return label
     }()
 
-    private lazy var profileTableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .plain)
-        tableView.register(ProfileTableViewCell.self, forCellReuseIdentifier: ProfileTableViewCell.identifier)
-        tableView.separatorStyle = .none
-        tableView.isScrollEnabled = false
-        tableView.delegate = self
-        tableView.dataSource = self
-        return tableView
+    private let urlTextField: UITextField = {
+        let textField = UITextField()
+        textField.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+        textField.textColor = UIColor.asset(Asset.main(.backround))
+        textField.backgroundColor = UIColor.asset(Asset.main(.lightGray))
+        return textField
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -63,8 +84,6 @@ final class ProfileVC: UIViewController {
     
     @objc private func editProfile() {
         print("Edit profile")
-        let editProfileVC = EditProfileViewController()
-        navigationController?.pushViewController(editProfileVC, animated: true)
     }
     
     private func getProfile() {
@@ -75,7 +94,6 @@ final class ProfileVC: UIViewController {
                     self?.setupView(profile: profile)
                     self?.nfts = profile.nfts
                     self?.likes = profile.likes
-                    self?.profileTableView.reloadData()
                 }
                 print(profile)
             case .failure(let error):
@@ -95,8 +113,7 @@ final class ProfileVC: UIViewController {
         [nameLabel,
          profileImage,
          descriptionLabel,
-         urlLabel,
-         profileTableView
+         urlLabel
         ].forEach { view in
             view.translatesAutoresizingMaskIntoConstraints = false
             self.view.addSubview(view)
@@ -117,46 +134,8 @@ final class ProfileVC: UIViewController {
             descriptionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -18),
 
             urlLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            urlLabel.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 12),
-
-            profileTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            profileTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            profileTableView.topAnchor.constraint(equalTo: urlLabel.bottomAnchor, constant: 44),
-            profileTableView.heightAnchor.constraint(equalToConstant: 375*3),
+            urlLabel.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 12)
         ])
     }
 }
 
-// MARK: - UITableViewDataSource
-extension ProfileVC: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        3
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: ProfileTableViewCell.identifier, for: indexPath) as! ProfileTableViewCell
-        var labelString = ""
-        switch indexPath.row {
-        case 0: labelString = "Мои NFT (\(nfts.count))"
-        case 1: labelString = "Избранные NFT (\(likes.count))"
-        case 2: labelString = "О разработчике"
-        default:
-            labelString = ""
-        }
-        cell.setupCell(label: labelString)
-        return cell
-    }
-
-}
-
-// MARK: - UITableViewDelegate
-extension ProfileVC: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 54
-    }
-
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //
-    }
-}
-    
