@@ -1,6 +1,6 @@
 extension CartVC {
     struct Dependencies {
-        let api: NftAPI
+        let nftProvider: NftProvider
         let shoppingCart: ShoppingCart
     }
 }

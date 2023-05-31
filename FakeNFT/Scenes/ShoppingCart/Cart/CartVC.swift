@@ -2,7 +2,7 @@ import UIKit
 
 final class CartVC: UIViewController {
     var deps: Dependencies
-    var viewModel: ViewModel = .init() { didSet { updateSnapshot() } }
+    var viewModel: ViewModel = .init() { didSet { refreshView() } }
 
     let tableView = UITableView()
     private lazy var dataSource = makeDataSource()
@@ -20,8 +20,8 @@ final class CartVC: UIViewController {
 // MARK: - DataSource
 
 private extension CartVC {
-    typealias DataSource = UITableViewDiffableDataSource<ViewModel, ItemViewModel>
-    typealias SnapShot = NSDiffableDataSourceSnapshot<ViewModel, ItemViewModel>
+    typealias DataSource = UITableViewDiffableDataSource<ViewModel, CartCell.ItemViewModel>
+    typealias SnapShot = NSDiffableDataSourceSnapshot<ViewModel, CartCell.ItemViewModel>
 
     func makeDataSource() -> DataSource {
         DataSource(tableView: tableView) { tableView, indexPath, _ in
@@ -37,8 +37,9 @@ private extension CartVC {
 
     private func updateSnapshot() {
         var snapshot = SnapShot()
+
+        snapshot.appendSections([viewModel])
         for itemViewModel in viewModel.sortedItems {
-            snapshot.appendSections([viewModel])
             snapshot.appendItems([itemViewModel], toSection: viewModel)
         }
 
@@ -109,6 +110,7 @@ extension CartVC {
     }
 
     func refreshView() {
+        dump(viewModel)
         updateSnapshot()
     }
 }
@@ -152,7 +154,22 @@ extension CartVC {
 // MARK: - External data
 
 private extension CartVC {
+    func updateItems(_ items: [CartCell.ItemViewModel]) {
+        DispatchQueue.main.async { [weak self] in
+            self?.viewModel.items = items
+        }
+    }
     func reloadExternalData() {
+        let ids = deps.shoppingCart.nfts
+        deps.nftProvider.getNfts(Set(ids)) { [weak self] result in
+            guard let self else { return }
 
+            switch result {
+            case let .success(data):
+                updateItems(data.map(CartCell.ItemViewModel.init))
+            case let .failure(error):
+                print(error)
+            }
+        }
     }
 }

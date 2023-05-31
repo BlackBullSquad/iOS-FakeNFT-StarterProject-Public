@@ -1,12 +1,12 @@
 extension CartVC {
     struct ViewModel: Hashable {
-        var items: [ItemViewModel] = []
+        var items: [CartCell.ItemViewModel] = []
         var sortedBy: SortOrder = .byName
 
         var nftCount: Int { items.count }
         var totalPrice: Float { items.map(\.price).reduce(0, +) }
 
-        var sortedItems: [ItemViewModel] {
+        var sortedItems: [CartCell.ItemViewModel] {
             switch sortedBy {
             case .byPrice:
                 return items.sorted { $0.price < $1.price }
