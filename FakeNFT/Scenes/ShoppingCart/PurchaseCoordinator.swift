@@ -6,6 +6,7 @@ protocol Coordinator {
 
 final class PurchaseCoordinator {
     weak var navigationController: UINavigationController?
+    weak var tabBarController: UITabBarController?
 
     let deps: Dependencies
 
@@ -35,7 +36,7 @@ extension PurchaseCoordinator: Coordinator {
     }
 
     func displayCurrencySelector(currencies: [Currency]) {
-
+        displayPurchaseResult(isSuccess: true)
     }
 
     func performPayment(with currencyId: Currency.ID) {
@@ -43,14 +44,22 @@ extension PurchaseCoordinator: Coordinator {
     }
 
     func displayPurchaseResult(isSuccess: Bool) {
+        guard let navigationController else { return }
 
+        let resultVC = PurchaseStatusController(isSuccess: isSuccess)
+
+        if isSuccess {
+            resultVC.onContinue = { [weak self] in
+                guard let self else { return }
+                self.escapeToCatalogue()
+            }
+        }
+
+        resultVC.modalPresentationStyle = .fullScreen
+        navigationController.present(resultVC, animated: true)
     }
 
-    func tryAgain() {
-
-    }
-
-    func getBack() {
-        
+    func escapeToCatalogue() {
+        tabBarController?.selectedIndex = 1
     }
 }
