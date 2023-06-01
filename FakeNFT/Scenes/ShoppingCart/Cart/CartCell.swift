@@ -26,13 +26,7 @@ final class CartCell: UITableViewCell {
         return label
     }()
 
-    private lazy var ratingLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .asset(.main(.primary))
-        label.font = .asset(.bold17)
-        label.textAlignment = .left
-        return label
-    }()
+    private lazy var ratingView = RatingView()
 
     private lazy var priceTitleLabel: UILabel = {
         let label = UILabel()
@@ -52,7 +46,7 @@ final class CartCell: UITableViewCell {
     }()
 
     private lazy var ratingVStack: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [titleLabel, ratingLabel])
+        let stack = UIStackView(arrangedSubviews: [titleLabel, ratingView])
         stack.axis = .vertical
         stack.spacing = 4
         return stack
@@ -118,6 +112,7 @@ extension CartCell {
             titleLabel.text = ""
             priceLabel.text = ""
             avatar.viewModel = .init(imageSize: .large, imageURL: nil, likeButtonAction: nil)
+            ratingView.rating = nil
             self.onDelete = nil
             return
         }
@@ -130,6 +125,7 @@ extension CartCell {
         avatar.viewModel = .init(imageSize: .large,
                                  imageURL: viewModel.avatarUrl,
                                  likeButtonAction: nil)
+        ratingView.rating = viewModel.rating
         self.onDelete = onDelete
     }
 }

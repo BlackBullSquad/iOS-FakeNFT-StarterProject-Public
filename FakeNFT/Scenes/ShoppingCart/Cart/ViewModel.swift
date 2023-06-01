@@ -11,7 +11,7 @@ extension CartVC {
             case .byPrice:
                 return items.sorted { $0.price < $1.price }
             case .byRating:
-                return items.sorted { $0.rating < $1.rating }
+                return items.sorted { $0.rating > $1.rating }
             case .byName:
                 return items.sorted { $0.name < $1.name }
             }

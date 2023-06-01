@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3835D01D2A28CB0D0046B354 /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3835D01C2A28CB0D0046B354 /* RatingView.swift */; };
 		38BEBF9B2A1AB754007B1297 /* FakeNftAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BEBF9A2A1AB754007B1297 /* FakeNftAPI.swift */; };
 		38BEBF9E2A1AB7D7007B1297 /* NftAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BEBF9D2A1AB7D7007B1297 /* NftAPI.swift */; };
 		38BEBFA02A1AB9E8007B1297 /* NftDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BEBF9F2A1AB9E8007B1297 /* NftDTO.swift */; };
@@ -69,6 +70,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3835D01C2A28CB0D0046B354 /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
 		38BEBF9A2A1AB754007B1297 /* FakeNftAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeNftAPI.swift; sourceTree = "<group>"; };
 		38BEBF9D2A1AB7D7007B1297 /* NftAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftAPI.swift; sourceTree = "<group>"; };
 		38BEBF9F2A1AB9E8007B1297 /* NftDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftDTO.swift; sourceTree = "<group>"; };
@@ -142,6 +144,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3835D01A2A28CAE10046B354 /* NftAvatar */ = {
+			isa = PBXGroup;
+			children = (
+				8DD0007E2A19B22B00C751E6 /* NFTAvatarView.swift */,
+				8DD0007C2A19B05600C751E6 /* NFTAvatarViewModel.swift */,
+			);
+			path = NftAvatar;
+			sourceTree = "<group>";
+		};
 		38BEBF992A1AB709007B1297 /* FakeAPI */ = {
 			isa = PBXGroup;
 			children = (
@@ -201,9 +212,10 @@
 		3F478ECD29DB473000F6D39E /* DesignSystem */ = {
 			isa = PBXGroup;
 			children = (
+				3835D01C2A28CB0D0046B354 /* RatingView.swift */,
+				3835D01A2A28CAE10046B354 /* NftAvatar */,
 				3F478ECE29DB474E00F6D39E /* Colors.swift */,
 				3F478ED029DB476500F6D39E /* Fonts.swift */,
-				8DD0007E2A19B22B00C751E6 /* NFTAvatarView.swift */,
 			);
 			path = DesignSystem;
 			sourceTree = "<group>";
@@ -296,7 +308,6 @@
 			isa = PBXGroup;
 			children = (
 				3F6806D829CC979D00B4F915 /* DTO */,
-				8DD0007C2A19B05600C751E6 /* NFTAvatarViewModel.swift */,
 				38BEBFB02A27D024007B1297 /* Nft.swift */,
 			);
 			path = Models;
@@ -531,6 +542,7 @@
 				38BEBFA42A1ABD8A007B1297 /* OrderDTO.swift in Sources */,
 				3F6806D129CBBE6B00B4F915 /* NetworkClient.swift in Sources */,
 				8DD0007D2A19B05600C751E6 /* NFTAvatarViewModel.swift in Sources */,
+				3835D01D2A28CB0D0046B354 /* RatingView.swift in Sources */,
 				38BEBFB82A27D40A007B1297 /* Dependencies.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

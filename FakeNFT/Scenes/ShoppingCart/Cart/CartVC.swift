@@ -2,9 +2,8 @@ import UIKit
 
 final class CartVC: UIViewController {
     var deps: Dependencies
-    var viewModel: ViewModel = .init() { didSet { refreshView() } }
 
-    let tableView = UITableView()
+    var viewModel: ViewModel = .init() { didSet { refreshView() } }
     private lazy var dataSource = makeDataSource()
 
     private lazy var priceFormatter: NumberFormatter = {
@@ -24,7 +23,53 @@ final class CartVC: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-}
+
+    // MARK: - Components
+
+    let tableView = UITableView()
+
+    private lazy var countLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .asset(.main(.primary))
+        label.font = .asset(.regular15)
+        label.textAlignment = .left
+        return label
+    }()
+
+    private lazy var priceLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .asset(.main(.green))
+        label.font = .asset(.bold17)
+        label.textAlignment = .left
+        return label
+    }()
+
+    private lazy var purchaseButton: UIButton = {
+        let button = UIButton()
+        return button
+    }()
+
+    private lazy var buttonPanel: UIStackView = {
+        let vStack = UIStackView(arrangedSubviews: [countLabel, priceLabel])
+        vStack.axis = .vertical
+        vStack.spacing = 2
+
+        let panel = UIStackView(arrangedSubviews: [vStack, purchaseButton])
+        panel.axis = .horizontal
+        panel.spacing = 12
+
+        panel.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+        panel.isLayoutMarginsRelativeArrangement = true
+
+        panel.backgroundColor = .asset(.main(.lightGray))
+        panel.layer.cornerRadius = 12
+        panel.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        panel.layer.masksToBounds = true
+
+        panel.translatesAutoresizingMaskIntoConstraints = false
+
+        return panel
+    }()}
 
 // MARK: - DataSource
 
@@ -95,12 +140,16 @@ private extension CartVC {
         tableView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -hInset)
 
         view.addSubview(tableView)
+        view.addSubview(buttonPanel)
 
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: guide.topAnchor, constant: 21),
             tableView.leadingAnchor.constraint(equalTo: guide.leadingAnchor, constant: hInset),
             tableView.trailingAnchor.constraint(equalTo: guide.trailingAnchor, constant: -hInset),
-            tableView.bottomAnchor.constraint(equalTo: guide.bottomAnchor)
+            tableView.bottomAnchor.constraint(equalTo: guide.bottomAnchor),
+            buttonPanel.leadingAnchor.constraint(equalTo: guide.leadingAnchor),
+            buttonPanel.trailingAnchor.constraint(equalTo: guide.trailingAnchor),
+            buttonPanel.bottomAnchor.constraint(equalTo: guide.bottomAnchor)
         ])
     }
 }
@@ -126,6 +175,9 @@ extension CartVC {
     }
 
     func refreshView() {
+        countLabel.text = "\(viewModel.nftCount) NFT"
+        let priceString = priceFormatter.string(from: .init(value: viewModel.totalPrice)) ?? ""
+        priceLabel.text = "\(priceString) ETH"
         updateSnapshot()
     }
 }
