@@ -29,7 +29,6 @@ final class CurrencySelectController: UIViewController {
     }()
 
     private lazy var infoText: UIStackView = {
-
         let firstLine = UILabel()
         firstLine.text = "Совершая покупку, вы соглашаетесь с условиями"
         firstLine.textColor = .asset(.main(.primary))
