@@ -18,6 +18,8 @@ final class PurchaseCoordinator {
 extension PurchaseCoordinator {
     struct Dependencies {
         let currencyProvider: CurrencyProvider
+        let shoppingCart: ShoppingCart
+        let paymentService: PaymentService
     }
 }
 
@@ -36,15 +38,20 @@ extension PurchaseCoordinator: Coordinator {
     }
 
     func displayCurrencySelector(currencies: [Currency]) {
-        let currencyVC = CurrencySelectController(currencies: currencies) { [weak self] in
-            self?.displayPurchaseResult(isSuccess: false)
+        let currencyVC = CurrencySelectController(currencies: currencies) { [weak self] id in
+            self?.performPayment(with: id)
         }
 
         navigationController?.pushViewController(currencyVC, animated: true)
     }
 
     func performPayment(with currencyId: Currency.ID) {
-
+        deps.paymentService.pay(with: currencyId) { [weak self] result in
+            guard let self else { return }
+            DispatchQueue.main.async {
+                self.displayPurchaseResult(isSuccess: result)
+            }
+        }
     }
 
     func displayPurchaseResult(isSuccess: Bool) {
@@ -63,6 +70,12 @@ extension PurchaseCoordinator: Coordinator {
     }
 
     func escapeToCatalogue() {
+        deps.shoppingCart.nfts.forEach { id in
+            deps.shoppingCart.removeFromCart(id)
+        }
+
+        navigationController?.popViewController(animated: false)
+
         tabBarController?.selectedIndex = 1
     }
 }

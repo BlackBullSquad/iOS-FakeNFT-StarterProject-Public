@@ -2,11 +2,12 @@ import UIKit
 
 final class CurrencySelectController: UIViewController {
     let currencies: [Currency]
-    var onPurchase: () -> Void
+    var selectedItem: Int?
+    var onPurchase: (Int) -> Void
 
     private lazy var dataSource = makeDataSource()
 
-    init(currencies: [Currency], onPurchase: @escaping () -> Void) {
+    init(currencies: [Currency], onPurchase: @escaping (Int) -> Void) {
         self.currencies = currencies
         self.onPurchase = onPurchase
         super.init(nibName: nil, bundle: nil)
@@ -66,6 +67,8 @@ final class CurrencySelectController: UIViewController {
 
         collection.alwaysBounceVertical = true
 
+        collection.delegate = self
+
         return collection
     }()
 }
@@ -107,7 +110,7 @@ extension CurrencySelectController {
         super.viewDidLoad()
         setupViews()
         collectionView.dataSource = dataSource
-        applySnapshot(animatingDifferences: false)
+        refreshView()
     }
 
     override func viewWillLayoutSubviews() {
@@ -144,7 +147,12 @@ private extension CurrencySelectController {
         var snapshot = Snapshot()
 
         snapshot.appendSections([0])
-        snapshot.appendItems(currencies.map(CurrencySelectCell.ViewModel.init), toSection: 0)
+
+        let items = currencies.enumerated().map { offset, currency in
+            return CurrencySelectCell.ViewModel(currency, isSelected: offset == selectedItem)
+        }
+
+        snapshot.appendItems(items, toSection: 0)
 
         dataSource.apply(snapshot, animatingDifferences: animatingDifferences)
     }
@@ -152,8 +160,20 @@ private extension CurrencySelectController {
 
 // MARK: - Actions
 
-extension CurrencySelectController {
+extension CurrencySelectController: UICollectionViewDelegate {
     @objc func didTapPurchaseButton() {
-        onPurchase()
+        guard let selectedItem else { return }
+        onPurchase(currencies[selectedItem].id)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        selectedItem = selectedItem != indexPath.row ? indexPath.row : nil
+        refreshView()
+    }
+
+    func refreshView() {
+        purchaseButton.layer.opacity = selectedItem == nil ? 0.5 : 1
+        purchaseButton.isEnabled = selectedItem != nil
+        applySnapshot()
     }
 }

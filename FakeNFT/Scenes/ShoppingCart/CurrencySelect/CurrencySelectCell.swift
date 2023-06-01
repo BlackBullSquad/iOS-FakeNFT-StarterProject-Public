@@ -50,6 +50,7 @@ final class CurrencySelectCell: UICollectionViewCell {
         currencyImage.kf.indicatorType = .activity
 
         contentView.backgroundColor = .asset(.main(.lightGray))
+        contentView.layer.borderColor = UIColor.black.cgColor
         contentView.layer.cornerRadius = 12
         contentView.clipsToBounds = true
 
@@ -94,12 +95,13 @@ extension CurrencySelectCell {
             nameLabel.text = ""
             codeLabel.text = ""
             currencyImage.image = nil
-
+            contentView.layer.borderWidth = 0
             return
         }
 
         nameLabel.text = viewModel.name
         codeLabel.text = viewModel.code
+        contentView.layer.borderWidth = viewModel.isSelected ? 1 : 0
 
         currencyImage.kf.setImage(
             with: viewModel.currencyImage,

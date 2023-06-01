@@ -2,8 +2,8 @@ import Foundation
 
 struct OrderDTO {
     let id: String
-
-    let nfts: [Int]
+    let success: Bool
+    let orderId: String
 }
 
 extension OrderDTO: Decodable {}
