@@ -102,6 +102,7 @@ final class ShoppingCartCell: UITableViewCell {
     }
 
     override func prepareForReuse() {
+        super.prepareForReuse()
         configure(nil, onDelete: nil)
     }
 }

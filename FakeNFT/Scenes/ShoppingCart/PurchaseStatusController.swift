@@ -2,10 +2,11 @@ import UIKit
 
 final class PurchaseStatusController: UIViewController {
     let isSuccess: Bool
-    var onContinue: (() -> Void)?
+    var onContinue: () -> Void
 
-    init(isSuccess: Bool) {
+    init(isSuccess: Bool, onContinue: @escaping () -> Void) {
         self.isSuccess = isSuccess
+        self.onContinue = onContinue
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -85,7 +86,7 @@ extension PurchaseStatusController {
 
 extension PurchaseStatusController {
     @objc func didTapContinueButton() {
-        onContinue?()
+        onContinue()
         dismiss(animated: true)
     }
 }

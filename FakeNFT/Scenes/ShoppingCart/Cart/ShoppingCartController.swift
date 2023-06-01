@@ -144,7 +144,7 @@ private extension ShoppingCartController {
         navigationItem.rightBarButtonItem = sortButton
     }
 
-    func setupTableView() {
+    func setupComponents() {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 140
 
@@ -185,7 +185,7 @@ private extension ShoppingCartController {
 extension ShoppingCartController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupTableView()
+        setupComponents()
         setupNavBar()
         refreshView()
         view.backgroundColor = .white
@@ -205,9 +205,8 @@ extension ShoppingCartController {
 
         priceLabel.text = "\(priceString) ETH"
         countLabel.text = "\(viewModel.nftCount) NFT"
-        purchaseButton.isEnabled = viewModel.nftCount > 0
-        purchaseButton.layer.opacity = viewModel.nftCount > 0 ? 1 : 0.5
         emptyLabel.isHidden = viewModel.nftCount > 0
+        buttonPanel.isHidden = viewModel.nftCount == 0
 
         updateSnapshot()
     }
