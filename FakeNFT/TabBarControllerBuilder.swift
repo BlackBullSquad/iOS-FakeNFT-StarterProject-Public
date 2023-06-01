@@ -8,9 +8,12 @@ struct TabBarControllerBuilder {
         let profileVC = ProfileVC()
         let catalogueVC = CatalogueVC()
 
-        let purchaseCoordinator = PurchaseCoordinator()
+        let api = FakeNftAPI()
+        let purchaseCoordinator = PurchaseCoordinator(deps: .init(
+            currencyProvider: FakeCurrencyProvider(api: api)
+        ))
         let cartVC = ShoppingCartController(deps: .init(
-            nftProvider: FakeNftProvider(api: FakeNftAPI()),
+            nftProvider: FakeNftProvider(api: api),
             shoppingCart: FakeShoppingCart()
         )) {
             purchaseCoordinator.start()
