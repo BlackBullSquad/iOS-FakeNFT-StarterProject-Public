@@ -8,6 +8,6 @@ final class PurchaseCoordinator: Coordinator {
     weak var navigationController: UINavigationController?
 
     func start() {
-        print("LETSGOOOOO")
-    }
+        let 
+        navigationController.pushViewController(newTrackerVC, animated: true)    }
 }
