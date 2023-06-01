@@ -36,7 +36,11 @@ extension PurchaseCoordinator: Coordinator {
     }
 
     func displayCurrencySelector(currencies: [Currency]) {
-        displayPurchaseResult(isSuccess: true)
+        let currencyVC = CurrencySelectController(currencies: currencies) { [weak self] in
+            self?.displayPurchaseResult(isSuccess: false)
+        }
+
+        navigationController?.pushViewController(currencyVC, animated: true)
     }
 
     func performPayment(with currencyId: Currency.ID) {
@@ -46,11 +50,10 @@ extension PurchaseCoordinator: Coordinator {
     func displayPurchaseResult(isSuccess: Bool) {
         guard let navigationController else { return }
 
-        let resultVC = PurchaseStatusController(isSuccess: isSuccess)
+        let resultVC = PurchaseStatusController(isSuccess: isSuccess) { [weak self] in
+            guard let self else { return }
 
-        if isSuccess {
-            resultVC.onContinue = { [weak self] in
-                guard let self else { return }
+            if isSuccess {
                 self.escapeToCatalogue()
             }
         }
