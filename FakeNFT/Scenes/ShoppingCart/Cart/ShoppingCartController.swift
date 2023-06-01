@@ -1,7 +1,8 @@
 import UIKit
 
-final class CartVC: UIViewController {
+final class ShoppingCartController: UIViewController {
     var deps: Dependencies
+    var onPurchase: () -> Void
 
     var viewModel: ViewModel = .init() { didSet { refreshView() } }
     private lazy var dataSource = makeDataSource()
@@ -15,8 +16,9 @@ final class CartVC: UIViewController {
         return formatter
     }()
 
-    init(deps: Dependencies) {
+    init(deps: Dependencies, onPurchase: @escaping () -> Void) {
         self.deps = deps
+        self.onPurchase = onPurchase
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -45,7 +47,13 @@ final class CartVC: UIViewController {
     }()
 
     private lazy var purchaseButton: UIButton = {
-        let button = UIButton()
+        let button = UIButton(type: .system)
+        button.setTitle("К оплате", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = .asset(.bold17)
+        button.backgroundColor = .black
+        button.layer.cornerRadius = 16
+        button.addTarget(self, action: #selector(didTapPurchaseButton), for: .touchUpInside)
         return button
     }()
 
@@ -73,17 +81,17 @@ final class CartVC: UIViewController {
 
 // MARK: - DataSource
 
-private extension CartVC {
-    typealias DataSource = UITableViewDiffableDataSource<Int, CartCell.ItemViewModel>
-    typealias SnapShot = NSDiffableDataSourceSnapshot<Int, CartCell.ItemViewModel>
+private extension ShoppingCartController {
+    typealias DataSource = UITableViewDiffableDataSource<Int, ShoppingCartCell.ItemViewModel>
+    typealias SnapShot = NSDiffableDataSourceSnapshot<Int, ShoppingCartCell.ItemViewModel>
 
     func makeDataSource() -> DataSource {
         DataSource(tableView: tableView) { [weak self] tableView, indexPath, _ in
             guard
                 let self,
                 let cell = tableView.dequeueReusableCell(
-                    withIdentifier: CartCell.identifier, for: indexPath
-                ) as? CartCell else {
+                    withIdentifier: ShoppingCartCell.identifier, for: indexPath
+                ) as? ShoppingCartCell else {
                 return UITableViewCell()
             }
 
@@ -111,7 +119,7 @@ private extension CartVC {
 
 // MARK: - Setup
 
-private extension CartVC {
+private extension ShoppingCartController {
     private func setupNavBar() {
         let sortButton: UIBarButtonItem = {
             let button = UIBarButtonItem()
@@ -128,7 +136,7 @@ private extension CartVC {
 
     func setupTableView() {
         tableView.dataSource = dataSource
-        tableView.register(CartCell.self, forCellReuseIdentifier: CartCell.identifier)
+        tableView.register(ShoppingCartCell.self, forCellReuseIdentifier: ShoppingCartCell.identifier)
         tableView.translatesAutoresizingMaskIntoConstraints = false
 
         let guide = view.safeAreaLayoutGuide
@@ -149,14 +157,15 @@ private extension CartVC {
             tableView.bottomAnchor.constraint(equalTo: guide.bottomAnchor),
             buttonPanel.leadingAnchor.constraint(equalTo: guide.leadingAnchor),
             buttonPanel.trailingAnchor.constraint(equalTo: guide.trailingAnchor),
-            buttonPanel.bottomAnchor.constraint(equalTo: guide.bottomAnchor)
+            buttonPanel.bottomAnchor.constraint(equalTo: guide.bottomAnchor),
+            purchaseButton.widthAnchor.constraint(equalToConstant: 240)
         ])
     }
 }
 
 // MARK: - Lifecycle
 
-extension CartVC {
+extension ShoppingCartController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
@@ -178,13 +187,19 @@ extension CartVC {
         countLabel.text = "\(viewModel.nftCount) NFT"
         let priceString = priceFormatter.string(from: .init(value: viewModel.totalPrice)) ?? ""
         priceLabel.text = "\(priceString) ETH"
+        purchaseButton.isEnabled = viewModel.nftCount > 0
+        purchaseButton.layer.opacity = viewModel.nftCount > 0 ? 1 : 0.5
         updateSnapshot()
     }
 }
 
 // MARK: - Actions
 
-extension CartVC {
+extension ShoppingCartController {
+    @objc func didTapPurchaseButton() {
+        onPurchase()
+    }
+
     @objc func didTapSortButton() {
         let alert = UIAlertController(
             title: "Сортировка",
@@ -225,8 +240,8 @@ extension CartVC {
 
 // MARK: - External data
 
-private extension CartVC {
-    func updateItems(_ items: [CartCell.ItemViewModel]) {
+private extension ShoppingCartController {
+    func updateItems(_ items: [ShoppingCartCell.ItemViewModel]) {
         DispatchQueue.main.async { [weak self] in
             self?.viewModel.items = items
         }
@@ -239,7 +254,7 @@ private extension CartVC {
 
             switch result {
             case let .success(data):
-                updateItems(data.map(CartCell.ItemViewModel.init))
+                updateItems(data.map(ShoppingCartCell.ItemViewModel.init))
             case let .failure(error):
                 print(error)
             }

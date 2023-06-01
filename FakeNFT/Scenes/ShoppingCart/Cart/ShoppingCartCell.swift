@@ -1,6 +1,6 @@
 import UIKit
 
-final class CartCell: UITableViewCell {
+final class ShoppingCartCell: UITableViewCell {
     static let identifier = "CartCell"
 
     var priceFormatter: NumberFormatter?
@@ -11,7 +11,7 @@ final class CartCell: UITableViewCell {
     private lazy var avatar = NFTAvatarView()
 
     private lazy var deleteButton: UIButton = {
-        let button = UIButton()
+        let button = UIButton(type: .system)
         button.tintColor = .asset(.main(.primary))
         button.setImage(.init(named: "deleteFromCart"), for: .normal)
         button.addTarget(self, action: #selector(didTapDeleteButton), for: .touchUpInside)
@@ -106,7 +106,7 @@ final class CartCell: UITableViewCell {
 
 // MARK: - Configuration
 
-extension CartCell {
+extension ShoppingCartCell {
     func configure(_ viewModel: ItemViewModel?, onDelete: (() -> Void)?) {
         guard let viewModel else {
             titleLabel.text = ""
@@ -132,7 +132,7 @@ extension CartCell {
 
 // MARK: - Action
 
-extension CartCell {
+extension ShoppingCartCell {
     @objc func didTapDeleteButton() {
         onDelete?()
     }

@@ -1,6 +1,6 @@
 import Foundation
 
-extension CartCell {
+extension ShoppingCartCell {
     struct ItemViewModel: Hashable {
         var id: Int
         var name: String
@@ -10,7 +10,7 @@ extension CartCell {
     }
 }
 
-extension CartCell.ItemViewModel {
+extension ShoppingCartCell.ItemViewModel {
     init(_ model: Nft) {
         self.init(
             id: model.id,
