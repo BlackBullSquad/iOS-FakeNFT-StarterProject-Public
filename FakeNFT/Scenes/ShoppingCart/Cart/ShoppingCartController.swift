@@ -108,7 +108,7 @@ private extension ShoppingCartController {
             cell.priceFormatter = self.priceFormatter
             let viewModel = self.viewModel.sortedItems[indexPath.row]
             cell.configure(viewModel) { [weak self] in
-                self?.deleteFromCart(viewModel.id)
+                self?.deleteFromCart(viewModel)
             }
 
             return cell
@@ -145,6 +145,9 @@ private extension ShoppingCartController {
     }
 
     func setupTableView() {
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 140
+        
         tableView.dataSource = dataSource
         tableView.register(ShoppingCartCell.self, forCellReuseIdentifier: ShoppingCartCell.identifier)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -249,9 +252,15 @@ extension ShoppingCartController {
         present(alert, animated: true)
     }
 
-    func deleteFromCart(_ id: Nft.ID) {
-        deps.shoppingCart.removeFromCart(id)
-        reloadExternalData()
+    func deleteFromCart(_ model: ShoppingCartCell.ItemViewModel) {
+        let deleteController = DeleteController(avatarURL: model.avatarUrl!) { [weak self] in
+            guard let self else { return }
+            deps.shoppingCart.removeFromCart(model.id)
+            reloadExternalData()
+        }
+        deleteController.modalPresentationStyle = .overFullScreen
+
+        present(deleteController, animated: true)
     }
 }
 

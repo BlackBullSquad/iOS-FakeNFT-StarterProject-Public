@@ -48,6 +48,7 @@ final class ShoppingCartCell: UITableViewCell {
     private lazy var ratingVStack: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [titleLabel, ratingView])
         stack.axis = .vertical
+        stack.alignment = .leading
         stack.spacing = 4
         return stack
     }()
@@ -55,6 +56,7 @@ final class ShoppingCartCell: UITableViewCell {
     private lazy var priceVStack: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [priceTitleLabel, priceLabel])
         stack.axis = .vertical
+        stack.alignment = .leading
         stack.spacing = 2
         return stack
     }()

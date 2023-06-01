@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3835D01D2A28CB0D0046B354 /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3835D01C2A28CB0D0046B354 /* RatingView.swift */; };
+		3835D01F2A28E2660046B354 /* DeleteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3835D01E2A28E2660046B354 /* DeleteController.swift */; };
 		38BEBF9B2A1AB754007B1297 /* FakeNftAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BEBF9A2A1AB754007B1297 /* FakeNftAPI.swift */; };
 		38BEBF9E2A1AB7D7007B1297 /* NftAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BEBF9D2A1AB7D7007B1297 /* NftAPI.swift */; };
 		38BEBFA02A1AB9E8007B1297 /* NftDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BEBF9F2A1AB9E8007B1297 /* NftDTO.swift */; };
@@ -71,6 +72,7 @@
 
 /* Begin PBXFileReference section */
 		3835D01C2A28CB0D0046B354 /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
+		3835D01E2A28E2660046B354 /* DeleteController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteController.swift; sourceTree = "<group>"; };
 		38BEBF9A2A1AB754007B1297 /* FakeNftAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeNftAPI.swift; sourceTree = "<group>"; };
 		38BEBF9D2A1AB7D7007B1297 /* NftAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftAPI.swift; sourceTree = "<group>"; };
 		38BEBF9F2A1AB9E8007B1297 /* NftDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftDTO.swift; sourceTree = "<group>"; };
@@ -196,6 +198,7 @@
 				38BEBFB92A27D421007B1297 /* ViewModel.swift */,
 				38BEBFBB2A27D4A1007B1297 /* ItemViewModel.swift */,
 				38BEBFBD2A27D7FB007B1297 /* ShoppingCartCell.swift */,
+				3835D01E2A28E2660046B354 /* DeleteController.swift */,
 			);
 			path = Cart;
 			sourceTree = "<group>";
@@ -525,6 +528,7 @@
 				8D1B7EC82A1876B600F30D51 /* TabBarControllerBuilder.swift in Sources */,
 				38BEBFBC2A27D4A1007B1297 /* ItemViewModel.swift in Sources */,
 				3F6806D529CBBEC700B4F915 /* NetworkTask.swift in Sources */,
+				3835D01F2A28E2660046B354 /* DeleteController.swift in Sources */,
 				3F68069729CBBAF100B4F915 /* AppDelegate.swift in Sources */,
 				3F68069929CBBAF100B4F915 /* SceneDelegate.swift in Sources */,
 				38BEBFAA2A1AC2D8007B1297 /* UserDTO.swift in Sources */,
