@@ -28,23 +28,27 @@ final class CurrencySelectController: UIViewController {
         return button
     }()
 
-    private lazy var infoLabel: UILabel = {
-        let label = UILabel()
+    private lazy var infoText: UIStackView = {
 
-        let line1 = NSMutableAttributedString(string: "Совершая покупку, вы соглашаетесь с условиями\n")
-        let line2Attributes = [ NSAttributedString.Key.foregroundColor: UIColor.blue ]
-        let line2 = NSAttributedString(string: "Пользовательского соглашения", attributes: line2Attributes)
-        line1.append(line2)
+        let firstLine = UILabel()
+        firstLine.text = "Совершая покупку, вы соглашаетесь с условиями"
+        firstLine.textColor = .asset(.main(.primary))
+        firstLine.font = .asset(.regular13)
+        firstLine.textAlignment = .left
 
-        label.attributedText = line1
-        label.textColor = .asset(.main(.primary))
-        label.font = .asset(.regular13)
-        label.textAlignment = .center
-        label.numberOfLines = 0
+        let secondLine = UILabel()
+        secondLine.text = "Пользовательского соглашения"
+        secondLine.textColor = .asset(.additional(.blue))
+        secondLine.font = .asset(.regular13)
+        secondLine.textAlignment = .left
 
-        label.translatesAutoresizingMaskIntoConstraints = false
+        let vStack = UIStackView(arrangedSubviews: [firstLine, secondLine])
+        vStack.axis = .vertical
+        vStack.alignment = .leading
+        vStack.spacing = 4
+        vStack.translatesAutoresizingMaskIntoConstraints = false
 
-        return label
+        return vStack
     }()
 }
 
@@ -67,13 +71,13 @@ extension CurrencySelectController {
 
         let guide = view.safeAreaLayoutGuide
 
-        view.addSubview(infoLabel)
+        view.addSubview(infoText)
         view.addSubview(purchaseButton)
 
         NSLayoutConstraint.activate([
-            infoLabel.bottomAnchor.constraint(equalTo: purchaseButton.bottomAnchor, constant: -20),
-            infoLabel.trailingAnchor.constraint(equalTo: purchaseButton.trailingAnchor),
-            infoLabel.leadingAnchor.constraint(equalTo: purchaseButton.leadingAnchor),
+            infoText.bottomAnchor.constraint(equalTo: purchaseButton.topAnchor, constant: -20),
+            infoText.trailingAnchor.constraint(equalTo: purchaseButton.trailingAnchor),
+            infoText.leadingAnchor.constraint(equalTo: purchaseButton.leadingAnchor),
             purchaseButton.heightAnchor.constraint(equalToConstant: 60),
             purchaseButton.leadingAnchor.constraint(equalTo: guide.leadingAnchor, constant: 16),
             purchaseButton.trailingAnchor.constraint(equalTo: guide.trailingAnchor, constant: -16),
