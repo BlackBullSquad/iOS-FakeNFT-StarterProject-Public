@@ -4,6 +4,8 @@ final class CurrencySelectController: UIViewController {
     let currencies: [Currency]
     var onPurchase: () -> Void
 
+    private lazy var dataSource = makeDataSource()
+
     init(currencies: [Currency], onPurchase: @escaping () -> Void) {
         self.currencies = currencies
         self.onPurchase = onPurchase
@@ -49,16 +51,28 @@ final class CurrencySelectController: UIViewController {
 
         return vStack
     }()
+
+    private lazy var collectionView: UICollectionView = {
+        let collection = UICollectionView(
+            frame: .zero,
+            collectionViewLayout: UICollectionViewCompositionalLayout.currencies
+        )
+
+        collection.keyboardDismissMode = .onDrag
+        collection.contentInset = .init(top: 20, left: 0, bottom: 0, right: 0)
+
+        collection.register(CurrencySelectCell.self,
+                            forCellWithReuseIdentifier: CurrencySelectCell.identifier)
+
+        collection.alwaysBounceVertical = true
+
+        return collection
+    }()
 }
 
 // MARK: - Setup
 
 extension CurrencySelectController {
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupViews()
-    }
-
     func setupViews() {
         title = "Выберите способ оплаты"
         let backItem = UIBarButtonItem()
@@ -70,6 +84,7 @@ extension CurrencySelectController {
 
         let guide = view.safeAreaLayoutGuide
 
+        view.addSubview(collectionView)
         view.addSubview(infoText)
         view.addSubview(purchaseButton)
 
@@ -82,6 +97,56 @@ extension CurrencySelectController {
             purchaseButton.trailingAnchor.constraint(equalTo: guide.trailingAnchor, constant: -16),
             purchaseButton.bottomAnchor.constraint(equalTo: guide.bottomAnchor, constant: -16)
         ])
+    }
+}
+
+// MARK: - Lifecycle
+
+extension CurrencySelectController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupViews()
+        collectionView.dataSource = dataSource
+        applySnapshot(animatingDifferences: false)
+    }
+
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        collectionView.frame = view.bounds
+    }
+}
+
+// MARK: - DataSource
+
+private extension CurrencySelectController {
+    typealias DataSource = UICollectionViewDiffableDataSource<Int, CurrencySelectCell.ViewModel>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Int, CurrencySelectCell.ViewModel>
+
+    func makeDataSource() -> DataSource {
+        let dataSource = DataSource(
+            collectionView: collectionView,
+            cellProvider: { (collectionView, indexPath, viewModel) -> UICollectionViewCell? in
+                let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: CurrencySelectCell.identifier,
+                    for: indexPath
+                ) as? CurrencySelectCell
+
+                cell?.configure(viewModel)
+
+                return cell
+            }
+        )
+
+        return dataSource
+    }
+
+    private func applySnapshot(animatingDifferences: Bool = true) {
+        var snapshot = Snapshot()
+
+        snapshot.appendSections([0])
+        snapshot.appendItems(currencies.map(CurrencySelectCell.ViewModel.init), toSection: 0)
+
+        dataSource.apply(snapshot, animatingDifferences: animatingDifferences)
     }
 }
 

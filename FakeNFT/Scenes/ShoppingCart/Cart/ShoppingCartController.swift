@@ -144,7 +144,7 @@ private extension ShoppingCartController {
         navigationItem.rightBarButtonItem = sortButton
     }
 
-    func setupTableView() {
+    func setupComponents() {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 140
 
@@ -185,7 +185,7 @@ private extension ShoppingCartController {
 extension ShoppingCartController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupTableView()
+        setupComponents()
         setupNavBar()
         refreshView()
         view.backgroundColor = .white

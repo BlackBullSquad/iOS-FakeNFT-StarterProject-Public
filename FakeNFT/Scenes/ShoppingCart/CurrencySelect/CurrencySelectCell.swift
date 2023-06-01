@@ -1,12 +1,20 @@
 import UIKit
 import Kingfisher
 
-final class CurrencySelectCell: UITableViewCell {
+final class CurrencySelectCell: UICollectionViewCell {
     static let identifier = "CurrencySelectCell"
 
     // MARK: - Components
 
     private lazy var currencyImage = UIImageView()
+    private lazy var currencyImageBackground: UIView = {
+        let view = UIView()
+        view.backgroundColor = .black
+        view.layer.cornerRadius = 6
+        view.clipsToBounds = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
 
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
@@ -26,8 +34,8 @@ final class CurrencySelectCell: UITableViewCell {
 
     // MARK: - Initialization
 
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         setupSubviews()
     }
 
@@ -54,25 +62,32 @@ final class CurrencySelectCell: UITableViewCell {
         hStack.spacing = 4
         hStack.translatesAutoresizingMaskIntoConstraints = false
 
+        contentView.addSubview(currencyImageBackground)
         contentView.addSubview(hStack)
 
         NSLayoutConstraint.activate([
+            currencyImage.widthAnchor.constraint(equalTo: currencyImage.heightAnchor),
+            currencyImageBackground.widthAnchor.constraint(equalTo: currencyImageBackground.heightAnchor),
+            currencyImageBackground.widthAnchor.constraint(equalTo: currencyImage.heightAnchor),
+            currencyImageBackground.centerXAnchor.constraint(equalTo: currencyImage.centerXAnchor),
+            currencyImageBackground.centerYAnchor.constraint(equalTo: currencyImage.centerYAnchor),
             hStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
             hStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
             hStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
             hStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5)
         ])
     }
-
-    override func prepareForReuse() {
-        configure(nil)
-    }
 }
 
 // MARK: - Configuration
 
 extension CurrencySelectCell {
-    func configure(_ viewModel: CurrencyViewModel?) {
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        configure(nil)
+    }
+
+    func configure(_ viewModel: ViewModel?) {
         let placeholder = UIImage(named: "placeholder")
 
         guard let viewModel else {

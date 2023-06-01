@@ -1,7 +1,7 @@
 import Foundation
 
 extension CurrencySelectCell {
-    struct CurrencyViewModel {
+    struct ViewModel: Hashable {
         let name: String
         let code: String
         let currencyImage: URL
