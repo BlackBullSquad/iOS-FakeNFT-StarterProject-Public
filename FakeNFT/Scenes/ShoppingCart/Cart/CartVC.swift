@@ -43,7 +43,10 @@ private extension CartVC {
             }
 
             cell.priceFormatter = self.priceFormatter
-            cell.configure(self.viewModel.sortedItems[indexPath.row])
+            let viewModel = self.viewModel.sortedItems[indexPath.row]
+            cell.configure(viewModel) { [weak self] in
+                self?.deleteFromCart(viewModel.id)
+            }
 
             return cell
         }
@@ -123,8 +126,6 @@ extension CartVC {
     }
 
     func refreshView() {
-        print("refresh")
-        dump(viewModel)
         updateSnapshot()
     }
 }
@@ -162,6 +163,11 @@ extension CartVC {
         )
 
         present(alert, animated: true)
+    }
+
+    func deleteFromCart(_ id: Nft.ID) {
+        deps.shoppingCart.removeFromCart(id)
+        reloadExternalData()
     }
 }
 

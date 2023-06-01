@@ -2,9 +2,21 @@ import UIKit
 
 final class CartCell: UITableViewCell {
     static let identifier = "CartCell"
+
     var priceFormatter: NumberFormatter?
+    var onDelete: (() -> Void)?
+
+    // MARK: - Components
 
     private lazy var avatar = NFTAvatarView()
+
+    private lazy var deleteButton: UIButton = {
+        let button = UIButton()
+        button.tintColor = .asset(.main(.primary))
+        button.setImage(.init(named: "deleteFromCart"), for: .normal)
+        button.addTarget(self, action: #selector(didTapDeleteButton), for: .touchUpInside)
+        return button
+    }()
 
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -61,9 +73,9 @@ final class CartCell: UITableViewCell {
     }()
 
     private lazy var hStack: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [avatar, vStack, UIView()])
+        let stack = UIStackView(arrangedSubviews: [avatar, vStack, UIView(), deleteButton])
         stack.axis = .horizontal
-        stack.alignment = .leading
+        stack.alignment = .center
         stack.spacing = 20
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
@@ -92,16 +104,40 @@ final class CartCell: UITableViewCell {
             hStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
         ])
     }
+
+    override func prepareForReuse() {
+        configure(nil, onDelete: nil)
+    }
 }
 
+// MARK: - Configuration
+
 extension CartCell {
-    func configure(_ viewModel: ItemViewModel) {
+    func configure(_ viewModel: ItemViewModel?, onDelete: (() -> Void)?) {
+        guard let viewModel else {
+            titleLabel.text = ""
+            priceLabel.text = ""
+            avatar.viewModel = .init(imageSize: .large, imageURL: nil, likeButtonAction: nil)
+            self.onDelete = nil
+            return
+        }
+
         guard let priceFormatter else { preconditionFailure("cell was not set up properly") }
 
         titleLabel.text = viewModel.name
         let priceString = priceFormatter.string(from: .init(value: viewModel.price)) ?? ""
         priceLabel.text = "\(priceString) ETH"
+        avatar.viewModel = .init(imageSize: .large,
+                                 imageURL: viewModel.avatarUrl,
+                                 likeButtonAction: nil)
+        self.onDelete = onDelete
+    }
+}
 
-        avatar.viewModel = .init(imageSize: .large, imageURL: viewModel.avatarUrl, likeButtonAction: nil)
+// MARK: - Action
+
+extension CartCell {
+    @objc func didTapDeleteButton() {
+        onDelete?()
     }
 }
