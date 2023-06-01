@@ -40,6 +40,8 @@ struct TabBarControllerBuilder {
 
         // MARK: - Tab Bar Controller
         let tabBarController = UITabBarController()
+        purchaseCoordinator.tabBarController = tabBarController
+
         tabBarController.viewControllers = [
             profileNavController,
             catalogueNavController,
