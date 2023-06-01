@@ -46,6 +46,16 @@ final class ShoppingCartController: UIViewController {
         return label
     }()
 
+    private lazy var emptyLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Корзина пуста"
+        label.textColor = .asset(.main(.primary))
+        label.font = .asset(.bold17)
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+
     private lazy var purchaseButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("К оплате", for: .normal)
@@ -138,6 +148,7 @@ private extension ShoppingCartController {
         tableView.dataSource = dataSource
         tableView.register(ShoppingCartCell.self, forCellReuseIdentifier: ShoppingCartCell.identifier)
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.contentInset = .init(top: 0, left: 0, bottom: 80, right: 0)
 
         let guide = view.safeAreaLayoutGuide
         let hInset: CGFloat = 16
@@ -149,6 +160,7 @@ private extension ShoppingCartController {
 
         view.addSubview(tableView)
         view.addSubview(buttonPanel)
+        view.addSubview(emptyLabel)
 
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: guide.topAnchor, constant: 21),
@@ -158,6 +170,8 @@ private extension ShoppingCartController {
             buttonPanel.leadingAnchor.constraint(equalTo: guide.leadingAnchor),
             buttonPanel.trailingAnchor.constraint(equalTo: guide.trailingAnchor),
             buttonPanel.bottomAnchor.constraint(equalTo: guide.bottomAnchor),
+            emptyLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            emptyLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             purchaseButton.widthAnchor.constraint(equalToConstant: 240)
         ])
     }
@@ -184,11 +198,14 @@ extension ShoppingCartController {
     }
 
     func refreshView() {
-        countLabel.text = "\(viewModel.nftCount) NFT"
         let priceString = priceFormatter.string(from: .init(value: viewModel.totalPrice)) ?? ""
+
         priceLabel.text = "\(priceString) ETH"
+        countLabel.text = "\(viewModel.nftCount) NFT"
         purchaseButton.isEnabled = viewModel.nftCount > 0
         purchaseButton.layer.opacity = viewModel.nftCount > 0 ? 1 : 0.5
+        emptyLabel.isHidden = viewModel.nftCount > 0
+
         updateSnapshot()
     }
 }

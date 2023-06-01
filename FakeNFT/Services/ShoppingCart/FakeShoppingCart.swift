@@ -1,5 +1,5 @@
 final class FakeShoppingCart {
-    private var contents: Set<Nft.ID> = [0, 1, 2, 3]
+    private var contents: Set<Nft.ID> = [0, 1, 2, 3, 4, 5, 6, 7]
 }
 
 extension FakeShoppingCart: ShoppingCart {
