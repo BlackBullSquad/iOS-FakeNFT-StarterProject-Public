@@ -7,11 +7,13 @@ struct TabBarControllerBuilder {
         // MARK: - View Controllers
         let profileVC = ProfileVC()
         let catalogueVC = CatalogueVC()
+
+        let purchaseCoordinator = PurchaseCoordinator()
         let cartVC = ShoppingCartController(deps: .init(
             nftProvider: FakeNftProvider(api: FakeNftAPI()),
             shoppingCart: FakeShoppingCart()
         )) {
-            print("hello purchase")
+            purchaseCoordinator.start()
         }
 
         // MARK: - Navigation Controllers
@@ -25,11 +27,13 @@ struct TabBarControllerBuilder {
             title: "Каталог",
             imageName: "rectangle.stack.fill"
         )
+
         let cartNavController = createNavigationController(
             with: cartVC,
             title: "Корзина",
             imageName: "bag.fill"
         )
+        purchaseCoordinator.navigationController = cartNavController
 
         // MARK: - Tab Bar Controller
         let tabBarController = UITabBarController()
