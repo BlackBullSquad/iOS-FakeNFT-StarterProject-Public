@@ -36,7 +36,7 @@ struct FakeNftAPI {
 }
 
 extension FakeNftAPI: NftAPI {
-    func updateProfile(
+    func updateProfile( // swiftlint:disable:this function_parameter_count
         id: Int,
         name: String,
         description: String,

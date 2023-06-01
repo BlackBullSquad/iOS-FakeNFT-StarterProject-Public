@@ -100,7 +100,11 @@ extension NFTAvatarView {
 
         let placeholder = UIImage(named: "placeholder")
 
-        imageView.kf.setImage(with: viewModel.imageURL, placeholder: placeholder, options: [.scaleFactor(UIScreen.main.scale), .transition(.fade(1))])
+        imageView.kf.setImage(
+            with: viewModel.imageURL,
+            placeholder: placeholder,
+            options: [.scaleFactor(UIScreen.main.scale), .transition(.fade(1))]
+        )
 
         if let isLiked = viewModel.isLiked {
             likeButton.isHidden = false

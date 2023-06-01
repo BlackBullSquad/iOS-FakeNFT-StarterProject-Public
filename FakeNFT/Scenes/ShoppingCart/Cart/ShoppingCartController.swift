@@ -147,7 +147,7 @@ private extension ShoppingCartController {
     func setupTableView() {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 140
-        
+
         tableView.dataSource = dataSource
         tableView.register(ShoppingCartCell.self, forCellReuseIdentifier: ShoppingCartCell.identifier)
         tableView.translatesAutoresizingMaskIntoConstraints = false

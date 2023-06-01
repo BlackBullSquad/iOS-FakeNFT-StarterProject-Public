@@ -15,7 +15,7 @@ enum Asset {
 }
 
 enum Main: String {
-    case backround, bg, green, lightGray, primary, red, whiteAlpha50
+    case backround, bg, green, lightGray, primary, red, whiteAlpha50 // swiftlint:disable:this identifier_name
 }
 
 enum Additional: String {

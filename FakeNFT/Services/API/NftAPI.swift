@@ -105,7 +105,7 @@ protocol NftAPI {
     /// - Parameter website Сайт
     /// - Parameter likes список лайков
     @discardableResult
-    func updateProfile(
+    func updateProfile( // swiftlint:disable:this function_parameter_count
         id: Int,
         name: String,
         description: String,

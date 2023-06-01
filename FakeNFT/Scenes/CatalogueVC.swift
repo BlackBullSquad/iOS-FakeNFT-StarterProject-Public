@@ -10,7 +10,10 @@ final class CatalogueVC: UIViewController {
         let avatarView = NFTAvatarView()
         avatarView.translatesAutoresizingMaskIntoConstraints = false
 
-        let imageURL = URL(string: "https://podarki.ru/gate/8d850520-0bde-4922-a1f1-b203cf177234/links-set/3af29402-0255-4f56-83fc-6d32cadf7b48/picture/96de30c0-da5a-4caf-8a25-3fed979df1ed.jpg")
+        let imageURL = URL(string: """
+            https://podarki.ru/gate/8d850520-0bde-4922-a1f1-b203cf177234/links-set/\
+            3af29402-0255-4f56-83fc-6d32cadf7b48/picture/96de30c0-da5a-4caf-8a25-3fed979df1ed.jpg
+            """)
         let viewModel = NFTAvatarViewModel(
             imageSize: .large,
             imageURL: imageURL,
