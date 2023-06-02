@@ -721,10 +721,6 @@
       "format" : "float",
       "example" : 8.81
     },
-    "author" : {
-      "type" : "integer",
-      "example" : 49
-    },
     "id" : {
       "type" : "string",
       "example" : "1"
@@ -770,6 +766,80 @@
             defs["inline_response_200_2"] = {
   "type" : "object",
   "properties" : {
+    "createdAt" : {
+      "type" : "string",
+      "example" : "2023-04-20T02:22:27Z"
+    },
+    "name" : {
+      "type" : "string",
+      "example" : "Beige"
+    },
+    "cover" : {
+      "type" : "string",
+      "example" : "https://code.s3.yandex.net/Mobile/iOS/NFT/Обложки_коллекций/Beige.png"
+    },
+    "nfts" : {
+      "type" : "array",
+      "example" : [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21 ],
+      "items" : {
+        "type" : "integer"
+      }
+    },
+    "description" : {
+      "type" : "string",
+      "example" : "A series of one-of-a-kind NFTs featuring historic moments in sports history."
+    },
+    "id" : {
+      "type" : "string",
+      "example" : "1"
+    }
+  }
+};
+            defs["inline_response_200_3"] = {
+  "type" : "object",
+  "properties" : {
+    "name" : {
+      "type" : "string"
+    },
+    "avatar" : {
+      "type" : "string"
+    },
+    "description" : {
+      "type" : "string"
+    },
+    "website" : {
+      "type" : "string"
+    },
+    "nfts" : {
+      "type" : "array",
+      "items" : {
+        "type" : "integer"
+      }
+    },
+    "rating" : {
+      "type" : "string"
+    },
+    "author" : {
+      "type" : "integer"
+    },
+    "id" : {
+      "type" : "string"
+    }
+  },
+  "example" : {
+    "name" : "Lucille Heaney",
+    "avatar" : "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/753.jpg",
+    "description" : "Supporting artists through NFTs is my passion ❤",
+    "website" : "https://practicum.yandex.ru/promo/courses/email-marketing",
+    "nfts" : [ 1, 4, 5 ],
+    "rating" : 10,
+    "author" : 49,
+    "id" : "3"
+  }
+};
+            defs["inline_response_200_4"] = {
+  "type" : "object",
+  "properties" : {
     "name" : {
       "type" : "string"
     },
@@ -805,7 +875,7 @@
     "id" : "3"
   }
 };
-            defs["inline_response_200_3"] = {
+            defs["inline_response_200_5"] = {
   "type" : "object",
   "properties" : {
     "name" : {
@@ -842,7 +912,7 @@
     }
   }
 };
-            defs["inline_response_200_4"] = {
+            defs["inline_response_200_6"] = {
   "type" : "object",
   "properties" : {
     "nfts" : {
@@ -857,7 +927,7 @@
     }
   }
 };
-            defs["inline_response_200_5"] = {
+            defs["inline_response_200_7"] = {
   "type" : "object",
   "properties" : {
     "title" : {
@@ -880,7 +950,7 @@
     "id" : "1"
   }
 };
-            defs["inline_response_200_6"] = {
+            defs["inline_response_200_8"] = {
   "type" : "object",
   "properties" : {
     "title" : {
@@ -903,7 +973,7 @@
     "id" : "1"
   } ]
 };
-            defs["inline_response_200_7"] = {
+            defs["inline_response_200_9"] = {
   "type" : "object",
   "properties" : {
     "success" : {
@@ -1085,7 +1155,7 @@ public class CollectionsApiExample {
         CollectionsApi apiInstance = new CollectionsApi();
         Integer collectionId = 56; // Integer | Id of collection to get
         try {
-            inline_response_200_1 result = apiInstance.apiV1CollectionsCollectionIdGet(collectionId);
+            inline_response_200_2 result = apiInstance.apiV1CollectionsCollectionIdGet(collectionId);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling CollectionsApi#apiV1CollectionsCollectionIdGet");
@@ -1104,7 +1174,7 @@ public class CollectionsApiExample {
         CollectionsApi apiInstance = new CollectionsApi();
         Integer collectionId = 56; // Integer | Id of collection to get
         try {
-            inline_response_200_1 result = apiInstance.apiV1CollectionsCollectionIdGet(collectionId);
+            inline_response_200_2 result = apiInstance.apiV1CollectionsCollectionIdGet(collectionId);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling CollectionsApi#apiV1CollectionsCollectionIdGet");
@@ -1124,7 +1194,7 @@ CollectionsApi *apiInstance = [[CollectionsApi alloc] init];
 
 // Получение коллекции с заданным id
 [apiInstance apiV1CollectionsCollectionIdGetWith:collectionId
-              completionHandler: ^(inline_response_200_1 output, NSError* error) {
+              completionHandler: ^(inline_response_200_2 output, NSError* error) {
                             if (output) {
                                 NSLog(@"%@", output);
                             }
@@ -1175,7 +1245,7 @@ namespace Example
             try
             {
                 // Получение коллекции с заданным id
-                inline_response_200_1 result = apiInstance.apiV1CollectionsCollectionIdGet(collectionId);
+                inline_response_200_2 result = apiInstance.apiV1CollectionsCollectionIdGet(collectionId);
                 Debug.WriteLine(result);
             }
             catch (Exception e)
@@ -1297,7 +1367,7 @@ except ApiException as e:
   "content" : {
     "application/json" : {
       "schema" : {
-        "$ref" : "#/components/schemas/inline_response_200_1"
+        "$ref" : "#/components/schemas/inline_response_200_2"
       }
     }
   }
@@ -2207,7 +2277,7 @@ public class OrderAndPaymentApiExample {
         OrderAndPaymentApi apiInstance = new OrderAndPaymentApi();
         Integer currencyId = 56; // Integer | Id of currency to get
         try {
-            inline_response_200_6 result = apiInstance.apiV1CurrenciesCurrencyIdGet(currencyId);
+            inline_response_200_8 result = apiInstance.apiV1CurrenciesCurrencyIdGet(currencyId);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling OrderAndPaymentApi#apiV1CurrenciesCurrencyIdGet");
@@ -2226,7 +2296,7 @@ public class OrderAndPaymentApiExample {
         OrderAndPaymentApi apiInstance = new OrderAndPaymentApi();
         Integer currencyId = 56; // Integer | Id of currency to get
         try {
-            inline_response_200_6 result = apiInstance.apiV1CurrenciesCurrencyIdGet(currencyId);
+            inline_response_200_8 result = apiInstance.apiV1CurrenciesCurrencyIdGet(currencyId);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling OrderAndPaymentApi#apiV1CurrenciesCurrencyIdGet");
@@ -2246,7 +2316,7 @@ OrderAndPaymentApi *apiInstance = [[OrderAndPaymentApi alloc] init];
 
 // Получение валюты с заданным id
 [apiInstance apiV1CurrenciesCurrencyIdGetWith:currencyId
-              completionHandler: ^(inline_response_200_6 output, NSError* error) {
+              completionHandler: ^(inline_response_200_8 output, NSError* error) {
                             if (output) {
                                 NSLog(@"%@", output);
                             }
@@ -2297,7 +2367,7 @@ namespace Example
             try
             {
                 // Получение валюты с заданным id
-                inline_response_200_6 result = apiInstance.apiV1CurrenciesCurrencyIdGet(currencyId);
+                inline_response_200_8 result = apiInstance.apiV1CurrenciesCurrencyIdGet(currencyId);
                 Debug.WriteLine(result);
             }
             catch (Exception e)
@@ -2419,7 +2489,7 @@ except ApiException as e:
   "content" : {
     "application/json" : {
       "schema" : {
-        "$ref" : "#/components/schemas/inline_response_200_6"
+        "$ref" : "#/components/schemas/inline_response_200_8"
       }
     }
   }
@@ -2502,7 +2572,7 @@ public class OrderAndPaymentApiExample {
         
         OrderAndPaymentApi apiInstance = new OrderAndPaymentApi();
         try {
-            array[inline_response_200_5] result = apiInstance.apiV1CurrenciesGet();
+            array[inline_response_200_7] result = apiInstance.apiV1CurrenciesGet();
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling OrderAndPaymentApi#apiV1CurrenciesGet");
@@ -2520,7 +2590,7 @@ public class OrderAndPaymentApiExample {
     public static void main(String[] args) {
         OrderAndPaymentApi apiInstance = new OrderAndPaymentApi();
         try {
-            array[inline_response_200_5] result = apiInstance.apiV1CurrenciesGet();
+            array[inline_response_200_7] result = apiInstance.apiV1CurrenciesGet();
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling OrderAndPaymentApi#apiV1CurrenciesGet");
@@ -2539,7 +2609,7 @@ OrderAndPaymentApi *apiInstance = [[OrderAndPaymentApi alloc] init];
 
 // Получение списка валют
 [apiInstance apiV1CurrenciesGetWithCompletionHandler: 
-              ^(array[inline_response_200_5] output, NSError* error) {
+              ^(array[inline_response_200_7] output, NSError* error) {
                             if (output) {
                                 NSLog(@"%@", output);
                             }
@@ -2587,7 +2657,7 @@ namespace Example
             try
             {
                 // Получение списка валют
-                array[inline_response_200_5] result = apiInstance.apiV1CurrenciesGet();
+                array[inline_response_200_7] result = apiInstance.apiV1CurrenciesGet();
                 Debug.WriteLine(result);
             }
             catch (Exception e)
@@ -2679,7 +2749,7 @@ except ApiException as e:
       "schema" : {
         "type" : "array",
         "items" : {
-          "$ref" : "#/components/schemas/inline_response_200_5"
+          "$ref" : "#/components/schemas/inline_response_200_7"
         },
         "x-content-type" : "application/json"
       }
@@ -2764,7 +2834,7 @@ public class OrderAndPaymentApiExample {
         
         OrderAndPaymentApi apiInstance = new OrderAndPaymentApi();
         try {
-            inline_response_200_4 result = apiInstance.apiV1Orders1Get();
+            inline_response_200_6 result = apiInstance.apiV1Orders1Get();
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling OrderAndPaymentApi#apiV1Orders1Get");
@@ -2782,7 +2852,7 @@ public class OrderAndPaymentApiExample {
     public static void main(String[] args) {
         OrderAndPaymentApi apiInstance = new OrderAndPaymentApi();
         try {
-            inline_response_200_4 result = apiInstance.apiV1Orders1Get();
+            inline_response_200_6 result = apiInstance.apiV1Orders1Get();
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling OrderAndPaymentApi#apiV1Orders1Get");
@@ -2801,7 +2871,7 @@ OrderAndPaymentApi *apiInstance = [[OrderAndPaymentApi alloc] init];
 
 // Получение заказа
 [apiInstance apiV1Orders1GetWithCompletionHandler: 
-              ^(inline_response_200_4 output, NSError* error) {
+              ^(inline_response_200_6 output, NSError* error) {
                             if (output) {
                                 NSLog(@"%@", output);
                             }
@@ -2849,7 +2919,7 @@ namespace Example
             try
             {
                 // Получение заказа
-                inline_response_200_4 result = apiInstance.apiV1Orders1Get();
+                inline_response_200_6 result = apiInstance.apiV1Orders1Get();
                 Debug.WriteLine(result);
             }
             catch (Exception e)
@@ -2939,7 +3009,7 @@ except ApiException as e:
   "content" : {
     "application/json" : {
       "schema" : {
-        "$ref" : "#/components/schemas/inline_response_200_4"
+        "$ref" : "#/components/schemas/inline_response_200_6"
       }
     }
   }
@@ -3023,7 +3093,7 @@ public class OrderAndPaymentApiExample {
         OrderAndPaymentApi apiInstance = new OrderAndPaymentApi();
         Integer currencyId = 56; // Integer | Id валюты для оплаты
         try {
-            inline_response_200_7 result = apiInstance.apiV1Orders1PaymentCurrencyIdGet(currencyId);
+            inline_response_200_9 result = apiInstance.apiV1Orders1PaymentCurrencyIdGet(currencyId);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling OrderAndPaymentApi#apiV1Orders1PaymentCurrencyIdGet");
@@ -3042,7 +3112,7 @@ public class OrderAndPaymentApiExample {
         OrderAndPaymentApi apiInstance = new OrderAndPaymentApi();
         Integer currencyId = 56; // Integer | Id валюты для оплаты
         try {
-            inline_response_200_7 result = apiInstance.apiV1Orders1PaymentCurrencyIdGet(currencyId);
+            inline_response_200_9 result = apiInstance.apiV1Orders1PaymentCurrencyIdGet(currencyId);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling OrderAndPaymentApi#apiV1Orders1PaymentCurrencyIdGet");
@@ -3062,7 +3132,7 @@ OrderAndPaymentApi *apiInstance = [[OrderAndPaymentApi alloc] init];
 
 // Оплата заказа валютой с заданным id
 [apiInstance apiV1Orders1PaymentCurrencyIdGetWith:currencyId
-              completionHandler: ^(inline_response_200_7 output, NSError* error) {
+              completionHandler: ^(inline_response_200_9 output, NSError* error) {
                             if (output) {
                                 NSLog(@"%@", output);
                             }
@@ -3113,7 +3183,7 @@ namespace Example
             try
             {
                 // Оплата заказа валютой с заданным id
-                inline_response_200_7 result = apiInstance.apiV1Orders1PaymentCurrencyIdGet(currencyId);
+                inline_response_200_9 result = apiInstance.apiV1Orders1PaymentCurrencyIdGet(currencyId);
                 Debug.WriteLine(result);
             }
             catch (Exception e)
@@ -3235,7 +3305,7 @@ except ApiException as e:
   "content" : {
     "application/json" : {
       "schema" : {
-        "$ref" : "#/components/schemas/inline_response_200_7"
+        "$ref" : "#/components/schemas/inline_response_200_9"
       }
     }
   }
@@ -3320,7 +3390,7 @@ public class OrderAndPaymentApiExample {
         OrderAndPaymentApi apiInstance = new OrderAndPaymentApi();
         array[Integer] nfts = ; // array[Integer] | 
         try {
-            inline_response_200_4 result = apiInstance.apiV1Orders1Put(nfts);
+            inline_response_200_6 result = apiInstance.apiV1Orders1Put(nfts);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling OrderAndPaymentApi#apiV1Orders1Put");
@@ -3339,7 +3409,7 @@ public class OrderAndPaymentApiExample {
         OrderAndPaymentApi apiInstance = new OrderAndPaymentApi();
         array[Integer] nfts = ; // array[Integer] | 
         try {
-            inline_response_200_4 result = apiInstance.apiV1Orders1Put(nfts);
+            inline_response_200_6 result = apiInstance.apiV1Orders1Put(nfts);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling OrderAndPaymentApi#apiV1Orders1Put");
@@ -3359,7 +3429,7 @@ OrderAndPaymentApi *apiInstance = [[OrderAndPaymentApi alloc] init];
 
 // Изменение заказа
 [apiInstance apiV1Orders1PutWith:nfts
-              completionHandler: ^(inline_response_200_4 output, NSError* error) {
+              completionHandler: ^(inline_response_200_6 output, NSError* error) {
                             if (output) {
                                 NSLog(@"%@", output);
                             }
@@ -3411,7 +3481,7 @@ namespace Example
             try
             {
                 // Изменение заказа
-                inline_response_200_4 result = apiInstance.apiV1Orders1Put(nfts);
+                inline_response_200_6 result = apiInstance.apiV1Orders1Put(nfts);
                 Debug.WriteLine(result);
             }
             catch (Exception e)
@@ -3527,7 +3597,7 @@ except ApiException as e:
   "content" : {
     "application/json" : {
       "schema" : {
-        "$ref" : "#/components/schemas/inline_response_200_4"
+        "$ref" : "#/components/schemas/inline_response_200_6"
       }
     }
   }
@@ -3613,7 +3683,7 @@ public class ProfileApiExample {
         
         ProfileApi apiInstance = new ProfileApi();
         try {
-            inline_response_200_3 result = apiInstance.apiV1Profile1Get();
+            inline_response_200_5 result = apiInstance.apiV1Profile1Get();
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling ProfileApi#apiV1Profile1Get");
@@ -3631,7 +3701,7 @@ public class ProfileApiExample {
     public static void main(String[] args) {
         ProfileApi apiInstance = new ProfileApi();
         try {
-            inline_response_200_3 result = apiInstance.apiV1Profile1Get();
+            inline_response_200_5 result = apiInstance.apiV1Profile1Get();
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling ProfileApi#apiV1Profile1Get");
@@ -3650,7 +3720,7 @@ ProfileApi *apiInstance = [[ProfileApi alloc] init];
 
 // Получение профиля
 [apiInstance apiV1Profile1GetWithCompletionHandler: 
-              ^(inline_response_200_3 output, NSError* error) {
+              ^(inline_response_200_5 output, NSError* error) {
                             if (output) {
                                 NSLog(@"%@", output);
                             }
@@ -3698,7 +3768,7 @@ namespace Example
             try
             {
                 // Получение профиля
-                inline_response_200_3 result = apiInstance.apiV1Profile1Get();
+                inline_response_200_5 result = apiInstance.apiV1Profile1Get();
                 Debug.WriteLine(result);
             }
             catch (Exception e)
@@ -3788,7 +3858,7 @@ except ApiException as e:
   "content" : {
     "application/json" : {
       "schema" : {
-        "$ref" : "#/components/schemas/inline_response_200_3"
+        "$ref" : "#/components/schemas/inline_response_200_5"
       }
     }
   }
@@ -3876,7 +3946,7 @@ public class ProfileApiExample {
         String website = website_example; // String | 
         array[Integer] likes = ; // array[Integer] | 
         try {
-            inline_response_200_3 result = apiInstance.apiV1Profile1Put(name, description, website, likes);
+            inline_response_200_5 result = apiInstance.apiV1Profile1Put(name, description, website, likes);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling ProfileApi#apiV1Profile1Put");
@@ -3898,7 +3968,7 @@ public class ProfileApiExample {
         String website = website_example; // String | 
         array[Integer] likes = ; // array[Integer] | 
         try {
-            inline_response_200_3 result = apiInstance.apiV1Profile1Put(name, description, website, likes);
+            inline_response_200_5 result = apiInstance.apiV1Profile1Put(name, description, website, likes);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling ProfileApi#apiV1Profile1Put");
@@ -3924,7 +3994,7 @@ ProfileApi *apiInstance = [[ProfileApi alloc] init];
     description:description
     website:website
     likes:likes
-              completionHandler: ^(inline_response_200_3 output, NSError* error) {
+              completionHandler: ^(inline_response_200_5 output, NSError* error) {
                             if (output) {
                                 NSLog(@"%@", output);
                             }
@@ -3982,7 +4052,7 @@ namespace Example
             try
             {
                 // Обновление профиля
-                inline_response_200_3 result = apiInstance.apiV1Profile1Put(name, description, website, likes);
+                inline_response_200_5 result = apiInstance.apiV1Profile1Put(name, description, website, likes);
                 Debug.WriteLine(result);
             }
             catch (Exception e)
@@ -4155,7 +4225,7 @@ except ApiException as e:
   "content" : {
     "application/json" : {
       "schema" : {
-        "$ref" : "#/components/schemas/inline_response_200_3"
+        "$ref" : "#/components/schemas/inline_response_200_5"
       }
     }
   }
@@ -4241,7 +4311,7 @@ public class UsersApiExample {
         
         UsersApi apiInstance = new UsersApi();
         try {
-            array[inline_response_200_2] result = apiInstance.apiV1UsersGet();
+            array[inline_response_200_3] result = apiInstance.apiV1UsersGet();
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling UsersApi#apiV1UsersGet");
@@ -4259,7 +4329,7 @@ public class UsersApiExample {
     public static void main(String[] args) {
         UsersApi apiInstance = new UsersApi();
         try {
-            array[inline_response_200_2] result = apiInstance.apiV1UsersGet();
+            array[inline_response_200_3] result = apiInstance.apiV1UsersGet();
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling UsersApi#apiV1UsersGet");
@@ -4278,7 +4348,7 @@ UsersApi *apiInstance = [[UsersApi alloc] init];
 
 // Получение списка пользователей
 [apiInstance apiV1UsersGetWithCompletionHandler: 
-              ^(array[inline_response_200_2] output, NSError* error) {
+              ^(array[inline_response_200_3] output, NSError* error) {
                             if (output) {
                                 NSLog(@"%@", output);
                             }
@@ -4326,7 +4396,7 @@ namespace Example
             try
             {
                 // Получение списка пользователей
-                array[inline_response_200_2] result = apiInstance.apiV1UsersGet();
+                array[inline_response_200_3] result = apiInstance.apiV1UsersGet();
                 Debug.WriteLine(result);
             }
             catch (Exception e)
@@ -4418,7 +4488,7 @@ except ApiException as e:
       "schema" : {
         "type" : "array",
         "items" : {
-          "$ref" : "#/components/schemas/inline_response_200_2"
+          "$ref" : "#/components/schemas/inline_response_200_3"
         },
         "x-content-type" : "application/json"
       }
@@ -4504,7 +4574,7 @@ public class UsersApiExample {
         UsersApi apiInstance = new UsersApi();
         Integer userId = 56; // Integer | Id пользователя
         try {
-            inline_response_200_2 result = apiInstance.apiV1UsersUserIdGet(userId);
+            inline_response_200_4 result = apiInstance.apiV1UsersUserIdGet(userId);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling UsersApi#apiV1UsersUserIdGet");
@@ -4523,7 +4593,7 @@ public class UsersApiExample {
         UsersApi apiInstance = new UsersApi();
         Integer userId = 56; // Integer | Id пользователя
         try {
-            inline_response_200_2 result = apiInstance.apiV1UsersUserIdGet(userId);
+            inline_response_200_4 result = apiInstance.apiV1UsersUserIdGet(userId);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling UsersApi#apiV1UsersUserIdGet");
@@ -4543,7 +4613,7 @@ UsersApi *apiInstance = [[UsersApi alloc] init];
 
 // Получение пользователя с заданным id
 [apiInstance apiV1UsersUserIdGetWith:userId
-              completionHandler: ^(inline_response_200_2 output, NSError* error) {
+              completionHandler: ^(inline_response_200_4 output, NSError* error) {
                             if (output) {
                                 NSLog(@"%@", output);
                             }
@@ -4594,7 +4664,7 @@ namespace Example
             try
             {
                 // Получение пользователя с заданным id
-                inline_response_200_2 result = apiInstance.apiV1UsersUserIdGet(userId);
+                inline_response_200_4 result = apiInstance.apiV1UsersUserIdGet(userId);
                 Debug.WriteLine(result);
             }
             catch (Exception e)
@@ -4716,7 +4786,7 @@ except ApiException as e:
   "content" : {
     "application/json" : {
       "schema" : {
-        "$ref" : "#/components/schemas/inline_response_200_2"
+        "$ref" : "#/components/schemas/inline_response_200_4"
       }
     }
   }
