@@ -10,7 +10,7 @@ struct NftDTO {
     let price: Float
     let rating: Int
 
-    let images: [String]
+    let images: [URL]
 }
 
 extension NftDTO: Decodable {}
