@@ -1,5 +1,26 @@
+import Foundation
+
 final class FakeShoppingCart {
-    private var contents: Set<Nft.ID> = [0, 1, 2, 3, 4, 5, 6, 7]
+    static let defaultsKey = "shoppingCart"
+
+    let defaults: UserDefaults
+
+    init(defaults: UserDefaults) {
+        self.defaults = defaults
+    }
+}
+
+extension FakeShoppingCart {
+    private var contents: Set<Nft.ID> {
+        get {
+            let array = defaults.object(forKey: Self.defaultsKey) as? [Nft.ID] ?? [0, 1, 2, 3, 4, 5]
+            return Set(array)
+        }
+
+        set {
+            defaults.set(Array(newValue), forKey: Self.defaultsKey)
+        }
+    }
 }
 
 extension FakeShoppingCart: ShoppingCart {
