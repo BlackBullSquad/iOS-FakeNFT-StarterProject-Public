@@ -14,3 +14,18 @@ enum CollectionProviderError: Error {
         case collectionNotFound
     }
 }
+
+enum ApplicationError: Error {
+    case networkError(NetworkError)
+    case dataError(DataError)
+}
+
+enum NetworkError: Error {
+    case requestFailed
+}
+
+enum DataError: Error {
+    case invalidData
+    case decodingError
+    case collectionNotFound
+}

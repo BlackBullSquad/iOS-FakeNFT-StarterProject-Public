@@ -1,9 +1,9 @@
 import UIKit
 
-final class CatalogueVC: UIViewController {
+final class CatalogueViewController: UIViewController {
     
-    let collectionViewModels: CatalogueViewModel
-    let tableView = UITableView()
+    private let collectionViewModels: CatalogueViewModel
+    private let tableView = UITableView()
     
     private lazy var dataSource = makeDataSource()
     
@@ -46,7 +46,7 @@ final class CatalogueVC: UIViewController {
         view.addSubview(tableView)
         
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: guide.topAnchor, constant: 21),
+            tableView.topAnchor.constraint(equalTo: guide.topAnchor, constant: 20),
             tableView.leadingAnchor.constraint(equalTo: guide.leadingAnchor, constant: hInset),
             tableView.trailingAnchor.constraint(equalTo: guide.trailingAnchor, constant: -hInset),
             tableView.bottomAnchor.constraint(equalTo: guide.bottomAnchor)
@@ -67,12 +67,16 @@ final class CatalogueVC: UIViewController {
         navigationItem.rightBarButtonItem = sortButton
     }
     
-    private func makeDataSource() -> UITableViewDiffableDataSource<CatalogueVC.ViewModel, CatalogueVC.ViewModel> {
-        
-        return UITableViewDiffableDataSource<CatalogueVC.ViewModel, CatalogueVC.ViewModel>(tableView: tableView) {
-            (tableView: UITableView, indexPath: IndexPath, viewModel: CatalogueVC.ViewModel) -> UITableViewCell? in
+    private func makeDataSource() -> UITableViewDiffableDataSource<CatalogueCellViewModel, CatalogueCellViewModel> {
+  
+        return .init(tableView: tableView) { tableView, indexPath, viewModel in
             
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: CatalogueCell.identifier, for: indexPath) as? CatalogueCell else {
+            guard
+                let cell = tableView.dequeueReusableCell(
+                    withIdentifier: CatalogueCell.identifier,
+                    for: indexPath
+                ) as? CatalogueCell
+            else {
                 return UITableViewCell()
             }
             
@@ -82,7 +86,7 @@ final class CatalogueVC: UIViewController {
     }
     
     private func updateSnapshot() {
-        var snapshot = NSDiffableDataSourceSnapshot<CatalogueVC.ViewModel, CatalogueVC.ViewModel>()
+        var snapshot = NSDiffableDataSourceSnapshot<CatalogueCellViewModel, CatalogueCellViewModel>()
         for collectionViewModel in collectionViewModels.viewModels ?? [] {
             snapshot.appendSections([collectionViewModel])
             snapshot.appendItems([collectionViewModel], toSection: collectionViewModel)
@@ -90,25 +94,25 @@ final class CatalogueVC: UIViewController {
         dataSource.apply(snapshot, animatingDifferences: true)
     }
     
-    @objc func didTapSortButton() {
+    @objc private func didTapSortButton() {
         let alert = UIAlertController(title: "Сортировать", message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "По названию", style: .default, handler: { _ in
-            self.collectionViewModels.sortModels(by: .byName)
+            self.collectionViewModels.sortModels(.byName)
         }))
         alert.addAction(UIAlertAction(title: "По количеству NFT", style: .default, handler: { _ in
-            self.collectionViewModels.sortModels(by: .byNftCount)
+            self.collectionViewModels.sortModels(.byNftCount)
         }))
         alert.addAction(UIAlertAction(title: "Закрыть", style: .cancel, handler: nil))
         present(alert, animated: true)
     }
 }
 
-extension CatalogueVC: UITableViewDelegate {
+extension CatalogueViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat { 21 }
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? { UIView() }
 }
 
-extension CatalogueVC: CatalogueViewModelUpdateListener {
+extension CatalogueViewController: CatalogueViewModelUpdateListener {
     func didUpdateCollections() {
         updateSnapshot()
     }
@@ -119,20 +123,3 @@ extension CatalogueVC: CatalogueViewModelUpdateListener {
         self.present(alert, animated: true, completion: nil)
     }
 }
-
-extension CatalogueVC {
-    struct ViewModel: Hashable {
-        let collectionId: Int
-        let title: String
-        let cover: URL?
-        let nftsCount: Int
-        
-        init(_ model: Collection) {
-            self.collectionId = model.id
-            self.title = model.name
-            self.cover = model.cover
-            self.nftsCount = model.nftCount
-        }
-    }
-}
-

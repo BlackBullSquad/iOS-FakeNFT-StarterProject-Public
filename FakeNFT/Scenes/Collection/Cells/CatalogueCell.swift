@@ -19,7 +19,7 @@ final class CatalogueCell: UITableViewCell {
         let label = UILabel()
         label.textColor = .asset(.main(.primary))
         label.font = .asset(.bold17)
-        label.textAlignment = .left
+        label.textAlignment = .natural
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

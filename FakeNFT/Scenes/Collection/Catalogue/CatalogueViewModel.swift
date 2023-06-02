@@ -7,25 +7,25 @@ protocol CatalogueViewModelUpdateListener: AnyObject {
 
 final class CatalogueViewModel {
     
-    private let dataService: CollectionProvider
-    var viewModels: [CatalogueVC.ViewModel]?
+    private let dataService: CollectionProviderProtocol
+    var viewModels: [CatalogueCellViewModel]?
     
     weak var updateListener: CatalogueViewModelUpdateListener?
     
-    init(dataService: CollectionProvider) {
+    init(dataService: CollectionProviderProtocol) {
         self.dataService = dataService
     }
     
     func loadCollections() {
-        dataService.getCollections { result in
+        dataService.getCollections { [weak self] result in
             switch result {
             case .success(let collection):
-                DispatchQueue.main.async { [weak self] in
-                    self?.viewModels = collection.map { CatalogueVC.ViewModel($0) }
+                DispatchQueue.main.async {
+                    self?.viewModels = collection.map { CatalogueCellViewModel($0) }
                     self?.updateListener?.didUpdateCollections()
                 }
             case .failure(let error):
-                DispatchQueue.main.async { [weak self] in
+                DispatchQueue.main.async {
                     self?.updateListener?.didFailWithError(error)
                 }
             }
@@ -37,7 +37,8 @@ final class CatalogueViewModel {
         case byNftCount
     }
     
-    func sortModels(by option: SortOption) {
+    func sortModels(_ option: SortOption) {
+        
         guard var viewModels = viewModels, let updateListener = updateListener else { return }
         
         switch option {
