@@ -1,54 +1,72 @@
 import Foundation
 
+enum CollectionsSortOption: String, Codable {
+    case byName
+    case byNftCount
+}
+
 protocol CatalogueViewModelUpdateListener: AnyObject {
     func didUpdateCollections()
     func didFailWithError(_ error: Error)
 }
 
 final class CatalogueViewModel {
-
     private let dataService: CollectionProviderProtocol
+    private let sortStateService: CollectionsSortOptionPersistenceServiceProtocol
+
     var viewModels: [CatalogueCellViewModel]?
-
     weak var updateListener: CatalogueViewModelUpdateListener?
-
-    init(dataService: CollectionProviderProtocol) {
+    
+    init(
+        dataService: CollectionProviderProtocol,
+        sortStateService: CollectionsSortOptionPersistenceServiceProtocol = CollectionsSortOptionPersistenceService()
+    ) {
         self.dataService = dataService
+        self.sortStateService = sortStateService
     }
 
+    // MARK: - Public methods
+    
     func loadCollections() {
         dataService.getCollections { [weak self] result in
+            guard let self = self else { return }
+            
             switch result {
             case .success(let collection):
                 DispatchQueue.main.async {
-                    self?.viewModels = collection.map { CatalogueCellViewModel($0) }
-                    self?.updateListener?.didUpdateCollections()
+                    self.viewModels = collection.map { CatalogueCellViewModel($0) }
+                    
+                    let sortOption = self.loadSortOption()
+                    self.sortModels(sortOption)
+
+                    self.updateListener?.didUpdateCollections()
                 }
             case .failure(let error):
                 DispatchQueue.main.async {
-                    self?.updateListener?.didFailWithError(error)
+                    self.updateListener?.didFailWithError(error)
                 }
             }
         }
     }
-
-    enum SortOption {
-        case byName
-        case byNftCount
-    }
-
-    func sortModels(_ option: SortOption) {
-
+    
+    func sortModels(_ option: CollectionsSortOption) {
         guard var viewModels = viewModels, let updateListener = updateListener else { return }
-
+        
         switch option {
         case .byName:
             viewModels.sort { $0.title < $1.title }
         case .byNftCount:
             viewModels.sort { $0.nftsCount > $1.nftsCount }
         }
-
+        
         self.viewModels = viewModels
         updateListener.didUpdateCollections()
+        sortStateService.saveSortOption(option)
+    }
+    
+    // MARK: - Private methods
+
+    private func loadSortOption() -> CollectionsSortOption {
+        return sortStateService.getSortOption() ?? .byName
     }
 }
