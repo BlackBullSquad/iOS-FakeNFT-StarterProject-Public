@@ -9,7 +9,7 @@ struct CollectionDTO {
 
     let nfts: [Int]
 
-    let cover: URL
+    let cover: String
 }
 
 extension CollectionDTO: Decodable {}
