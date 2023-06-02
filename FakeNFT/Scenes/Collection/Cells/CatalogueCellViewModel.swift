@@ -5,7 +5,7 @@ struct CatalogueCellViewModel: Hashable {
     let title: String
     let cover: URL?
     let nftsCount: Int
-    
+
     init(_ model: Collection) {
         self.collectionId = model.id
         self.title = model.name

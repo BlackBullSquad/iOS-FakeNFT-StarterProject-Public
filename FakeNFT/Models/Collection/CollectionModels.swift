@@ -8,7 +8,7 @@ struct Collection {
     let description: String
     let cover: URL?
     let nfts: [Nft]
-    
+
     var nftCount: Int {
         nfts.count
     }
