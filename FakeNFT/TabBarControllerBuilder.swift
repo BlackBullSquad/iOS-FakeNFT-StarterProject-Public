@@ -4,10 +4,12 @@ struct TabBarControllerBuilder {
 
     static func makeRootVC() -> UITabBarController {
 
+        let api: NftAPI = FakeNftAPI()
+        
         // MARK: - View Controllers
         let profileVC = ProfileVC()
 
-        let catalogueViewModel = CatalogueViewModel(dataService: CollectionProvider(api: FakeNftAPI()))
+        let catalogueViewModel = CatalogueViewModel(dataService: CollectionProvider(api: api))
         let catalogueVC = CatalogueViewController(viewModel: catalogueViewModel)
 
         let cartVC = CartVC()
