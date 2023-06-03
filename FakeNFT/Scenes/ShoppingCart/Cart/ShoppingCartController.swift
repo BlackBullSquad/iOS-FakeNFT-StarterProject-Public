@@ -252,11 +252,13 @@ extension ShoppingCartController {
     }
 
     func deleteFromCart(_ model: ShoppingCartCell.ItemViewModel) {
-        let deleteController = DeleteController(avatarURL: model.avatarUrl!) { [weak self] in
+        let viewModel = NftDeleteViewModel(avatarURL: model.avatarUrl) { [weak self] in
             guard let self else { return }
             deps.shoppingCart.removeFromCart(model.id)
             reloadExternalData()
         }
+
+        let deleteController = NftDeleteView(viewModel)
         deleteController.modalPresentationStyle = .overFullScreen
 
         present(deleteController, animated: true)
@@ -279,7 +281,7 @@ private extension ShoppingCartController {
 
             switch result {
             case let .success(data):
-                updateItems(data.map(ShoppingCartCell.ItemViewModel.init))
+                updateItems(data.compactMap(ShoppingCartCell.ItemViewModel.init))
             case let .failure(error):
                 print(error)
             }

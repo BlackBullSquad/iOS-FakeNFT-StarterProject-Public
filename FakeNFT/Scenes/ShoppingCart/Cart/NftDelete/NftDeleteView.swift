@@ -1,14 +1,14 @@
 import UIKit
+import Combine
 
-final class DeleteController: UIViewController {
-    let avatarURL: URL
-    let onDelete: () -> Void
+final class NftDeleteView: UIViewController {
+    let viewModel: NftDeleteViewModel
+    var cancellable: AnyCancellable?
 
-    init(avatarURL: URL, onDelete: @escaping () -> Void) {
-        self.onDelete = onDelete
-        self.avatarURL = avatarURL
-
+    init(_ viewModel: NftDeleteViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        cancellable = viewModel.bind { [weak self] in self?.viewModelUpdate() }
     }
 
     required init?(coder: NSCoder) {
@@ -19,7 +19,7 @@ final class DeleteController: UIViewController {
 
     private lazy var avatar: NFTAvatarView = {
         let avatar = NFTAvatarView()
-        avatar.viewModel = .init(imageSize: .large, imageURL: avatarURL, likeButtonAction: nil)
+        avatar.viewModel = .init(imageSize: .large, imageURL: viewModel.avatarURL, likeButtonAction: nil)
         return avatar
     }()
 
@@ -63,15 +63,21 @@ final class DeleteController: UIViewController {
 
 // MARK: - Lifecycle
 
-extension DeleteController {
+extension NftDeleteView {
     override func viewDidLoad() {
         setupViews()
+    }
+
+    private func viewModelUpdate() {
+        if !viewModel.isPresented {
+            dismiss(animated: true)
+        }
     }
 }
 
 // MARK: - Layout
 
-extension DeleteController {
+private extension NftDeleteView {
     func setupViews() {
         let blurEffect = UIBlurEffect(style: .systemUltraThinMaterial)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
@@ -108,13 +114,7 @@ extension DeleteController {
 
 // MARK: - Actions
 
-extension DeleteController {
-    @objc func didTapDeleteButton() {
-        onDelete()
-        dismiss(animated: true)
-    }
-
-    @objc func didTapCancelButton() {
-        dismiss(animated: true)
-    }
+extension NftDeleteView {
+    @objc func didTapDeleteButton() { viewModel.didTapDeleteButton() }
+    @objc func didTapCancelButton() { viewModel.didTapCancelButton() }
 }

@@ -16,7 +16,7 @@
 		3802C1D72A29DA6F00AFFADE /* CollectionProviderErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3802C1D52A29DA6F00AFFADE /* CollectionProviderErrors.swift */; };
 		3802C1D92A29DE7800AFFADE /* ShoppingCartController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3802C1D82A29DE7800AFFADE /* ShoppingCartController.swift */; };
 		3835D01D2A28CB0D0046B354 /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3835D01C2A28CB0D0046B354 /* RatingView.swift */; };
-		3835D01F2A28E2660046B354 /* DeleteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3835D01E2A28E2660046B354 /* DeleteController.swift */; };
+		3835D01F2A28E2660046B354 /* NftDeleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3835D01E2A28E2660046B354 /* NftDeleteView.swift */; };
 		3835D0222A28EDC60046B354 /* TODO.md in Resources */ = {isa = PBXBuildFile; fileRef = 3835D0212A28EDC50046B354 /* TODO.md */; };
 		3835D0252A28EDCC0046B354 /* Readme.md in Resources */ = {isa = PBXBuildFile; fileRef = 3835D0232A28EDCC0046B354 /* Readme.md */; };
 		3835D0262A28EDCC0046B354 /* API.html in Resources */ = {isa = PBXBuildFile; fileRef = 3835D0242A28EDCC0046B354 /* API.html */; };
@@ -49,6 +49,8 @@
 		38BEBFBE2A27D7FB007B1297 /* ShoppingCartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BEBFBD2A27D7FB007B1297 /* ShoppingCartCell.swift */; };
 		38BEBFC02A27DF26007B1297 /* NftProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BEBFBF2A27DF26007B1297 /* NftProvider.swift */; };
 		38BEBFC32A27DF91007B1297 /* FakeNftProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BEBFC22A27DF91007B1297 /* FakeNftProvider.swift */; };
+		38D3B01B2A2BDE6100D0B1B8 /* ObservableObject+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D3B01A2A2BDE6100D0B1B8 /* ObservableObject+Extensions.swift */; };
+		38E6B52D2A2BCBE0006ABA74 /* NftDeleteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E6B52C2A2BCBE0006ABA74 /* NftDeleteViewModel.swift */; };
 		3F478ECF29DB474E00F6D39E /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F478ECE29DB474E00F6D39E /* Colors.swift */; };
 		3F478ED129DB476500F6D39E /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F478ED029DB476500F6D39E /* Fonts.swift */; };
 		3F603CCD29DB4A53000C43D7 /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 3F603CCC29DB4A53000C43D7 /* ProgressHUD */; };
@@ -100,7 +102,7 @@
 		3802C1D52A29DA6F00AFFADE /* CollectionProviderErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionProviderErrors.swift; sourceTree = "<group>"; };
 		3802C1D82A29DE7800AFFADE /* ShoppingCartController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShoppingCartController.swift; sourceTree = "<group>"; };
 		3835D01C2A28CB0D0046B354 /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
-		3835D01E2A28E2660046B354 /* DeleteController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteController.swift; sourceTree = "<group>"; };
+		3835D01E2A28E2660046B354 /* NftDeleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftDeleteView.swift; sourceTree = "<group>"; };
 		3835D0212A28EDC50046B354 /* TODO.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = TODO.md; sourceTree = "<group>"; };
 		3835D0232A28EDCC0046B354 /* Readme.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = Readme.md; sourceTree = "<group>"; };
 		3835D0242A28EDCC0046B354 /* API.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = API.html; sourceTree = "<group>"; };
@@ -133,6 +135,8 @@
 		38BEBFBD2A27D7FB007B1297 /* ShoppingCartCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingCartCell.swift; sourceTree = "<group>"; };
 		38BEBFBF2A27DF26007B1297 /* NftProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftProvider.swift; sourceTree = "<group>"; };
 		38BEBFC22A27DF91007B1297 /* FakeNftProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeNftProvider.swift; sourceTree = "<group>"; };
+		38D3B01A2A2BDE6100D0B1B8 /* ObservableObject+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObservableObject+Extensions.swift"; sourceTree = "<group>"; };
+		38E6B52C2A2BCBE0006ABA74 /* NftDeleteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftDeleteViewModel.swift; sourceTree = "<group>"; };
 		3F478ECE29DB474E00F6D39E /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		3F478ED029DB476500F6D39E /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
 		3F68069329CBBAF100B4F915 /* FakeNFT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FakeNFT.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -309,12 +313,12 @@
 		38BEBFB62A27D3FA007B1297 /* Cart */ = {
 			isa = PBXGroup;
 			children = (
+				38E6B52B2A2BCBCB006ABA74 /* NftDelete */,
 				3802C1D82A29DE7800AFFADE /* ShoppingCartController.swift */,
 				38BEBFB72A27D40A007B1297 /* Dependencies.swift */,
 				38BEBFB92A27D421007B1297 /* ViewModel.swift */,
 				38BEBFBB2A27D4A1007B1297 /* ItemViewModel.swift */,
 				38BEBFBD2A27D7FB007B1297 /* ShoppingCartCell.swift */,
-				3835D01E2A28E2660046B354 /* DeleteController.swift */,
 			);
 			path = Cart;
 			sourceTree = "<group>";
@@ -326,6 +330,15 @@
 				38BEBFC22A27DF91007B1297 /* FakeNftProvider.swift */,
 			);
 			path = NftsProvider;
+			sourceTree = "<group>";
+		};
+		38E6B52B2A2BCBCB006ABA74 /* NftDelete */ = {
+			isa = PBXGroup;
+			children = (
+				3835D01E2A28E2660046B354 /* NftDeleteView.swift */,
+				38E6B52C2A2BCBE0006ABA74 /* NftDeleteViewModel.swift */,
+			);
+			path = NftDelete;
 			sourceTree = "<group>";
 		};
 		3F478ECD29DB473000F6D39E /* DesignSystem */ = {
@@ -446,6 +459,7 @@
 				3F6806CF29CBBDB100B4F915 /* NetworkClient */,
 				3F6806D629CBC50A00B4F915 /* CellsReusingUtils.swift */,
 				3FC8C39229D246BA0081F015 /* DateFormatters+Presets.swift */,
+				38D3B01A2A2BDE6100D0B1B8 /* ObservableObject+Extensions.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -649,6 +663,7 @@
 				3F478ECF29DB474E00F6D39E /* Colors.swift in Sources */,
 				3835D0312A29264D0046B354 /* PurchaseStatusController.swift in Sources */,
 				38BEBFA82A1AC0B0007B1297 /* ProfileDTO.swift in Sources */,
+				38E6B52D2A2BCBE0006ABA74 /* NftDeleteViewModel.swift in Sources */,
 				3F478ED129DB476500F6D39E /* Fonts.swift in Sources */,
 				3835D0362A293BF10046B354 /* UICollectionViewCompositionalLayout.swift in Sources */,
 				3835D02D2A2920FB0046B354 /* FakeCurrencyProvider.swift in Sources */,
@@ -664,7 +679,7 @@
 				8D1B7EC82A1876B600F30D51 /* TabBarControllerBuilder.swift in Sources */,
 				38BEBFBC2A27D4A1007B1297 /* ItemViewModel.swift in Sources */,
 				3F6806D529CBBEC700B4F915 /* NetworkTask.swift in Sources */,
-				3835D01F2A28E2660046B354 /* DeleteController.swift in Sources */,
+				3835D01F2A28E2660046B354 /* NftDeleteView.swift in Sources */,
 				3F68069729CBBAF100B4F915 /* AppDelegate.swift in Sources */,
 				3F68069929CBBAF100B4F915 /* SceneDelegate.swift in Sources */,
 				38BEBFAA2A1AC2D8007B1297 /* UserDTO.swift in Sources */,
@@ -692,6 +707,7 @@
 				8DD0007D2A19B05600C751E6 /* NFTAvatarViewModel.swift in Sources */,
 				3835D01D2A28CB0D0046B354 /* RatingView.swift in Sources */,
 				3835D03D2A294AF50046B354 /* PaymentService.swift in Sources */,
+				38D3B01B2A2BDE6100D0B1B8 /* ObservableObject+Extensions.swift in Sources */,
 				38BEBFB82A27D40A007B1297 /* Dependencies.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

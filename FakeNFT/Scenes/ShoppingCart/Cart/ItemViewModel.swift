@@ -6,18 +6,20 @@ extension ShoppingCartCell {
         var name: String
         var price: Float
         var rating: Int
-        var avatarUrl: URL?
+        var avatarUrl: URL
     }
 }
 
 extension ShoppingCartCell.ItemViewModel {
-    init(_ model: Nft) {
+    init?(_ model: Nft) {
+        guard let avatarUrl = model.images.first else { return nil }
+
         self.init(
             id: model.id,
             name: model.name,
             price: model.price,
             rating: model.rating,
-            avatarUrl: model.images.first
+            avatarUrl: avatarUrl
         )
     }
 }
