@@ -15,6 +15,7 @@ final class CollectionsSortOptionPersistenceService {
     }
     
     func saveSortOption(_ option: CollectionsSortOption) {
+        
         let encoder = JSONEncoder()
         
         do {
@@ -26,6 +27,7 @@ final class CollectionsSortOptionPersistenceService {
     }
     
     func getSortOption() -> CollectionsSortOption? {
+        
         guard let savedData = userDefaults.object(forKey: sortOptionKey) as? Data else { return nil }
     
         let decoder = JSONDecoder()

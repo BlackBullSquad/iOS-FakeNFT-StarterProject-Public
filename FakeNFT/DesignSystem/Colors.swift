@@ -15,7 +15,7 @@ enum Asset {
 }
 
 enum Main: String {
-    case backround, bg, green, lightGray, primary, red, whiteAlpha50
+    case background, bg, green, lightGray, primary, red, whiteAlpha50
 }
 
 enum Additional: String {

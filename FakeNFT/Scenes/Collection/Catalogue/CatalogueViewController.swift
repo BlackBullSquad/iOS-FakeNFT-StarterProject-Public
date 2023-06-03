@@ -2,13 +2,13 @@ import UIKit
 
 final class CatalogueViewController: UIViewController {
 
-    private let collectionViewModels: CatalogueViewModel
+    private let catalogueViewModel: CatalogueViewModel
     private let tableView = UITableView()
 
     private lazy var dataSource = makeDataSource()
 
     init(viewModel: CatalogueViewModel) {
-        self.collectionViewModels = viewModel
+        self.catalogueViewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -25,8 +25,8 @@ final class CatalogueViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        collectionViewModels.updateListener = self
-        collectionViewModels.loadCollections()
+        catalogueViewModel.updateListener = self
+        catalogueViewModel.loadCollections()
     }
 
     private func setupTableView() {
@@ -39,7 +39,7 @@ final class CatalogueViewController: UIViewController {
         let hInset: CGFloat = 16
 
         tableView.separatorStyle = .none
-        tableView.allowsSelection = false
+        tableView.allowsSelection = true
         tableView.layer.masksToBounds = false
         tableView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -hInset)
 
@@ -54,6 +54,13 @@ final class CatalogueViewController: UIViewController {
     }
 
     private func setupNavBar() {
+        
+        navigationItem.backBarButtonItem = UIBarButtonItem(
+            title: "",
+            style: .plain,
+            target: nil,
+            action: nil)
+        
         let sortButton: UIBarButtonItem = {
             let button = UIBarButtonItem()
             button.tintColor = .asset(.main(.primary))
@@ -63,7 +70,8 @@ final class CatalogueViewController: UIViewController {
             button.action = #selector(didTapSortButton)
             return button
         }()
-
+        
+        navigationController?.navigationBar.tintColor = .black
         navigationItem.rightBarButtonItem = sortButton
     }
 
@@ -87,7 +95,7 @@ final class CatalogueViewController: UIViewController {
 
     private func updateSnapshot() {
         var snapshot = NSDiffableDataSourceSnapshot<CatalogueCellViewModel, CatalogueCellViewModel>()
-        for collectionViewModel in collectionViewModels.viewModels ?? [] {
+        for collectionViewModel in catalogueViewModel.viewModels ?? [] {
             snapshot.appendSections([collectionViewModel])
             snapshot.appendItems([collectionViewModel], toSection: collectionViewModel)
         }
@@ -97,10 +105,10 @@ final class CatalogueViewController: UIViewController {
     @objc private func didTapSortButton() {
         let alert = UIAlertController(title: "Сортировать", message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "По названию", style: .default, handler: { _ in
-            self.collectionViewModels.sortModels(.byName)
+            self.catalogueViewModel.sortModels(.byName)
         }))
         alert.addAction(UIAlertAction(title: "По количеству NFT", style: .default, handler: { _ in
-            self.collectionViewModels.sortModels(.byNftCount)
+            self.catalogueViewModel.sortModels(.byNftCount)
         }))
         alert.addAction(UIAlertAction(title: "Закрыть", style: .cancel, handler: nil))
         present(alert, animated: true)
@@ -108,8 +116,19 @@ final class CatalogueViewController: UIViewController {
 }
 
 extension CatalogueViewController: UITableViewDelegate {
+    
+    // MARK: Footer
+    
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat { 21 }
+    
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? { UIView() }
+    
+    // MARK: User Interaction
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let selectedCollectionID = catalogueViewModel.viewModels?[indexPath.section].collectionId else { return }
+        catalogueViewModel.coordinator?.openCollectionDetail(withId: selectedCollectionID)
+    }
 }
 
 extension CatalogueViewController: CatalogueViewModelUpdateListener {

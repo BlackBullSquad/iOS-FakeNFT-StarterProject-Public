@@ -11,18 +11,23 @@ protocol CatalogueViewModelUpdateListener: AnyObject {
 }
 
 final class CatalogueViewModel {
+    
     private let dataService: CollectionProviderProtocol
     private let sortStateService: CollectionsSortOptionPersistenceServiceProtocol
 
-    var viewModels: [CatalogueCellViewModel]?
+    weak var coordinator: CollectionsCoordinatorProtocol?
     weak var updateListener: CatalogueViewModelUpdateListener?
+    
+    var viewModels: [CatalogueCellViewModel]?
     
     init(
         dataService: CollectionProviderProtocol,
-        sortStateService: CollectionsSortOptionPersistenceServiceProtocol = CollectionsSortOptionPersistenceService()
+        sortStateService: CollectionsSortOptionPersistenceServiceProtocol = CollectionsSortOptionPersistenceService(),
+        coordinator: CollectionsCoordinatorProtocol?
     ) {
         self.dataService = dataService
         self.sortStateService = sortStateService
+        self.coordinator = coordinator
     }
 
     // MARK: - Public methods

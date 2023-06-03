@@ -1,17 +1,31 @@
 import UIKit
 
 struct TabBarControllerBuilder {
+    
+    static var collectionsCoordinator: CollectionsCoordinator?
 
-    static func makeRootVC() -> UITabBarController {
-
+    static func makeRootVC() -> UITabBarController? {
         let api: NftAPI = FakeNftAPI()
+        let catalogueDataService: CollectionProviderProtocol = CollectionProvider(api: api)
         
         // MARK: - View Controllers
         let profileVC = ProfileVC()
 
-        let catalogueViewModel = CatalogueViewModel(dataService: CollectionProvider(api: api))
-        let catalogueVC = CatalogueViewController(viewModel: catalogueViewModel)
+        let collectionsNavController = UINavigationController()
+        collectionsCoordinator = CollectionsCoordinator(
+            api: api,
+            navigationController: collectionsNavController,
+            dataService: catalogueDataService
+        )
+        collectionsCoordinator?.start()
 
+        guard let collectionsCoordinator = collectionsCoordinator else {
+            return nil
+        }
+        
+        let catalogueViewModel = CatalogueViewModel(dataService: catalogueDataService, coordinator: collectionsCoordinator)
+        let catalogueVC = CatalogueViewController(viewModel: catalogueViewModel)
+        
         let cartVC = CartVC()
 
         // MARK: - Navigation Controllers
@@ -20,11 +34,13 @@ struct TabBarControllerBuilder {
             title: "Профиль",
             imageName: "person.crop.circle.fill"
         )
-        let catalogueNavController = createNavigationController(
-            with: catalogueVC,
+        let catalogueNavController = collectionsCoordinator.navigationController
+        catalogueNavController.tabBarItem = UITabBarItem(
             title: "Каталог",
-            imageName: "rectangle.stack.fill"
+            image: UIImage(systemName: "rectangle.stack.fill"),
+            tag: 1
         )
+            
         let cartNavController = createNavigationController(
             with: cartVC,
             title: "Корзина",
@@ -43,6 +59,7 @@ struct TabBarControllerBuilder {
 
         return tabBarController
     }
+
 
     private static func createNavigationController(with rootController: UIViewController, title: String, imageName: String) -> UINavigationController {
 
