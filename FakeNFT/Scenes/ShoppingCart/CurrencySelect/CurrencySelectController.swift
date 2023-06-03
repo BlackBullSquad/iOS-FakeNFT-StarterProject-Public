@@ -56,14 +56,14 @@ final class CurrencySelectController: UIViewController {
     private lazy var collectionView: UICollectionView = {
         let collection = UICollectionView(
             frame: .zero,
-            collectionViewLayout: UICollectionViewCompositionalLayout.currencies
+            collectionViewLayout: .currencySelectView
         )
 
         collection.keyboardDismissMode = .onDrag
         collection.contentInset = .init(top: 20, left: 0, bottom: 0, right: 0)
 
-        collection.register(CurrencySelectCell.self,
-                            forCellWithReuseIdentifier: CurrencySelectCell.identifier)
+        collection.register(CurrencySelectCellView.self,
+                            forCellWithReuseIdentifier: "\(CurrencySelectCellView.self)")
 
         collection.alwaysBounceVertical = true
 
@@ -122,19 +122,19 @@ extension CurrencySelectController {
 // MARK: - DataSource
 
 private extension CurrencySelectController {
-    typealias DataSource = UICollectionViewDiffableDataSource<Int, CurrencySelectCell.ViewModel>
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Int, CurrencySelectCell.ViewModel>
+    typealias DataSource = UICollectionViewDiffableDataSource<Int, CurrencySelectCellViewModel>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Int, CurrencySelectCellViewModel>
 
     func makeDataSource() -> DataSource {
         let dataSource = DataSource(
             collectionView: collectionView,
-            cellProvider: { (collectionView, indexPath, viewModel) -> UICollectionViewCell? in
+            cellProvider: { collectionView, indexPath, viewModel in
                 let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: CurrencySelectCell.identifier,
+                    withReuseIdentifier: "\(CurrencySelectCellView.self)",
                     for: indexPath
-                ) as? CurrencySelectCell
+                ) as? CurrencySelectCellView
 
-                cell?.configure(viewModel)
+                cell?.viewModel = viewModel
 
                 return cell
             }
@@ -149,7 +149,7 @@ private extension CurrencySelectController {
         snapshot.appendSections([0])
 
         let items = currencies.enumerated().map { offset, currency in
-            return CurrencySelectCell.ViewModel(currency, isSelected: offset == selectedItem)
+            return CurrencySelectCellViewModel(currency, isSelected: offset == selectedItem)
         }
 
         snapshot.appendItems(items, toSection: 0)

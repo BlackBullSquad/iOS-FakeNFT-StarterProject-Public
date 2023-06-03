@@ -1,7 +1,7 @@
 import UIKit
 
-extension UICollectionViewCompositionalLayout {
-    static var currencies: Self {
+extension UICollectionViewLayout {
+    static var currencySelectView: UICollectionViewCompositionalLayout {
         let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1),
                                                             heightDimension: .absolute(46)))
         let group = NSCollectionLayoutGroup.horizontal(
