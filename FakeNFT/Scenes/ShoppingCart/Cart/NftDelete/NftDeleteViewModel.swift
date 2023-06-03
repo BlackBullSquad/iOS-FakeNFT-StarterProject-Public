@@ -1,9 +1,10 @@
 import Foundation
 
 final class NftDeleteViewModel: ObservableObject {
-    @Published var avatarURL: URL
-    @Published var isPresented = true
+    let avatarURL: URL
     let onDelete: () -> Void
+
+    @Published var isPresented = true
 
     init(avatarURL: URL, onDelete: @escaping () -> Void) {
         self.avatarURL = avatarURL
@@ -11,15 +12,15 @@ final class NftDeleteViewModel: ObservableObject {
     }
 }
 
-// MARK: User Actions
+// MARK: - Actions
 
 extension NftDeleteViewModel {
-    func didTapDeleteButton() {
+    func didDelete() {
         onDelete()
         isPresented = false
     }
 
-    func didTapCancelButton() {
+    func didCancel() {
         isPresented = false
     }
 }

@@ -115,6 +115,6 @@ private extension NftDeleteView {
 // MARK: - Actions
 
 extension NftDeleteView {
-    @objc func didTapDeleteButton() { viewModel.didTapDeleteButton() }
-    @objc func didTapCancelButton() { viewModel.didTapCancelButton() }
+    @objc func didTapDeleteButton() { viewModel.didDelete() }
+    @objc func didTapCancelButton() { viewModel.didCancel() }
 }

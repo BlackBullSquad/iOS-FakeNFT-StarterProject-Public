@@ -57,13 +57,15 @@ extension PurchaseCoordinator: Coordinator {
     func displayPurchaseResult(isSuccess: Bool) {
         guard let navigationController else { return }
 
-        let resultVC = PurchaseStatusController(isSuccess: isSuccess) { [weak self] in
+        let viewModel = PurchaseStatusViewModel(isSuccess: isSuccess) { [weak self] in
             guard let self else { return }
 
             if isSuccess {
                 self.escapeToCatalogue()
             }
         }
+
+        let resultVC = PurchaseStatusView(viewModel)
 
         resultVC.modalPresentationStyle = .fullScreen
         navigationController.present(resultVC, animated: true)
