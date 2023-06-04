@@ -2,8 +2,8 @@ import UIKit
 import Combine
 
 final class CurrencySelectView: UIViewController {
-    let viewModel: CurrencySelectViewModel
-    var cancellable: AnyCancellable?
+    private let viewModel: CurrencySelectViewModel
+    private var cancellable: AnyCancellable?
 
     private lazy var dataSource = makeDataSource()
 
@@ -89,7 +89,7 @@ extension CurrencySelectView {
         collectionView.frame = view.bounds
     }
 
-    func viewModelDidUpdate() {
+    private func viewModelDidUpdate() {
         purchaseButton.layer.opacity = viewModel.isPurchaseAvailable ? 1 : 0.5
         purchaseButton.isEnabled = viewModel.isPurchaseAvailable
         applySnapshot()
@@ -98,7 +98,7 @@ extension CurrencySelectView {
 
 // MARK: - Initial Setup
 
-extension CurrencySelectView {
+private extension CurrencySelectView {
     func setupViews() {
         title = "Выберите способ оплаты"
         let backItem = UIBarButtonItem()
@@ -129,7 +129,7 @@ extension CurrencySelectView {
 // MARK: - User Actions
 
 extension CurrencySelectView: UICollectionViewDelegate {
-    @objc func didTapPurchaseButton() {
+    @objc private func didTapPurchaseButton() {
         viewModel.purchase()
     }
 
@@ -162,7 +162,7 @@ private extension CurrencySelectView {
         return dataSource
     }
 
-    private func applySnapshot(animatingDifferences: Bool = true) {
+    func applySnapshot(animatingDifferences: Bool = true) {
         var snapshot = Snapshot()
 
         snapshot.appendSections([0])

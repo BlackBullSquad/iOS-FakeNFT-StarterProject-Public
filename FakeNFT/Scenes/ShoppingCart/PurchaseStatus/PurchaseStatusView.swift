@@ -2,7 +2,7 @@ import UIKit
 import Combine
 
 final class PurchaseStatusView: UIViewController {
-    let viewModel: PurchaseStatusViewModel
+    private let viewModel: PurchaseStatusViewModel
     var cancellable: AnyCancellable?
 
     init(_ viewModel: PurchaseStatusViewModel) {
@@ -95,7 +95,7 @@ private extension PurchaseStatusView {
 
 // MARK: - User Actions
 
-extension PurchaseStatusView {
+private extension PurchaseStatusView {
     @objc func didTapContinueButton() {
         viewModel.didContinue()
     }

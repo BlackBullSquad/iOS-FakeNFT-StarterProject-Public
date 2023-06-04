@@ -1,9 +1,5 @@
 import UIKit
 
-protocol Coordinator {
-    func start()
-}
-
 final class PurchaseCoordinator {
     weak var navigationController: UINavigationController?
     weak var tabBarController: UITabBarController?
@@ -15,6 +11,8 @@ final class PurchaseCoordinator {
     }
 }
 
+// MARK: - Dependencies
+
 extension PurchaseCoordinator {
     struct Dependencies {
         let currencyProvider: CurrencyProvider
@@ -23,11 +21,17 @@ extension PurchaseCoordinator {
     }
 }
 
+// MARK: - Coordinator
+
 extension PurchaseCoordinator: Coordinator {
     func start() {
         displayCurrencySelector()
     }
+}
 
+// MARK: - Flow
+
+private extension PurchaseCoordinator {
     func displayCurrencySelector() {
         let viewModel = CurrencySelectViewModel(
             deps: .init(currencyProvider: deps.currencyProvider)
@@ -56,7 +60,7 @@ extension PurchaseCoordinator: Coordinator {
             guard let self else { return }
 
             if isSuccess {
-                self.escapeToCatalogue()
+                self.finalizePurchase()
             }
         }
 
@@ -66,7 +70,7 @@ extension PurchaseCoordinator: Coordinator {
         navigationController.present(resultVC, animated: true)
     }
 
-    func escapeToCatalogue() {
+    func finalizePurchase() {
         deps.shoppingCart.nfts.forEach { id in
             deps.shoppingCart.removeFromCart(id)
         }

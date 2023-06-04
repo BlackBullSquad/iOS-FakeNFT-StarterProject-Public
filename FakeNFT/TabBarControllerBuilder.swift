@@ -15,12 +15,13 @@ struct TabBarControllerBuilder {
             shoppingCart: shoppingCart,
             paymentService: FakePaymentService(api: api)
         ))
-        let cartVC = ShoppingCartController(deps: .init(
-            nftProvider: FakeNftProvider(api: api),
-            shoppingCart: shoppingCart
-        )) {
-            purchaseCoordinator.start()
-        }
+
+        let cartViewModel = ShoppingCartViewModel(
+            deps: .init(nftProvider: FakeNftProvider(api: api),
+                        shoppingCart: shoppingCart),
+            onPurchase: purchaseCoordinator.start
+        )
+        let cartView = ShoppingCartView(cartViewModel)
 
         let catalogueViewModel = CatalogueViewModel(dataService: CollectionProvider(api: api))
         let catalogueVC = CatalogueViewController(viewModel: catalogueViewModel)
@@ -38,7 +39,7 @@ struct TabBarControllerBuilder {
         )
 
         let cartNavController = createNavigationController(
-            with: cartVC,
+            with: cartView,
             title: "Корзина",
             imageName: "bag.fill"
         )

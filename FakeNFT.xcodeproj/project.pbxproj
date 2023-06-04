@@ -14,7 +14,7 @@
 		3802C1D22A29DA5F00AFFADE /* CollectionModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3802C1D02A29DA5F00AFFADE /* CollectionModels.swift */; };
 		3802C1D62A29DA6F00AFFADE /* CollectionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3802C1D42A29DA6F00AFFADE /* CollectionProvider.swift */; };
 		3802C1D72A29DA6F00AFFADE /* CollectionProviderErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3802C1D52A29DA6F00AFFADE /* CollectionProviderErrors.swift */; };
-		3802C1D92A29DE7800AFFADE /* ShoppingCartController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3802C1D82A29DE7800AFFADE /* ShoppingCartController.swift */; };
+		3802C1D92A29DE7800AFFADE /* ShoppingCartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3802C1D82A29DE7800AFFADE /* ShoppingCartView.swift */; };
 		3835D01D2A28CB0D0046B354 /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3835D01C2A28CB0D0046B354 /* RatingView.swift */; };
 		3835D01F2A28E2660046B354 /* NftDeleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3835D01E2A28E2660046B354 /* NftDeleteView.swift */; };
 		3835D0222A28EDC60046B354 /* TODO.md in Resources */ = {isa = PBXBuildFile; fileRef = 3835D0212A28EDC50046B354 /* TODO.md */; };
@@ -43,15 +43,15 @@
 		38BEBFAF2A27CF47007B1297 /* ShoppingCart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BEBFAE2A27CF47007B1297 /* ShoppingCart.swift */; };
 		38BEBFB12A27D024007B1297 /* Nft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BEBFB02A27D024007B1297 /* Nft.swift */; };
 		38BEBFB42A27D0CA007B1297 /* FakeShoppingCart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BEBFB32A27D0CA007B1297 /* FakeShoppingCart.swift */; };
-		38BEBFB82A27D40A007B1297 /* Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BEBFB72A27D40A007B1297 /* Dependencies.swift */; };
-		38BEBFBA2A27D421007B1297 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BEBFB92A27D421007B1297 /* ViewModel.swift */; };
-		38BEBFBC2A27D4A1007B1297 /* ItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BEBFBB2A27D4A1007B1297 /* ItemViewModel.swift */; };
-		38BEBFBE2A27D7FB007B1297 /* ShoppingCartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BEBFBD2A27D7FB007B1297 /* ShoppingCartCell.swift */; };
+		38BEBFBA2A27D421007B1297 /* ShoppingCartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BEBFB92A27D421007B1297 /* ShoppingCartViewModel.swift */; };
+		38BEBFBC2A27D4A1007B1297 /* ShoppingCartCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BEBFBB2A27D4A1007B1297 /* ShoppingCartCellViewModel.swift */; };
+		38BEBFBE2A27D7FB007B1297 /* ShoppingCartCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BEBFBD2A27D7FB007B1297 /* ShoppingCartCellView.swift */; };
 		38BEBFC02A27DF26007B1297 /* NftProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BEBFBF2A27DF26007B1297 /* NftProvider.swift */; };
 		38BEBFC32A27DF91007B1297 /* FakeNftProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BEBFC22A27DF91007B1297 /* FakeNftProvider.swift */; };
 		38D3B01B2A2BDE6100D0B1B8 /* ObservableObject+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D3B01A2A2BDE6100D0B1B8 /* ObservableObject+Extensions.swift */; };
 		38D3B01E2A2BE21A00D0B1B8 /* PurchaseStatusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D3B01D2A2BE21A00D0B1B8 /* PurchaseStatusViewModel.swift */; };
 		38D3B0222A2C754700D0B1B8 /* CurrencySelectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D3B0212A2C754700D0B1B8 /* CurrencySelectViewModel.swift */; };
+		38D3B0252A2CD88D00D0B1B8 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D3B0242A2CD88D00D0B1B8 /* Coordinator.swift */; };
 		38E6B52D2A2BCBE0006ABA74 /* NftDeleteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E6B52C2A2BCBE0006ABA74 /* NftDeleteViewModel.swift */; };
 		3F478ECF29DB474E00F6D39E /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F478ECE29DB474E00F6D39E /* Colors.swift */; };
 		3F478ED129DB476500F6D39E /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F478ED029DB476500F6D39E /* Fonts.swift */; };
@@ -102,7 +102,7 @@
 		3802C1D02A29DA5F00AFFADE /* CollectionModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionModels.swift; sourceTree = "<group>"; };
 		3802C1D42A29DA6F00AFFADE /* CollectionProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionProvider.swift; sourceTree = "<group>"; };
 		3802C1D52A29DA6F00AFFADE /* CollectionProviderErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionProviderErrors.swift; sourceTree = "<group>"; };
-		3802C1D82A29DE7800AFFADE /* ShoppingCartController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShoppingCartController.swift; sourceTree = "<group>"; };
+		3802C1D82A29DE7800AFFADE /* ShoppingCartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShoppingCartView.swift; sourceTree = "<group>"; };
 		3835D01C2A28CB0D0046B354 /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
 		3835D01E2A28E2660046B354 /* NftDeleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftDeleteView.swift; sourceTree = "<group>"; };
 		3835D0212A28EDC50046B354 /* TODO.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = TODO.md; sourceTree = "<group>"; };
@@ -131,15 +131,15 @@
 		38BEBFAE2A27CF47007B1297 /* ShoppingCart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingCart.swift; sourceTree = "<group>"; };
 		38BEBFB02A27D024007B1297 /* Nft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nft.swift; sourceTree = "<group>"; };
 		38BEBFB32A27D0CA007B1297 /* FakeShoppingCart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeShoppingCart.swift; sourceTree = "<group>"; };
-		38BEBFB72A27D40A007B1297 /* Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dependencies.swift; sourceTree = "<group>"; };
-		38BEBFB92A27D421007B1297 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
-		38BEBFBB2A27D4A1007B1297 /* ItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemViewModel.swift; sourceTree = "<group>"; };
-		38BEBFBD2A27D7FB007B1297 /* ShoppingCartCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingCartCell.swift; sourceTree = "<group>"; };
+		38BEBFB92A27D421007B1297 /* ShoppingCartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingCartViewModel.swift; sourceTree = "<group>"; };
+		38BEBFBB2A27D4A1007B1297 /* ShoppingCartCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingCartCellViewModel.swift; sourceTree = "<group>"; };
+		38BEBFBD2A27D7FB007B1297 /* ShoppingCartCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingCartCellView.swift; sourceTree = "<group>"; };
 		38BEBFBF2A27DF26007B1297 /* NftProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftProvider.swift; sourceTree = "<group>"; };
 		38BEBFC22A27DF91007B1297 /* FakeNftProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeNftProvider.swift; sourceTree = "<group>"; };
 		38D3B01A2A2BDE6100D0B1B8 /* ObservableObject+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObservableObject+Extensions.swift"; sourceTree = "<group>"; };
 		38D3B01D2A2BE21A00D0B1B8 /* PurchaseStatusViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseStatusViewModel.swift; sourceTree = "<group>"; };
 		38D3B0212A2C754700D0B1B8 /* CurrencySelectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencySelectViewModel.swift; sourceTree = "<group>"; };
+		38D3B0242A2CD88D00D0B1B8 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		38E6B52C2A2BCBE0006ABA74 /* NftDeleteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftDeleteViewModel.swift; sourceTree = "<group>"; };
 		3F478ECE29DB474E00F6D39E /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		3F478ED029DB476500F6D39E /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
@@ -308,23 +308,21 @@
 			children = (
 				38D3B01C2A2BE1EA00D0B1B8 /* PurchaseStatus */,
 				3835D0322A29310F0046B354 /* CurrencySelect */,
-				38BEBFB62A27D3FA007B1297 /* Cart */,
+				38BEBFB62A27D3FA007B1297 /* ShoppingCart */,
 				3835D0272A291D4F0046B354 /* PurchaseCoordinator.swift */,
 			);
 			path = ShoppingCart;
 			sourceTree = "<group>";
 		};
-		38BEBFB62A27D3FA007B1297 /* Cart */ = {
+		38BEBFB62A27D3FA007B1297 /* ShoppingCart */ = {
 			isa = PBXGroup;
 			children = (
+				38D3B0232A2CC60B00D0B1B8 /* ShoppingCartCell */,
 				38E6B52B2A2BCBCB006ABA74 /* NftDelete */,
-				3802C1D82A29DE7800AFFADE /* ShoppingCartController.swift */,
-				38BEBFB72A27D40A007B1297 /* Dependencies.swift */,
-				38BEBFB92A27D421007B1297 /* ViewModel.swift */,
-				38BEBFBB2A27D4A1007B1297 /* ItemViewModel.swift */,
-				38BEBFBD2A27D7FB007B1297 /* ShoppingCartCell.swift */,
+				3802C1D82A29DE7800AFFADE /* ShoppingCartView.swift */,
+				38BEBFB92A27D421007B1297 /* ShoppingCartViewModel.swift */,
 			);
-			path = Cart;
+			path = ShoppingCart;
 			sourceTree = "<group>";
 		};
 		38BEBFC12A27DF2B007B1297 /* NftsProvider */ = {
@@ -352,6 +350,15 @@
 				3835D0392A293E6F0046B354 /* CurrencySelectCellViewModel.swift */,
 			);
 			path = CurrencySelectCell;
+			sourceTree = "<group>";
+		};
+		38D3B0232A2CC60B00D0B1B8 /* ShoppingCartCell */ = {
+			isa = PBXGroup;
+			children = (
+				38BEBFBD2A27D7FB007B1297 /* ShoppingCartCellView.swift */,
+				38BEBFBB2A27D4A1007B1297 /* ShoppingCartCellViewModel.swift */,
+			);
+			path = ShoppingCartCell;
 			sourceTree = "<group>";
 		};
 		38E6B52B2A2BCBCB006ABA74 /* NftDelete */ = {
@@ -482,6 +489,7 @@
 				3F6806D629CBC50A00B4F915 /* CellsReusingUtils.swift */,
 				3FC8C39229D246BA0081F015 /* DateFormatters+Presets.swift */,
 				38D3B01A2A2BDE6100D0B1B8 /* ObservableObject+Extensions.swift */,
+				38D3B0242A2CD88D00D0B1B8 /* Coordinator.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -679,7 +687,7 @@
 				38BEBFAC2A1AC35E007B1297 /* FakeAPIRequest.swift in Sources */,
 				38BEBFB12A27D024007B1297 /* Nft.swift in Sources */,
 				38BEBF9E2A1AB7D7007B1297 /* NftAPI.swift in Sources */,
-				3802C1D92A29DE7800AFFADE /* ShoppingCartController.swift in Sources */,
+				3802C1D92A29DE7800AFFADE /* ShoppingCartView.swift in Sources */,
 				38BEBFC02A27DF26007B1297 /* NftProvider.swift in Sources */,
 				3835D02B2A2920D30046B354 /* CurrencyProvider.swift in Sources */,
 				3F478ECF29DB474E00F6D39E /* Colors.swift in Sources */,
@@ -693,13 +701,14 @@
 				3835D02F2A2921440046B354 /* Currency.swift in Sources */,
 				3FC8C39329D246BA0081F015 /* DateFormatters+Presets.swift in Sources */,
 				38BEBFAF2A27CF47007B1297 /* ShoppingCart.swift in Sources */,
-				38BEBFBE2A27D7FB007B1297 /* ShoppingCartCell.swift in Sources */,
+				38BEBFBE2A27D7FB007B1297 /* ShoppingCartCellView.swift in Sources */,
 				8D883AC12A15CD8F000B7DA4 /* ProfileVC.swift in Sources */,
 				3802C1CC2A29DA3000AFFADE /* CatalogueViewController.swift in Sources */,
 				3802C1D22A29DA5F00AFFADE /* CollectionModels.swift in Sources */,
+				38D3B0252A2CD88D00D0B1B8 /* Coordinator.swift in Sources */,
 				3F68069B29CBBAF100B4F915 /* ProductDetailsTableViewController.swift in Sources */,
 				8D1B7EC82A1876B600F30D51 /* TabBarControllerBuilder.swift in Sources */,
-				38BEBFBC2A27D4A1007B1297 /* ItemViewModel.swift in Sources */,
+				38BEBFBC2A27D4A1007B1297 /* ShoppingCartCellViewModel.swift in Sources */,
 				3F6806D529CBBEC700B4F915 /* NetworkTask.swift in Sources */,
 				3835D01F2A28E2660046B354 /* NftDeleteView.swift in Sources */,
 				3F68069729CBBAF100B4F915 /* AppDelegate.swift in Sources */,
@@ -714,7 +723,7 @@
 				3802C1CA2A29DA3000AFFADE /* CatalogueCell.swift in Sources */,
 				38BEBFB42A27D0CA007B1297 /* FakeShoppingCart.swift in Sources */,
 				38BEBFA22A1ABC06007B1297 /* CurrencyDTO.swift in Sources */,
-				38BEBFBA2A27D421007B1297 /* ViewModel.swift in Sources */,
+				38BEBFBA2A27D421007B1297 /* ShoppingCartViewModel.swift in Sources */,
 				3802C1CB2A29DA3000AFFADE /* CatalogueCellViewModel.swift in Sources */,
 				3802C1D72A29DA6F00AFFADE /* CollectionProviderErrors.swift in Sources */,
 				3F6806D729CBC50A00B4F915 /* CellsReusingUtils.swift in Sources */,
@@ -731,7 +740,6 @@
 				3835D01D2A28CB0D0046B354 /* RatingView.swift in Sources */,
 				3835D03D2A294AF50046B354 /* PaymentService.swift in Sources */,
 				38D3B01B2A2BDE6100D0B1B8 /* ObservableObject+Extensions.swift in Sources */,
-				38BEBFB82A27D40A007B1297 /* Dependencies.swift in Sources */,
 				38D3B01E2A2BE21A00D0B1B8 /* PurchaseStatusViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
