@@ -88,6 +88,7 @@ final class CatalogueViewController: UIViewController {
                 return UITableViewCell()
             }
 
+            cell.selectionStyle = .none
             cell.configure(title: viewModel.title, coverURL: viewModel.cover, nftCount: viewModel.nftsCount)
             return cell
         }
@@ -127,7 +128,7 @@ extension CatalogueViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let selectedCollectionID = catalogueViewModel.viewModels?[indexPath.section].collectionId else { return }
-        catalogueViewModel.coordinator?.openCollectionDetail(withId: selectedCollectionID)
+        catalogueViewModel.didSelectItem(at: selectedCollectionID)
     }
 }
 

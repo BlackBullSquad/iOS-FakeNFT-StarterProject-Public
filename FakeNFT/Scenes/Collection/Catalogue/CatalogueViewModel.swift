@@ -69,6 +69,10 @@ final class CatalogueViewModel {
         sortStateService.saveSortOption(option)
     }
     
+    func didSelectItem(at id: Int) {
+        coordinator?.openCollectionDetail(withId: id)
+    }
+    
     // MARK: - Private methods
 
     private func loadSortOption() -> CollectionsSortOption {
