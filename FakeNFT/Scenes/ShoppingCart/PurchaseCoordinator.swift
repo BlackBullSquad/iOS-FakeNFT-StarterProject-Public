@@ -40,6 +40,7 @@ private extension PurchaseCoordinator {
         }
 
         let currencyVC = CurrencySelectView(viewModel)
+        currencyVC.hidesBottomBarWhenPushed = true
 
         navigationController?.pushViewController(currencyVC, animated: true)
     }
