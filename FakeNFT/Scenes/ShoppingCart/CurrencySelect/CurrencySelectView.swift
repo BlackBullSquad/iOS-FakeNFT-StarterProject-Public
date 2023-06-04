@@ -61,7 +61,7 @@ final class CurrencySelectView: UIViewController {
         )
 
         collection.keyboardDismissMode = .onDrag
-        collection.contentInset = .init(top: 20, left: 0, bottom: 0, right: 0)
+        collection.contentInset = .init(top: 20, left: 0, bottom: 150, right: 0)
 
         collection.register(CurrencySelectCellView.self,
                             forCellWithReuseIdentifier: "\(CurrencySelectCellView.self)")
