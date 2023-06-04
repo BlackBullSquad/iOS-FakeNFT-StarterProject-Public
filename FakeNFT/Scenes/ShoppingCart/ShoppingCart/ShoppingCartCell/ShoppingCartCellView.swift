@@ -18,7 +18,7 @@ final class ShoppingCartCellView: UITableViewCell {
 
     private lazy var deleteButton: UIButton = {
         let button = UIButton(type: .system)
-        button.tintColor = .asset(.main(.primary))
+        button.tintColor = .asset(.black)
         button.setImage(.init(named: "deleteFromCart"), for: .normal)
         button.addTarget(self, action: #selector(didTapDeleteButton), for: .touchUpInside)
         return button
@@ -26,7 +26,7 @@ final class ShoppingCartCellView: UITableViewCell {
 
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .asset(.main(.primary))
+        label.textColor = .asset(.black)
         label.font = .asset(.bold17)
         label.textAlignment = .left
         return label
@@ -37,7 +37,7 @@ final class ShoppingCartCellView: UITableViewCell {
     private lazy var priceTitleLabel: UILabel = {
         let label = UILabel()
         label.text = "Цена"
-        label.textColor = .asset(.main(.primary))
+        label.textColor = .asset(.black)
         label.font = .asset(.regular13)
         label.textAlignment = .left
         return label
@@ -45,7 +45,7 @@ final class ShoppingCartCellView: UITableViewCell {
 
     private lazy var priceLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .asset(.main(.primary))
+        label.textColor = .asset(.black)
         label.font = .asset(.bold17)
         label.textAlignment = .left
         return label
@@ -106,6 +106,8 @@ extension ShoppingCartCellView {
 
 private extension ShoppingCartCellView {
     func setupSubviews() {
+        backgroundColor = .asset(.white)
+
         contentView.addSubview(hStack)
 
         NSLayoutConstraint.activate([

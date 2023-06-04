@@ -77,6 +77,7 @@ extension ShoppingCartViewModel {
 
         itemToDelete = .init(avatarURL: item.avatarUrl) { [weak self] in
             self?.items.removeAll { $0.id == itemId }
+            self?.itemToDelete = nil
         } onCancel: { [weak self] in
             self?.itemToDelete = nil
         }

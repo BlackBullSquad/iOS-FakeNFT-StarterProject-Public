@@ -54,8 +54,8 @@ struct TabBarControllerBuilder {
             catalogueNavController,
             cartNavController]
         tabBarController.selectedIndex = 1
-        tabBarController.tabBar.backgroundColor = .white
-        tabBarController.tabBar.tintColor = .asset(.main(.primary))
+        tabBarController.tabBar.backgroundColor = .asset(.white)
+        tabBarController.tabBar.tintColor = .asset(.black)
 
         return tabBarController
     }

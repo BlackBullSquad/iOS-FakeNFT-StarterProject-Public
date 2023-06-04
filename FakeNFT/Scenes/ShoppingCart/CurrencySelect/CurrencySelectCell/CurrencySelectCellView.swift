@@ -19,7 +19,7 @@ final class CurrencySelectCellView: UICollectionViewCell {
 
     private lazy var currencyImageBackground: UIView = {
         let view = UIView()
-        view.backgroundColor = .black
+        view.backgroundColor = .asset(.black)
         view.layer.cornerRadius = 6
         view.clipsToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -28,7 +28,7 @@ final class CurrencySelectCellView: UICollectionViewCell {
 
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .asset(.main(.primary))
+        label.textColor = .asset(.black)
         label.font = .asset(.regular13)
         label.textAlignment = .left
         return label
@@ -36,7 +36,7 @@ final class CurrencySelectCellView: UICollectionViewCell {
 
     private lazy var codeLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .asset(.main(.green))
+        label.textColor = .asset(.greenUniversal)
         label.font = .asset(.regular13)
         label.textAlignment = .left
         return label
@@ -73,8 +73,8 @@ private extension CurrencySelectCellView {
         currencyImage.backgroundColor = .clear
         currencyImage.kf.indicatorType = .activity
 
-        contentView.backgroundColor = .asset(.main(.lightGray))
-        contentView.layer.borderColor = UIColor.black.cgColor
+        contentView.backgroundColor = .asset(.lightGrey)
+        contentView.layer.borderColor = UIColor.asset(.black).cgColor
         contentView.layer.cornerRadius = 12
         contentView.clipsToBounds = true
 
