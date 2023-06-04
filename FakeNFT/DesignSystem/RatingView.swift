@@ -2,24 +2,25 @@ import UIKit
 
 final class RatingView: UIView {
 
-    private let star1 = UIImageView()
-    private let star2 = UIImageView()
-    private let star3 = UIImageView()
-    private let star4 = UIImageView()
-    private let star5 = UIImageView()
+    private var stars: [UIImageView]
 
     var rating: Int? { didSet { configure(with: rating) } }
 
     // MARK: - Initializers
 
     override init(frame: CGRect) {
+        self.stars = (1...5).map { _ in
+            let view = UIImageView()
+            view.image = UIImage(named: "ratingStar")
+            return view
+        }
+
         super.init(frame: frame)
         setupViews()
     }
 
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        setupViews()
+        fatalError("init(coder:) has not been implemented")
     }
 }
 
@@ -27,7 +28,7 @@ final class RatingView: UIView {
 
 extension RatingView {
     private func setupViews() {
-        let stack = UIStackView(arrangedSubviews: [star1, star2, star3, star4, star5])
+        let stack = UIStackView(arrangedSubviews: stars)
         stack.axis = .horizontal
         stack.alignment = .center
         stack.spacing = 2
@@ -52,10 +53,8 @@ extension RatingView {
     private func configure(with rating: Int?) {
         let rating = rating ?? 0
 
-        star1.image = UIImage(named: rating > 0 ? "ratingStarActive" : "ratingStarInactive")
-        star2.image = UIImage(named: rating > 1 ? "ratingStarActive" : "ratingStarInactive")
-        star3.image = UIImage(named: rating > 2 ? "ratingStarActive" : "ratingStarInactive")
-        star4.image = UIImage(named: rating > 3 ? "ratingStarActive" : "ratingStarInactive")
-        star5.image = UIImage(named: rating > 4 ? "ratingStarActive" : "ratingStarInactive")
+        stars.enumerated().forEach { offset, star in
+            star.tintColor = rating > offset ? .asset(.yellowUniversal) : .asset(.lightGrey)
+        }
     }
 }
