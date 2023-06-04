@@ -119,7 +119,7 @@ extension ShoppingCartView {
                                       message: nil,
                                       preferredStyle: .actionSheet)
 
-        ShoppingCartViewModel.SortOrder.allCases.forEach { orderType in
+        SortingOrder.allCases.forEach { orderType in
             alert.addAction(
                 UIAlertAction(title: orderType.rawValue, style: .default) { [weak self] _ in
                     self?.viewModel.selectSorting(by: orderType)

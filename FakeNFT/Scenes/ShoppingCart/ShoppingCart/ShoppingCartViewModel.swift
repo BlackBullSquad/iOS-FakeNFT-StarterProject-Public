@@ -4,7 +4,7 @@ final class ShoppingCartViewModel: ObservableObject {
     let deps: Dependencies
 
     @Published var items: [ShoppingCartCellViewModel] = []
-    @Published var sortedBy: SortOrder = .byName
+    @Published var sortedBy: SortingOrder = .byName
     @Published var isSelectingSort = false
     @Published var itemToDelete: NftDeleteViewModel?
 
@@ -28,14 +28,6 @@ final class ShoppingCartViewModel: ObservableObject {
     init(deps: Dependencies, onPurchase: @escaping () -> Void) {
         self.deps = deps
         self.onPurchase = onPurchase
-    }
-}
-
-extension ShoppingCartViewModel {
-    enum SortOrder: String, Hashable, CaseIterable {
-        case byPrice = "По цене"
-        case byRating = "По рейтингу"
-        case byName = "По названию"
     }
 }
 
@@ -71,7 +63,7 @@ extension ShoppingCartViewModel {
         isSelectingSort = true
     }
 
-    func selectSorting(by sortedBy: SortOrder) {
+    func selectSorting(by sortedBy: SortingOrder) {
         self.sortedBy = sortedBy
         isSelectingSort = false
     }
