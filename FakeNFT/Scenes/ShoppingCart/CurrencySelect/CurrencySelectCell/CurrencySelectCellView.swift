@@ -1,12 +1,22 @@
 import UIKit
 import Kingfisher
 
-final class CurrencySelectCell: UICollectionViewCell {
-    static let identifier = "CurrencySelectCell"
+final class CurrencySelectCellView: UICollectionViewCell {
+    var viewModel: CurrencySelectCellViewModel? { didSet { viewModelDidUpdate() } }
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupSubviews()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     // MARK: - Components
 
     private lazy var currencyImage = UIImageView()
+
     private lazy var currencyImageBackground: UIView = {
         let view = UIView()
         view.backgroundColor = .black
@@ -31,21 +41,35 @@ final class CurrencySelectCell: UICollectionViewCell {
         label.textAlignment = .left
         return label
     }()
+}
 
-    // MARK: - Initialization
+// MARK: - Lifecycle
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupSubviews()
+extension CurrencySelectCellView {
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        viewModel = nil
     }
 
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    private func viewModelDidUpdate() {
+        let placeholder = UIImage(named: "placeholder")
+
+        nameLabel.text = viewModel?.name
+        codeLabel.text = viewModel?.code
+        contentView.layer.borderWidth = viewModel?.isSelected == true ? 1 : 0
+
+        currencyImage.kf.setImage(
+            with: viewModel?.currencyImage,
+            placeholder: placeholder,
+            options: [.scaleFactor(UIScreen.main.scale), .transition(.fade(1))]
+        )
     }
+}
 
-    // MARK: - Setup
+// MARK: - Initial Setup
 
-    private func setupSubviews() {
+private extension CurrencySelectCellView {
+    func setupSubviews() {
         currencyImage.backgroundColor = .clear
         currencyImage.kf.indicatorType = .activity
 
@@ -77,36 +101,5 @@ final class CurrencySelectCell: UICollectionViewCell {
             hStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
             hStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5)
         ])
-    }
-}
-
-// MARK: - Configuration
-
-extension CurrencySelectCell {
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        configure(nil)
-    }
-
-    func configure(_ viewModel: ViewModel?) {
-        let placeholder = UIImage(named: "placeholder")
-
-        guard let viewModel else {
-            nameLabel.text = ""
-            codeLabel.text = ""
-            currencyImage.image = nil
-            contentView.layer.borderWidth = 0
-            return
-        }
-
-        nameLabel.text = viewModel.name
-        codeLabel.text = viewModel.code
-        contentView.layer.borderWidth = viewModel.isSelected ? 1 : 0
-
-        currencyImage.kf.setImage(
-            with: viewModel.currencyImage,
-            placeholder: placeholder,
-            options: [.scaleFactor(UIScreen.main.scale), .transition(.fade(1))]
-        )
     }
 }

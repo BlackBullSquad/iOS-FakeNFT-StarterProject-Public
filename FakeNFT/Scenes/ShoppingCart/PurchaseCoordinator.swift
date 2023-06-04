@@ -1,9 +1,5 @@
 import UIKit
 
-protocol Coordinator {
-    func start()
-}
-
 final class PurchaseCoordinator {
     weak var navigationController: UINavigationController?
     weak var tabBarController: UITabBarController?
@@ -15,6 +11,8 @@ final class PurchaseCoordinator {
     }
 }
 
+// MARK: - Dependencies
+
 extension PurchaseCoordinator {
     struct Dependencies {
         let currencyProvider: CurrencyProvider
@@ -23,24 +21,25 @@ extension PurchaseCoordinator {
     }
 }
 
+// MARK: - Coordinator
+
 extension PurchaseCoordinator: Coordinator {
     func start() {
-        deps.currencyProvider.getCurrencies { result in
-            switch result {
-            case let .success(currencies):
-                DispatchQueue.main.async { [weak self] in
-                    self?.displayCurrencySelector(currencies: currencies)
-                }
-            case let .failure(error):
-                print(error)
-            }
-        }
+        displayCurrencySelector()
     }
+}
 
-    func displayCurrencySelector(currencies: [Currency]) {
-        let currencyVC = CurrencySelectController(currencies: currencies) { [weak self] id in
+// MARK: - Flow
+
+private extension PurchaseCoordinator {
+    func displayCurrencySelector() {
+        let viewModel = CurrencySelectViewModel(
+            deps: .init(currencyProvider: deps.currencyProvider)
+        ) { [weak self] id in
             self?.performPayment(with: id)
         }
+
+        let currencyVC = CurrencySelectView(viewModel)
 
         navigationController?.pushViewController(currencyVC, animated: true)
     }
@@ -57,19 +56,21 @@ extension PurchaseCoordinator: Coordinator {
     func displayPurchaseResult(isSuccess: Bool) {
         guard let navigationController else { return }
 
-        let resultVC = PurchaseStatusController(isSuccess: isSuccess) { [weak self] in
+        let viewModel = PurchaseStatusViewModel(isSuccess: isSuccess) { [weak self] in
             guard let self else { return }
 
             if isSuccess {
-                self.escapeToCatalogue()
+                self.finalizePurchase()
             }
         }
+
+        let resultVC = PurchaseStatusView(viewModel)
 
         resultVC.modalPresentationStyle = .fullScreen
         navigationController.present(resultVC, animated: true)
     }
 
-    func escapeToCatalogue() {
+    func finalizePurchase() {
         deps.shoppingCart.nfts.forEach { id in
             deps.shoppingCart.removeFromCart(id)
         }

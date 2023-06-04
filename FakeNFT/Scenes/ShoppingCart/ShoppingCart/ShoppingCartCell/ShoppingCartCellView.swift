@@ -1,10 +1,16 @@
 import UIKit
 
-final class ShoppingCartCell: UITableViewCell {
-    static let identifier = "CartCell"
+final class ShoppingCartCellView: UITableViewCell {
+    var viewModel: ShoppingCartCellViewModel? { didSet { viewModelDidUpdate() } }
 
-    var priceFormatter: NumberFormatter?
-    var onDelete: (() -> Void)?
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupSubviews()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     // MARK: - Components
 
@@ -76,21 +82,30 @@ final class ShoppingCartCell: UITableViewCell {
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
     }()
+}
 
-    // MARK: - Initialization
+// MARK: - Lifecycle
 
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupSubviews()
+extension ShoppingCartCellView {
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        viewModel = nil
     }
 
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    private func viewModelDidUpdate() {
+        titleLabel.text = viewModel?.name
+        priceLabel.text = viewModel?.priceLabel
+        avatar.viewModel = .init(imageSize: .large,
+                                 imageURL: viewModel?.avatarUrl,
+                                 likeButtonAction: nil)
+        ratingView.rating = viewModel?.rating
     }
+}
 
-    // MARK: - Setup
+// MARK: - Initial Setup
 
-    private func setupSubviews() {
+private extension ShoppingCartCellView {
+    func setupSubviews() {
         contentView.addSubview(hStack)
 
         NSLayoutConstraint.activate([
@@ -100,43 +115,12 @@ final class ShoppingCartCell: UITableViewCell {
             hStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
         ])
     }
-
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        configure(nil, onDelete: nil)
-    }
 }
 
-// MARK: - Configuration
+// MARK: - User Action
 
-extension ShoppingCartCell {
-    func configure(_ viewModel: ItemViewModel?, onDelete: (() -> Void)?) {
-        guard let viewModel else {
-            titleLabel.text = ""
-            priceLabel.text = ""
-            avatar.viewModel = .init(imageSize: .large, imageURL: nil, likeButtonAction: nil)
-            ratingView.rating = nil
-            self.onDelete = nil
-            return
-        }
-
-        guard let priceFormatter else { preconditionFailure("cell was not set up properly") }
-
-        titleLabel.text = viewModel.name
-        let priceString = priceFormatter.string(from: .init(value: viewModel.price)) ?? ""
-        priceLabel.text = "\(priceString) ETH"
-        avatar.viewModel = .init(imageSize: .large,
-                                 imageURL: viewModel.avatarUrl,
-                                 likeButtonAction: nil)
-        ratingView.rating = viewModel.rating
-        self.onDelete = onDelete
-    }
-}
-
-// MARK: - Action
-
-extension ShoppingCartCell {
+private extension ShoppingCartCellView {
     @objc func didTapDeleteButton() {
-        onDelete?()
+        viewModel?.onDelete()
     }
 }

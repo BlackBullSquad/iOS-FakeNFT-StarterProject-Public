@@ -1,16 +1,16 @@
 import UIKit
+import Combine
 
-final class CurrencySelectController: UIViewController {
-    let currencies: [Currency]
-    var selectedItem: Int?
-    var onPurchase: (Int) -> Void
+final class CurrencySelectView: UIViewController {
+    private let viewModel: CurrencySelectViewModel
+    private var cancellable: AnyCancellable?
 
     private lazy var dataSource = makeDataSource()
 
-    init(currencies: [Currency], onPurchase: @escaping (Int) -> Void) {
-        self.currencies = currencies
-        self.onPurchase = onPurchase
+    init(_ viewModel: CurrencySelectViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        cancellable = viewModel.bind { [weak self] in self?.viewModelDidUpdate() }
     }
 
     required init?(coder: NSCoder) {
@@ -28,6 +28,7 @@ final class CurrencySelectController: UIViewController {
         button.layer.cornerRadius = 16
         button.addTarget(self, action: #selector(didTapPurchaseButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
+
         return button
     }()
 
@@ -56,14 +57,14 @@ final class CurrencySelectController: UIViewController {
     private lazy var collectionView: UICollectionView = {
         let collection = UICollectionView(
             frame: .zero,
-            collectionViewLayout: UICollectionViewCompositionalLayout.currencies
+            collectionViewLayout: .currencySelectView
         )
 
         collection.keyboardDismissMode = .onDrag
         collection.contentInset = .init(top: 20, left: 0, bottom: 0, right: 0)
 
-        collection.register(CurrencySelectCell.self,
-                            forCellWithReuseIdentifier: CurrencySelectCell.identifier)
+        collection.register(CurrencySelectCellView.self,
+                            forCellWithReuseIdentifier: "\(CurrencySelectCellView.self)")
 
         collection.alwaysBounceVertical = true
 
@@ -73,9 +74,31 @@ final class CurrencySelectController: UIViewController {
     }()
 }
 
-// MARK: - Setup
+// MARK: - Lifecycle
 
-extension CurrencySelectController {
+extension CurrencySelectView {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        collectionView.dataSource = dataSource
+        setupViews()
+        viewModel.start()
+    }
+
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        collectionView.frame = view.bounds
+    }
+
+    private func viewModelDidUpdate() {
+        purchaseButton.layer.opacity = viewModel.isPurchaseAvailable ? 1 : 0.5
+        purchaseButton.isEnabled = viewModel.isPurchaseAvailable
+        applySnapshot()
+    }
+}
+
+// MARK: - Initial Setup
+
+private extension CurrencySelectView {
     func setupViews() {
         title = "Выберите способ оплаты"
         let backItem = UIBarButtonItem()
@@ -103,38 +126,34 @@ extension CurrencySelectController {
     }
 }
 
-// MARK: - Lifecycle
+// MARK: - User Actions
 
-extension CurrencySelectController {
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupViews()
-        collectionView.dataSource = dataSource
-        refreshView()
+extension CurrencySelectView: UICollectionViewDelegate {
+    @objc private func didTapPurchaseButton() {
+        viewModel.purchase()
     }
 
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        collectionView.frame = view.bounds
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        viewModel.selectedItem(indexPath.row)
     }
 }
 
 // MARK: - DataSource
 
-private extension CurrencySelectController {
-    typealias DataSource = UICollectionViewDiffableDataSource<Int, CurrencySelectCell.ViewModel>
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Int, CurrencySelectCell.ViewModel>
+private extension CurrencySelectView {
+    typealias DataSource = UICollectionViewDiffableDataSource<Int, CurrencySelectCellViewModel>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Int, CurrencySelectCellViewModel>
 
     func makeDataSource() -> DataSource {
         let dataSource = DataSource(
             collectionView: collectionView,
-            cellProvider: { (collectionView, indexPath, viewModel) -> UICollectionViewCell? in
+            cellProvider: { collectionView, indexPath, viewModel in
                 let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: CurrencySelectCell.identifier,
+                    withReuseIdentifier: "\(CurrencySelectCellView.self)",
                     for: indexPath
-                ) as? CurrencySelectCell
+                ) as? CurrencySelectCellView
 
-                cell?.configure(viewModel)
+                cell?.viewModel = viewModel
 
                 return cell
             }
@@ -143,37 +162,12 @@ private extension CurrencySelectController {
         return dataSource
     }
 
-    private func applySnapshot(animatingDifferences: Bool = true) {
+    func applySnapshot(animatingDifferences: Bool = true) {
         var snapshot = Snapshot()
 
         snapshot.appendSections([0])
-
-        let items = currencies.enumerated().map { offset, currency in
-            return CurrencySelectCell.ViewModel(currency, isSelected: offset == selectedItem)
-        }
-
-        snapshot.appendItems(items, toSection: 0)
+        snapshot.appendItems(viewModel.items, toSection: 0)
 
         dataSource.apply(snapshot, animatingDifferences: animatingDifferences)
-    }
-}
-
-// MARK: - Actions
-
-extension CurrencySelectController: UICollectionViewDelegate {
-    @objc func didTapPurchaseButton() {
-        guard let selectedItem else { return }
-        onPurchase(currencies[selectedItem].id)
-    }
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        selectedItem = selectedItem != indexPath.row ? indexPath.row : nil
-        refreshView()
-    }
-
-    func refreshView() {
-        purchaseButton.layer.opacity = selectedItem == nil ? 0.5 : 1
-        purchaseButton.isEnabled = selectedItem != nil
-        applySnapshot()
     }
 }

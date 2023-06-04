@@ -1,0 +1,247 @@
+import UIKit
+import Combine
+
+final class ShoppingCartView: UIViewController {
+    private let viewModel: ShoppingCartViewModel
+    private var cancellable: AnyCancellable?
+
+    private lazy var dataSource = makeDataSource()
+
+    init(_ viewModel: ShoppingCartViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+        cancellable = viewModel.bind { [weak self] in self?.viewModelDidUpdate() }
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: - Components
+
+    private let tableView = UITableView()
+
+    private lazy var countLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .asset(.main(.primary))
+        label.font = .asset(.regular15)
+        label.textAlignment = .left
+        return label
+    }()
+
+    private lazy var priceLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .asset(.main(.green))
+        label.font = .asset(.bold17)
+        label.textAlignment = .left
+        return label
+    }()
+
+    private lazy var emptyLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Корзина пуста"
+        label.textColor = .asset(.main(.primary))
+        label.font = .asset(.bold17)
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+
+    private lazy var purchaseButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("К оплате", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = .asset(.bold17)
+        button.backgroundColor = .black
+        button.layer.cornerRadius = 16
+        button.addTarget(self, action: #selector(didTapPurchaseButton), for: .touchUpInside)
+        return button
+    }()
+
+    private lazy var buttonPanel: UIStackView = {
+        let vStack = UIStackView(arrangedSubviews: [countLabel, priceLabel])
+        vStack.axis = .vertical
+        vStack.spacing = 2
+
+        let panel = UIStackView(arrangedSubviews: [vStack, purchaseButton])
+        panel.axis = .horizontal
+        panel.spacing = 12
+
+        panel.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+        panel.isLayoutMarginsRelativeArrangement = true
+
+        panel.backgroundColor = .asset(.main(.lightGray))
+        panel.layer.cornerRadius = 12
+        panel.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        panel.layer.masksToBounds = true
+
+        panel.translatesAutoresizingMaskIntoConstraints = false
+
+        return panel
+    }()
+}
+
+// MARK: - Lifecycle
+
+extension ShoppingCartView {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupViews()
+        setupNavBar()
+        viewModel.start()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.refresh()
+    }
+
+    private func viewModelDidUpdate() {
+        priceLabel.text = viewModel.priceLabel
+        countLabel.text = viewModel.countLabel
+
+        emptyLabel.isHidden = !viewModel.isCartEmpty
+        buttonPanel.isHidden = viewModel.isCartEmpty
+
+        updateSnapshot()
+
+        if viewModel.isSelectingSort {
+            showSortingDialog()
+        }
+
+        if let itemToDelete = viewModel.itemToDelete {
+            showDeleteRequest(itemToDelete)
+        }
+    }
+
+    private func showSortingDialog() {
+        let alert = UIAlertController(title: "Сортировка",
+                                      message: nil,
+                                      preferredStyle: .actionSheet)
+
+        SortingOrder.allCases.forEach { orderType in
+            alert.addAction(
+                UIAlertAction(title: orderType.rawValue, style: .default) { [weak self] _ in
+                    self?.viewModel.selectSorting(by: orderType)
+                }
+            )
+        }
+
+        alert.addAction(
+            UIAlertAction(title: "Закрыть", style: .cancel) { [weak self] _ in
+                self?.viewModel.cancelSorting()
+            }
+        )
+
+        present(alert, animated: true)
+    }
+
+    private func showDeleteRequest(_ itemModel: NftDeleteViewModel) {
+        let deleteController = NftDeleteView(itemModel)
+        deleteController.modalPresentationStyle = .overFullScreen
+
+        present(deleteController, animated: true)
+    }
+}
+
+// MARK: - Initial Setup
+
+private extension ShoppingCartView {
+    func setupNavBar() {
+        let sortButton: UIBarButtonItem = {
+            let button = UIBarButtonItem()
+            button.tintColor = .asset(.main(.primary))
+            button.style = .plain
+            button.image = UIImage(named: "sortIcon")
+            button.target = self
+            button.action = #selector(didTapSortButton)
+            return button
+        }()
+
+        navigationItem.rightBarButtonItem = sortButton
+    }
+
+    func setupViews() {
+        view.backgroundColor = .white
+
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 140
+
+        tableView.dataSource = dataSource
+        tableView.register(ShoppingCartCellView.self,
+                           forCellReuseIdentifier: "\(ShoppingCartCellView.self)")
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.contentInset = .init(top: 0, left: 0, bottom: 80, right: 0)
+
+        let guide = view.safeAreaLayoutGuide
+        let hInset: CGFloat = 16
+
+        tableView.separatorStyle = .none
+        tableView.allowsSelection = false
+        tableView.layer.masksToBounds = false
+        tableView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -hInset)
+
+        view.addSubview(tableView)
+        view.addSubview(buttonPanel)
+        view.addSubview(emptyLabel)
+
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: guide.topAnchor, constant: 21),
+            tableView.leadingAnchor.constraint(equalTo: guide.leadingAnchor, constant: hInset),
+            tableView.trailingAnchor.constraint(equalTo: guide.trailingAnchor, constant: -hInset),
+            tableView.bottomAnchor.constraint(equalTo: guide.bottomAnchor),
+            buttonPanel.leadingAnchor.constraint(equalTo: guide.leadingAnchor),
+            buttonPanel.trailingAnchor.constraint(equalTo: guide.trailingAnchor),
+            buttonPanel.bottomAnchor.constraint(equalTo: guide.bottomAnchor),
+            emptyLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            emptyLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            purchaseButton.widthAnchor.constraint(equalToConstant: 240)
+        ])
+    }
+}
+
+// MARK: - User Actions
+
+private extension ShoppingCartView {
+    @objc func didTapPurchaseButton() {
+        viewModel.purchase()
+    }
+
+    @objc func didTapSortButton() {
+        viewModel.requestSorting()
+    }
+}
+
+// MARK: - DataSource
+
+private extension ShoppingCartView {
+    typealias DataSource = UITableViewDiffableDataSource<Int, ShoppingCartCellViewModel>
+    typealias SnapShot = NSDiffableDataSourceSnapshot<Int, ShoppingCartCellViewModel>
+
+    func makeDataSource() -> DataSource {
+        DataSource(tableView: tableView) { [weak self] tableView, indexPath, _ in
+            guard
+                let self,
+                let cell = tableView.dequeueReusableCell(
+                    withIdentifier: "\(ShoppingCartCellView.self)", for: indexPath
+                ) as? ShoppingCartCellView else {
+                return UITableViewCell()
+            }
+
+            cell.viewModel = self.viewModel.sortedItems[indexPath.row]
+
+            return cell
+        }
+    }
+
+    func updateSnapshot() {
+        var snapshot = SnapShot()
+
+        snapshot.appendSections([0])
+        for itemViewModel in viewModel.sortedItems {
+            snapshot.appendItems([itemViewModel], toSection: 0)
+        }
+
+        dataSource.apply(snapshot, animatingDifferences: true)
+    }
+}

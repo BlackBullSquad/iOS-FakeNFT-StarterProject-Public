@@ -1,13 +1,14 @@
 import UIKit
+import Combine
 
-final class PurchaseStatusController: UIViewController {
-    let isSuccess: Bool
-    var onContinue: () -> Void
+final class PurchaseStatusView: UIViewController {
+    private let viewModel: PurchaseStatusViewModel
+    var cancellable: AnyCancellable?
 
-    init(isSuccess: Bool, onContinue: @escaping () -> Void) {
-        self.isSuccess = isSuccess
-        self.onContinue = onContinue
+    init(_ viewModel: PurchaseStatusViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        cancellable = viewModel.bind { [weak self] in self?.viewModelUpdate() }
     }
 
     required init?(coder: NSCoder) {
@@ -19,7 +20,7 @@ final class PurchaseStatusController: UIViewController {
     private lazy var continueButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle(
-            isSuccess ? "Вернуться в каталог" : "Попробовать еще раз",
+            viewModel.isSuccess ? "Вернуться в каталог" : "Попробовать еще раз",
             for: .normal
         )
         button.setTitleColor(.white, for: .normal)
@@ -33,7 +34,7 @@ final class PurchaseStatusController: UIViewController {
 
     private lazy var infoLabel: UILabel = {
         let label = UILabel()
-        label.text = isSuccess
+        label.text = viewModel.isSuccess
         ? "Успех! Оплата прошла,\nпоздравляем с покупкой!"
         : "Упс! Что-то пошло не так :(\nПопробуйте ещё раз!"
 
@@ -45,18 +46,28 @@ final class PurchaseStatusController: UIViewController {
     }()
 
     private lazy var statusImage = UIImageView(
-        image: UIImage(named: isSuccess ? "purchaseSuccess" : "purchaseFailure")
+        image: UIImage(named: viewModel.isSuccess ? "purchaseSuccess" : "purchaseFailure")
     )
 }
 
-// MARK: - Setup
+// MARK: - Lifecycle
 
-extension PurchaseStatusController {
+extension PurchaseStatusView {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
     }
 
+    private func viewModelUpdate() {
+        if !viewModel.isPresented {
+            dismiss(animated: true)
+        }
+    }
+}
+
+// MARK: - Initial Setup
+
+private extension PurchaseStatusView {
     func setupViews() {
         view.backgroundColor = .white
 
@@ -82,11 +93,10 @@ extension PurchaseStatusController {
     }
 }
 
-// MARK: - Actions
+// MARK: - User Actions
 
-extension PurchaseStatusController {
+private extension PurchaseStatusView {
     @objc func didTapContinueButton() {
-        onContinue()
-        dismiss(animated: true)
+        viewModel.didContinue()
     }
 }
