@@ -26,9 +26,9 @@ final class NftDeleteView: UIViewController {
     private lazy var deleteButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Удалить", for: .normal)
-        button.setTitleColor(.asset(.main(.red)), for: .normal)
+        button.setTitleColor(.asset(.redUniversal), for: .normal)
         button.titleLabel?.font = .asset(.regular17)
-        button.backgroundColor = .black
+        button.backgroundColor = .asset(.black)
         button.layer.cornerRadius = 12
         button.contentEdgeInsets = UIEdgeInsets(top: 11, left: 0, bottom: 11, right: 0)
         button.addTarget(self, action: #selector(didTapDeleteButton), for: .touchUpInside)
@@ -38,9 +38,9 @@ final class NftDeleteView: UIViewController {
     private lazy var cancelButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Вернуться", for: .normal)
-        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(.asset(.white), for: .normal)
         button.titleLabel?.font = .asset(.regular17)
-        button.backgroundColor = .black
+        button.backgroundColor = .asset(.black)
         button.layer.cornerRadius = 12
         button.contentEdgeInsets = UIEdgeInsets(top: 11, left: 0, bottom: 11, right: 0)
         button.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
@@ -54,7 +54,7 @@ final class NftDeleteView: UIViewController {
             удалить объект из корзины?
             """
         label.numberOfLines = 0
-        label.textColor = .asset(.main(.primary))
+        label.textColor = .asset(.black)
         label.font = .asset(.regular13)
         label.textAlignment = .center
         return label

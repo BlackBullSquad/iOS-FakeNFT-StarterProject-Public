@@ -5,7 +5,7 @@ struct CurrencySelectCellViewModel: Hashable, Identifiable {
     let name: String
     let code: String
     let currencyImage: URL
-    let isSelected: Bool
+    var isSelected: Bool
 
     init(_ model: Currency, isSelected: Bool) {
         id = model.id

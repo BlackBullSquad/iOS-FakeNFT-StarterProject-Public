@@ -22,9 +22,9 @@ final class CurrencySelectView: UIViewController {
     private lazy var purchaseButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Оплатить", for: .normal)
-        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(.asset(.white), for: .normal)
         button.titleLabel?.font = .asset(.bold17)
-        button.backgroundColor = .black
+        button.backgroundColor = .asset(.black)
         button.layer.cornerRadius = 16
         button.addTarget(self, action: #selector(didTapPurchaseButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -35,13 +35,13 @@ final class CurrencySelectView: UIViewController {
     private lazy var infoText: UIStackView = {
         let firstLine = UILabel()
         firstLine.text = "Совершая покупку, вы соглашаетесь с условиями"
-        firstLine.textColor = .asset(.main(.primary))
+        firstLine.textColor = .asset(.black)
         firstLine.font = .asset(.regular13)
         firstLine.textAlignment = .left
 
         let secondLine = UILabel()
         secondLine.text = "Пользовательского соглашения"
-        secondLine.textColor = .asset(.additional(.blue))
+        secondLine.textColor = .asset(.blueUniversal)
         secondLine.font = .asset(.regular13)
         secondLine.textAlignment = .left
 
@@ -103,10 +103,10 @@ private extension CurrencySelectView {
         title = "Выберите способ оплаты"
         let backItem = UIBarButtonItem()
         backItem.title = nil
-        backItem.tintColor = .black
+        backItem.tintColor = .asset(.black)
 
         navigationController?.navigationBar.topItem?.backBarButtonItem = backItem
-        view.backgroundColor = .white
+        view.backgroundColor = .asset(.white)
 
         let guide = view.safeAreaLayoutGuide
 

@@ -23,9 +23,9 @@ final class PurchaseStatusView: UIViewController {
             viewModel.isSuccess ? "Вернуться в каталог" : "Попробовать еще раз",
             for: .normal
         )
-        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(.asset(.white), for: .normal)
         button.titleLabel?.font = .asset(.bold17)
-        button.backgroundColor = .black
+        button.backgroundColor = .asset(.black)
         button.layer.cornerRadius = 16
         button.addTarget(self, action: #selector(didTapContinueButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -38,7 +38,7 @@ final class PurchaseStatusView: UIViewController {
         ? "Успех! Оплата прошла,\nпоздравляем с покупкой!"
         : "Упс! Что-то пошло не так :(\nПопробуйте ещё раз!"
 
-        label.textColor = .asset(.main(.primary))
+        label.textColor = .asset(.black)
         label.font = .asset(.bold22)
         label.textAlignment = .center
         label.numberOfLines = 0
@@ -69,7 +69,7 @@ extension PurchaseStatusView {
 
 private extension PurchaseStatusView {
     func setupViews() {
-        view.backgroundColor = .white
+        view.backgroundColor = .asset(.white)
 
         let vStack = UIStackView(arrangedSubviews: [statusImage, infoLabel])
         vStack.axis = .vertical

@@ -19,11 +19,15 @@ final class ShoppingCartView: UIViewController {
 
     // MARK: - Components
 
-    private let tableView = UITableView()
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.backgroundColor = .asset(.white)
+        return tableView
+    }()
 
     private lazy var countLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .asset(.main(.primary))
+        label.textColor = .asset(.black)
         label.font = .asset(.regular15)
         label.textAlignment = .left
         return label
@@ -31,7 +35,7 @@ final class ShoppingCartView: UIViewController {
 
     private lazy var priceLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .asset(.main(.green))
+        label.textColor = .asset(.greenUniversal)
         label.font = .asset(.bold17)
         label.textAlignment = .left
         return label
@@ -40,7 +44,7 @@ final class ShoppingCartView: UIViewController {
     private lazy var emptyLabel: UILabel = {
         let label = UILabel()
         label.text = "Корзина пуста"
-        label.textColor = .asset(.main(.primary))
+        label.textColor = .asset(.black)
         label.font = .asset(.bold17)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -50,9 +54,9 @@ final class ShoppingCartView: UIViewController {
     private lazy var purchaseButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("К оплате", for: .normal)
-        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(.asset(.white), for: .normal)
         button.titleLabel?.font = .asset(.bold17)
-        button.backgroundColor = .black
+        button.backgroundColor = .asset(.black)
         button.layer.cornerRadius = 16
         button.addTarget(self, action: #selector(didTapPurchaseButton), for: .touchUpInside)
         return button
@@ -70,7 +74,7 @@ final class ShoppingCartView: UIViewController {
         panel.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         panel.isLayoutMarginsRelativeArrangement = true
 
-        panel.backgroundColor = .asset(.main(.lightGray))
+        panel.backgroundColor = .asset(.lightGrey)
         panel.layer.cornerRadius = 12
         panel.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         panel.layer.masksToBounds = true
@@ -150,7 +154,7 @@ private extension ShoppingCartView {
     func setupNavBar() {
         let sortButton: UIBarButtonItem = {
             let button = UIBarButtonItem()
-            button.tintColor = .asset(.main(.primary))
+            button.tintColor = .asset(.black)
             button.style = .plain
             button.image = UIImage(named: "sortIcon")
             button.target = self
@@ -162,7 +166,7 @@ private extension ShoppingCartView {
     }
 
     func setupViews() {
-        view.backgroundColor = .white
+        view.backgroundColor = .asset(.white)
 
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 140
@@ -171,7 +175,7 @@ private extension ShoppingCartView {
         tableView.register(ShoppingCartCellView.self,
                            forCellReuseIdentifier: "\(ShoppingCartCellView.self)")
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.contentInset = .init(top: 0, left: 0, bottom: 80, right: 0)
+        tableView.contentInset = .init(top: 20, left: 0, bottom: 80, right: 0)
 
         let guide = view.safeAreaLayoutGuide
         let hInset: CGFloat = 16
@@ -182,14 +186,14 @@ private extension ShoppingCartView {
         tableView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -hInset)
 
         view.addSubview(tableView)
-        view.addSubview(buttonPanel)
+         view.addSubview(buttonPanel)
         view.addSubview(emptyLabel)
 
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: guide.topAnchor, constant: 21),
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: guide.leadingAnchor, constant: hInset),
             tableView.trailingAnchor.constraint(equalTo: guide.trailingAnchor, constant: -hInset),
-            tableView.bottomAnchor.constraint(equalTo: guide.bottomAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             buttonPanel.leadingAnchor.constraint(equalTo: guide.leadingAnchor),
             buttonPanel.trailingAnchor.constraint(equalTo: guide.trailingAnchor),
             buttonPanel.bottomAnchor.constraint(equalTo: guide.bottomAnchor),
