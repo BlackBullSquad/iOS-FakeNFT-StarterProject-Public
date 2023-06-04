@@ -8,7 +8,7 @@ final class NftDeleteView: UIViewController {
     init(_ viewModel: NftDeleteViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-        cancellable = viewModel.bind { [weak self] in self?.viewModelUpdate() }
+        cancellable = viewModel.bind { [weak self] in self?.viewModelDidUpdate() }
     }
 
     required init?(coder: NSCoder) {
@@ -68,14 +68,14 @@ extension NftDeleteView {
         setupViews()
     }
 
-    private func viewModelUpdate() {
+    private func viewModelDidUpdate() {
         if !viewModel.isPresented {
             dismiss(animated: true)
         }
     }
 }
 
-// MARK: - Layout
+// MARK: - Initial Setup
 
 private extension NftDeleteView {
     func setupViews() {
@@ -112,9 +112,14 @@ private extension NftDeleteView {
     }
 }
 
-// MARK: - Actions
+// MARK: - User Actions
 
 extension NftDeleteView {
-    @objc func didTapDeleteButton() { viewModel.didDelete() }
-    @objc func didTapCancelButton() { viewModel.didCancel() }
+    @objc func didTapDeleteButton() {
+        viewModel.didDelete()
+    }
+
+    @objc func didTapCancelButton() {
+        viewModel.didCancel()
+    }
 }

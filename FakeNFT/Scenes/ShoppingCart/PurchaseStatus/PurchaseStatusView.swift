@@ -65,7 +65,7 @@ extension PurchaseStatusView {
     }
 }
 
-// MARK: - Setup
+// MARK: - Initial Setup
 
 private extension PurchaseStatusView {
     func setupViews() {
@@ -93,8 +93,10 @@ private extension PurchaseStatusView {
     }
 }
 
-// MARK: - Actions
+// MARK: - User Actions
 
 extension PurchaseStatusView {
-    @objc func didTapContinueButton() { viewModel.didContinue() }
+    @objc func didTapContinueButton() {
+        viewModel.didContinue()
+    }
 }

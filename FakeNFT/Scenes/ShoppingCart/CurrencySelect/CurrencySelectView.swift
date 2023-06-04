@@ -10,14 +10,14 @@ final class CurrencySelectView: UIViewController {
     init(_ viewModel: CurrencySelectViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-        cancellable = viewModel.bind { [weak self] in self?.viewModelUpdate() }
+        cancellable = viewModel.bind { [weak self] in self?.viewModelDidUpdate() }
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - View Components
+    // MARK: - Components
 
     private lazy var purchaseButton: UIButton = {
         let button = UIButton(type: .system)
@@ -89,14 +89,14 @@ extension CurrencySelectView {
         collectionView.frame = view.bounds
     }
 
-    func viewModelUpdate() {
+    func viewModelDidUpdate() {
         purchaseButton.layer.opacity = viewModel.isPurchaseAvailable ? 1 : 0.5
         purchaseButton.isEnabled = viewModel.isPurchaseAvailable
         applySnapshot()
     }
 }
 
-// MARK: - Setup
+// MARK: - Initial Setup
 
 extension CurrencySelectView {
     func setupViews() {
@@ -123,6 +123,18 @@ extension CurrencySelectView {
             purchaseButton.trailingAnchor.constraint(equalTo: guide.trailingAnchor, constant: -16),
             purchaseButton.bottomAnchor.constraint(equalTo: guide.bottomAnchor, constant: -16)
         ])
+    }
+}
+
+// MARK: - User Actions
+
+extension CurrencySelectView: UICollectionViewDelegate {
+    @objc func didTapPurchaseButton() {
+        viewModel.purchase()
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        viewModel.selectedItem(indexPath.row)
     }
 }
 
@@ -157,17 +169,5 @@ private extension CurrencySelectView {
         snapshot.appendItems(viewModel.items, toSection: 0)
 
         dataSource.apply(snapshot, animatingDifferences: animatingDifferences)
-    }
-}
-
-// MARK: - Actions
-
-extension CurrencySelectView: UICollectionViewDelegate {
-    @objc func didTapPurchaseButton() {
-        viewModel.purchase()
-    }
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        viewModel.selectedItem(indexPath.row)
     }
 }

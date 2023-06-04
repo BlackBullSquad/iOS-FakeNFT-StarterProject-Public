@@ -15,6 +15,8 @@ final class CurrencySelectViewModel: ObservableObject {
     }
 }
 
+// MARK: - Dependencies
+
 extension CurrencySelectViewModel {
     struct Dependencies {
         let currencyProvider: CurrencyProvider

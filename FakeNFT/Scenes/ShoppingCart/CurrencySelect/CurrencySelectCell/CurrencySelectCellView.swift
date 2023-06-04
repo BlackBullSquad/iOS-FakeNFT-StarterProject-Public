@@ -2,7 +2,7 @@ import UIKit
 import Kingfisher
 
 final class CurrencySelectCellView: UICollectionViewCell {
-    var viewModel: CurrencySelectCellViewModel? { didSet { viewModelUpdate() } }
+    var viewModel: CurrencySelectCellViewModel? { didSet { viewModelDidUpdate() } }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -43,7 +43,31 @@ final class CurrencySelectCellView: UICollectionViewCell {
     }()
 }
 
-    // MARK: - Setup
+// MARK: - Lifecycle
+
+extension CurrencySelectCellView {
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        viewModel = nil
+    }
+
+    func viewModelDidUpdate() {
+        let placeholder = UIImage(named: "placeholder")
+
+        nameLabel.text = viewModel?.name
+        codeLabel.text = viewModel?.code
+        contentView.layer.borderWidth = viewModel?.isSelected == true ? 1 : 0
+
+        currencyImage.kf.setImage(
+            with: viewModel?.currencyImage,
+            placeholder: placeholder,
+            options: [.scaleFactor(UIScreen.main.scale), .transition(.fade(1))]
+        )
+    }
+}
+
+// MARK: - Initial Setup
+
 private extension CurrencySelectCellView {
     func setupSubviews() {
         currencyImage.backgroundColor = .clear
@@ -77,28 +101,5 @@ private extension CurrencySelectCellView {
             hStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
             hStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5)
         ])
-    }
-}
-
-// MARK: - Lifecycle
-
-extension CurrencySelectCellView {
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        viewModel = nil
-    }
-
-    func viewModelUpdate() {
-        let placeholder = UIImage(named: "placeholder")
-
-        nameLabel.text = viewModel?.name
-        codeLabel.text = viewModel?.code
-        contentView.layer.borderWidth = viewModel?.isSelected == true ? 1 : 0
-
-        currencyImage.kf.setImage(
-            with: viewModel?.currencyImage,
-            placeholder: placeholder,
-            options: [.scaleFactor(UIScreen.main.scale), .transition(.fade(1))]
-        )
     }
 }
