@@ -40,8 +40,20 @@ extension CurrencySelectViewModel {
     }
 
     func selectedItem(_ index: Int) {
-        let selectedId = items[index].id
-        selectedItemId = selectedItemId != selectedId ? selectedId : nil
+        let newSelectedId = items[index].id
+
+        if selectedItemId == newSelectedId {
+            items[index].isSelected = false
+            selectedItemId = nil
+            return
+        }
+
+        if let currentIndex = items.firstIndex(where: { $0.id == selectedItemId }) {
+            items[currentIndex].isSelected = false
+        }
+
+        items[index].isSelected = true
+        selectedItemId = newSelectedId
     }
 
     func purchase() {
