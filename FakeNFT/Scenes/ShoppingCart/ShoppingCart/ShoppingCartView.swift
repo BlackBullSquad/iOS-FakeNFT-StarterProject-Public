@@ -199,7 +199,8 @@ private extension ShoppingCartView {
             buttonPanel.bottomAnchor.constraint(equalTo: guide.bottomAnchor),
             emptyLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             emptyLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            purchaseButton.widthAnchor.constraint(equalToConstant: 240)
+            purchaseButton.heightAnchor.constraint(equalToConstant: 44),
+            priceLabel.widthAnchor.constraint(equalToConstant: 88)
         ])
     }
 }
