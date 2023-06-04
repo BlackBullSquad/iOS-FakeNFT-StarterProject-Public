@@ -1,23 +1,23 @@
 import UIKit
+import Combine
 
-final class CurrencySelectController: UIViewController {
-    let currencies: [Currency]
-    var selectedItem: Int?
-    var onPurchase: (Int) -> Void
+final class CurrencySelectView: UIViewController {
+    let viewModel: CurrencySelectViewModel
+    var cancellable: AnyCancellable?
 
     private lazy var dataSource = makeDataSource()
 
-    init(currencies: [Currency], onPurchase: @escaping (Int) -> Void) {
-        self.currencies = currencies
-        self.onPurchase = onPurchase
+    init(_ viewModel: CurrencySelectViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        cancellable = viewModel.bind { [weak self] in self?.viewModelUpdate() }
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - Components
+    // MARK: - View Components
 
     private lazy var purchaseButton: UIButton = {
         let button = UIButton(type: .system)
@@ -28,6 +28,7 @@ final class CurrencySelectController: UIViewController {
         button.layer.cornerRadius = 16
         button.addTarget(self, action: #selector(didTapPurchaseButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
+
         return button
     }()
 
@@ -73,9 +74,31 @@ final class CurrencySelectController: UIViewController {
     }()
 }
 
+// MARK: - Lifecycle
+
+extension CurrencySelectView {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        collectionView.dataSource = dataSource
+        setupViews()
+        viewModel.start()
+    }
+
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        collectionView.frame = view.bounds
+    }
+
+    func viewModelUpdate() {
+        purchaseButton.layer.opacity = viewModel.isPurchaseAvailable ? 1 : 0.5
+        purchaseButton.isEnabled = viewModel.isPurchaseAvailable
+        applySnapshot()
+    }
+}
+
 // MARK: - Setup
 
-extension CurrencySelectController {
+extension CurrencySelectView {
     func setupViews() {
         title = "Выберите способ оплаты"
         let backItem = UIBarButtonItem()
@@ -103,25 +126,9 @@ extension CurrencySelectController {
     }
 }
 
-// MARK: - Lifecycle
-
-extension CurrencySelectController {
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupViews()
-        collectionView.dataSource = dataSource
-        refreshView()
-    }
-
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        collectionView.frame = view.bounds
-    }
-}
-
 // MARK: - DataSource
 
-private extension CurrencySelectController {
+private extension CurrencySelectView {
     typealias DataSource = UICollectionViewDiffableDataSource<Int, CurrencySelectCellViewModel>
     typealias Snapshot = NSDiffableDataSourceSnapshot<Int, CurrencySelectCellViewModel>
 
@@ -147,12 +154,7 @@ private extension CurrencySelectController {
         var snapshot = Snapshot()
 
         snapshot.appendSections([0])
-
-        let items = currencies.enumerated().map { offset, currency in
-            return CurrencySelectCellViewModel(currency, isSelected: offset == selectedItem)
-        }
-
-        snapshot.appendItems(items, toSection: 0)
+        snapshot.appendItems(viewModel.items, toSection: 0)
 
         dataSource.apply(snapshot, animatingDifferences: animatingDifferences)
     }
@@ -160,20 +162,12 @@ private extension CurrencySelectController {
 
 // MARK: - Actions
 
-extension CurrencySelectController: UICollectionViewDelegate {
+extension CurrencySelectView: UICollectionViewDelegate {
     @objc func didTapPurchaseButton() {
-        guard let selectedItem else { return }
-        onPurchase(currencies[selectedItem].id)
+        viewModel.purchase()
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        selectedItem = selectedItem != indexPath.row ? indexPath.row : nil
-        refreshView()
-    }
-
-    func refreshView() {
-        purchaseButton.layer.opacity = selectedItem == nil ? 0.5 : 1
-        purchaseButton.isEnabled = selectedItem != nil
-        applySnapshot()
+        viewModel.selectedItem(indexPath.row)
     }
 }

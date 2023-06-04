@@ -25,22 +25,17 @@ extension PurchaseCoordinator {
 
 extension PurchaseCoordinator: Coordinator {
     func start() {
-        deps.currencyProvider.getCurrencies { result in
-            switch result {
-            case let .success(currencies):
-                DispatchQueue.main.async { [weak self] in
-                    self?.displayCurrencySelector(currencies: currencies)
-                }
-            case let .failure(error):
-                print(error)
-            }
-        }
+        displayCurrencySelector()
     }
 
-    func displayCurrencySelector(currencies: [Currency]) {
-        let currencyVC = CurrencySelectController(currencies: currencies) { [weak self] id in
+    func displayCurrencySelector() {
+        let viewModel = CurrencySelectViewModel(
+            deps: .init(currencyProvider: deps.currencyProvider)
+        ) { [weak self] id in
             self?.performPayment(with: id)
         }
+
+        let currencyVC = CurrencySelectView(viewModel)
 
         navigationController?.pushViewController(currencyVC, animated: true)
     }
