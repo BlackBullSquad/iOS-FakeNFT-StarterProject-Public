@@ -186,7 +186,7 @@ private extension ShoppingCartView {
         view.addSubview(emptyLabel)
 
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: guide.topAnchor, constant: 21),
+            tableView.topAnchor.constraint(equalTo: guide.topAnchor, constant: 20),
             tableView.leadingAnchor.constraint(equalTo: guide.leadingAnchor, constant: hInset),
             tableView.trailingAnchor.constraint(equalTo: guide.trailingAnchor, constant: -hInset),
             tableView.bottomAnchor.constraint(equalTo: guide.bottomAnchor),
