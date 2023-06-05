@@ -46,7 +46,11 @@ private extension PurchaseCoordinator {
     }
 
     func performPayment(with currencyId: Currency.ID) {
+        UIBlockingProgressHUD.show()
+
         deps.paymentService.pay(with: currencyId) { [weak self] result in
+            defer { UIBlockingProgressHUD.dismiss() }
+
             guard let self else { return }
             DispatchQueue.main.async {
                 self.displayPurchaseResult(isSuccess: result)

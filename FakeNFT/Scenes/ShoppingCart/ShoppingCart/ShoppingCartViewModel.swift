@@ -92,9 +92,13 @@ extension ShoppingCartViewModel {
 
 private extension ShoppingCartViewModel {
     func reloadExternalData() {
+        UIBlockingProgressHUD.show()
+
         let ids = deps.shoppingCart.nfts
 
         deps.nftProvider.getNfts(Set(ids)) { [weak self] result in
+            defer { UIBlockingProgressHUD.dismiss() }
+
             guard let self else { return }
 
             switch result {

@@ -53,6 +53,7 @@
 		38D3B0222A2C754700D0B1B8 /* CurrencySelectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D3B0212A2C754700D0B1B8 /* CurrencySelectViewModel.swift */; };
 		38D3B0252A2CD88D00D0B1B8 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D3B0242A2CD88D00D0B1B8 /* Coordinator.swift */; };
 		38D3B0272A2CD96E00D0B1B8 /* SortingOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D3B0262A2CD96E00D0B1B8 /* SortingOrder.swift */; };
+		38D3B0292A2E27AD00D0B1B8 /* UIBlockingProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D3B0282A2E27AD00D0B1B8 /* UIBlockingProgressHUD.swift */; };
 		38E6B52D2A2BCBE0006ABA74 /* NftDeleteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E6B52C2A2BCBE0006ABA74 /* NftDeleteViewModel.swift */; };
 		3F478ECF29DB474E00F6D39E /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F478ECE29DB474E00F6D39E /* Colors.swift */; };
 		3F478ED129DB476500F6D39E /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F478ED029DB476500F6D39E /* Fonts.swift */; };
@@ -142,6 +143,7 @@
 		38D3B0212A2C754700D0B1B8 /* CurrencySelectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencySelectViewModel.swift; sourceTree = "<group>"; };
 		38D3B0242A2CD88D00D0B1B8 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		38D3B0262A2CD96E00D0B1B8 /* SortingOrder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortingOrder.swift; sourceTree = "<group>"; };
+		38D3B0282A2E27AD00D0B1B8 /* UIBlockingProgressHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBlockingProgressHUD.swift; sourceTree = "<group>"; };
 		38E6B52C2A2BCBE0006ABA74 /* NftDeleteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftDeleteViewModel.swift; sourceTree = "<group>"; };
 		3F478ECE29DB474E00F6D39E /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		3F478ED029DB476500F6D39E /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
@@ -493,6 +495,7 @@
 				3FC8C39229D246BA0081F015 /* DateFormatters+Presets.swift */,
 				38D3B01A2A2BDE6100D0B1B8 /* ObservableObject+Extensions.swift */,
 				38D3B0242A2CD88D00D0B1B8 /* Coordinator.swift */,
+				38D3B0282A2E27AD00D0B1B8 /* UIBlockingProgressHUD.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -740,6 +743,7 @@
 				3835D03A2A293E6F0046B354 /* CurrencySelectCellViewModel.swift in Sources */,
 				3F6806D129CBBE6B00B4F915 /* NetworkClient.swift in Sources */,
 				3802C1D62A29DA6F00AFFADE /* CollectionProvider.swift in Sources */,
+				38D3B0292A2E27AD00D0B1B8 /* UIBlockingProgressHUD.swift in Sources */,
 				8DD0007D2A19B05600C751E6 /* NFTAvatarViewModel.swift in Sources */,
 				3835D01D2A28CB0D0046B354 /* RatingView.swift in Sources */,
 				3835D03D2A294AF50046B354 /* PaymentService.swift in Sources */,

@@ -27,7 +27,11 @@ extension CurrencySelectViewModel {
 
 extension CurrencySelectViewModel {
     func start() {
+        UIBlockingProgressHUD.show()
+
         deps.currencyProvider.getCurrencies { [weak self] result in
+            defer { UIBlockingProgressHUD.dismiss() }
+
             guard let self else { return }
 
             switch result {
