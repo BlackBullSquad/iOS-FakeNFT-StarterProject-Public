@@ -92,7 +92,12 @@ extension CurrencySelectView {
     private func viewModelDidUpdate() {
         purchaseButton.layer.opacity = viewModel.isPurchaseAvailable ? 1 : 0.5
         purchaseButton.isEnabled = viewModel.isPurchaseAvailable
+
         applySnapshot()
+
+        if let viewModel = viewModel.errorLoadingData {
+            showErrorDialog(viewModel)
+        }
     }
 }
 
@@ -169,5 +174,16 @@ private extension CurrencySelectView {
         snapshot.appendItems(viewModel.items, toSection: 0)
 
         dataSource.apply(snapshot, animatingDifferences: animatingDifferences)
+    }
+}
+
+// MARK: - Destination
+
+private extension CurrencySelectView {
+    func showErrorDialog(_ viewModel: StatusViewModel) {
+        let statusView = StatusView(viewModel)
+        statusView.modalPresentationStyle = .fullScreen
+
+        present(statusView, animated: true)
     }
 }
