@@ -152,7 +152,6 @@ extension CurrencySelectView: UICollectionViewDelegate {
     }
 
     @objc private func didTapTermsAndConditions() {
-        print("tapped")
         viewModel.openTermsAndConditions()
     }
 
