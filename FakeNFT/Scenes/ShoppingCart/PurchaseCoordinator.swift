@@ -50,8 +50,8 @@ private extension PurchaseCoordinator {
 
         deps.paymentService.pay(with: currencyId) { [weak self] result in
             defer { UIBlockingProgressHUD.dismiss() }
-
             guard let self else { return }
+
             DispatchQueue.main.async {
                 self.displayPurchaseResult(isSuccess: result)
             }
@@ -61,15 +61,25 @@ private extension PurchaseCoordinator {
     func displayPurchaseResult(isSuccess: Bool) {
         guard let navigationController else { return }
 
-        let viewModel = PurchaseStatusViewModel(isSuccess: isSuccess) { [weak self] in
-            guard let self else { return }
+        let viewModel: StatusViewModel
 
-            if isSuccess {
-                self.finalizePurchase()
+        if isSuccess {
+            viewModel = .init(
+                continueLabel: "Вернуться в каталог",
+                statusDescription: "Успех! Оплата прошла,\nпоздравляем с покупкой!",
+                imageAsset: "statusSuccess"
+            ) { [weak self] in
+                self?.finalizePurchase()
             }
+        } else {
+            viewModel = .init(
+                continueLabel: "Попробовать еще раз",
+                statusDescription: "Упс! Что-то пошло не так :(\nПопробуйте ещё раз!",
+                imageAsset: "statusFailure"
+            ) {}
         }
 
-        let resultVC = PurchaseStatusView(viewModel)
+        let resultVC = StatusView(viewModel)
 
         resultVC.modalPresentationStyle = .fullScreen
         navigationController.present(resultVC, animated: true)

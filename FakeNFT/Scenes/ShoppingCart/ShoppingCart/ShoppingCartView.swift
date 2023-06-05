@@ -119,36 +119,10 @@ extension ShoppingCartView {
         case let .deleteItem(itemViewModel):
             showDeleteRequest(itemViewModel)
 
+        case let .errorLoading(viewModel):
+            showErrorDialog(viewModel)
+
         }
-    }
-
-    private func showSortingDialog() {
-        let alert = UIAlertController(title: "Сортировка",
-                                      message: nil,
-                                      preferredStyle: .actionSheet)
-
-        SortingOrder.allCases.forEach { orderType in
-            alert.addAction(
-                UIAlertAction(title: orderType.rawValue, style: .default) { [weak self] _ in
-                    self?.viewModel.selectSorting(by: orderType)
-                }
-            )
-        }
-
-        alert.addAction(
-            UIAlertAction(title: "Закрыть", style: .cancel) { [weak self] _ in
-                self?.viewModel.cancelSorting()
-            }
-        )
-
-        present(alert, animated: true)
-    }
-
-    private func showDeleteRequest(_ itemModel: NftDeleteViewModel) {
-        let deleteController = NftDeleteView(itemModel)
-        deleteController.modalPresentationStyle = .overFullScreen
-
-        present(deleteController, animated: true)
     }
 }
 
@@ -252,5 +226,45 @@ private extension ShoppingCartView {
         }
 
         dataSource.apply(snapshot, animatingDifferences: true)
+    }
+}
+
+// MARK: - Destination
+
+private extension ShoppingCartView {
+    func showSortingDialog() {
+        let alert = UIAlertController(title: "Сортировка",
+                                      message: nil,
+                                      preferredStyle: .actionSheet)
+
+        SortingOrder.allCases.forEach { orderType in
+            alert.addAction(
+                UIAlertAction(title: orderType.rawValue, style: .default) { [weak self] _ in
+                    self?.viewModel.selectSorting(by: orderType)
+                }
+            )
+        }
+
+        alert.addAction(
+            UIAlertAction(title: "Закрыть", style: .cancel) { [weak self] _ in
+                self?.viewModel.cancelSorting()
+            }
+        )
+
+        present(alert, animated: true)
+    }
+
+    func showDeleteRequest(_ itemModel: NftDeleteViewModel) {
+        let deleteController = NftDeleteView(itemModel)
+        deleteController.modalPresentationStyle = .overFullScreen
+
+        present(deleteController, animated: true)
+    }
+
+    func showErrorDialog(_ viewModel: StatusViewModel) {
+        let statusView = StatusView(viewModel)
+        statusView.modalPresentationStyle = .fullScreen
+
+        present(statusView, animated: true)
     }
 }
