@@ -3,12 +3,12 @@ import Combine
 
 final class PurchaseStatusView: UIViewController {
     private let viewModel: PurchaseStatusViewModel
-    var cancellable: AnyCancellable?
+    private var cancellable: AnyCancellable?
 
     init(_ viewModel: PurchaseStatusViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-        cancellable = viewModel.bind { [weak self] in self?.viewModelUpdate() }
+        cancellable = viewModel.bind { [weak self] in self?.viewModelDidUpdate() }
     }
 
     required init?(coder: NSCoder) {
@@ -58,7 +58,7 @@ extension PurchaseStatusView {
         setupViews()
     }
 
-    private func viewModelUpdate() {
+    private func viewModelDidUpdate() {
         if !viewModel.isPresented {
             dismiss(animated: true)
         }

@@ -2,8 +2,8 @@ import UIKit
 import Combine
 
 final class NftDeleteView: UIViewController {
-    let viewModel: NftDeleteViewModel
-    var cancellable: AnyCancellable?
+    private let viewModel: NftDeleteViewModel
+    private var cancellable: AnyCancellable?
 
     init(_ viewModel: NftDeleteViewModel) {
         self.viewModel = viewModel
@@ -114,7 +114,7 @@ private extension NftDeleteView {
 
 // MARK: - User Actions
 
-extension NftDeleteView {
+private extension NftDeleteView {
     @objc func didTapDeleteButton() {
         viewModel.didDelete()
     }

@@ -109,12 +109,16 @@ extension ShoppingCartView {
 
         updateSnapshot()
 
-        if viewModel.isSelectingSort {
-            showSortingDialog()
-        }
+        switch viewModel.destination {
+        case .none:
+            break
 
-        if let itemToDelete = viewModel.itemToDelete {
-            showDeleteRequest(itemToDelete)
+        case .selectingSort:
+            showSortingDialog()
+
+        case let .deleteItem(itemViewModel):
+            showDeleteRequest(itemViewModel)
+
         }
     }
 

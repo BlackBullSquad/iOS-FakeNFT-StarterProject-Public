@@ -4,10 +4,11 @@ final class CurrencySelectViewModel: ObservableObject {
     let deps: Dependencies
 
     @Published var items: [CurrencySelectCellViewModel] = []
-    @Published var selectedItemId: CurrencySelectCellViewModel.ID?
 
     var isPurchaseAvailable: Bool { selectedItemId != nil }
-    var onPurchase: (Int) -> Void
+
+    private var selectedItemId: CurrencySelectCellViewModel.ID?
+    private var onPurchase: (Int) -> Void
 
     init(deps: Dependencies, onPurchase: @escaping (Int) -> Void) {
         self.deps = deps

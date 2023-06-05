@@ -3,10 +3,10 @@ import Foundation
 final class NftDeleteViewModel: ObservableObject {
     let avatarURL: URL
 
-    let onDelete: () -> Void
-    let onCancel: () -> Void
-
     @Published var isPresented = true
+
+    private let onDelete: () -> Void
+    private let onCancel: () -> Void
 
     init(avatarURL: URL, onDelete: @escaping () -> Void, onCancel: @escaping () -> Void) {
         self.avatarURL = avatarURL

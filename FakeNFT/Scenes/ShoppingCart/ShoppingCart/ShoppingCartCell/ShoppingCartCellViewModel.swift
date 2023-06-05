@@ -1,7 +1,7 @@
 import Foundation
 
 struct ShoppingCartCellViewModel {
-    let deps: Dependencies
+    private let deps: Dependencies
 
     var id: Int
     var name: String

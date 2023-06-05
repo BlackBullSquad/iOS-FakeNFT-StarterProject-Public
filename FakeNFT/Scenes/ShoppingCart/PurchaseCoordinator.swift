@@ -4,7 +4,7 @@ final class PurchaseCoordinator {
     weak var navigationController: UINavigationController?
     weak var tabBarController: UITabBarController?
 
-    let deps: Dependencies
+    private let deps: Dependencies
 
     init(deps: Dependencies) {
         self.deps = deps

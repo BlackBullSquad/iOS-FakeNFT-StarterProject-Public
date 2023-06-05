@@ -5,10 +5,9 @@ final class ShoppingCartViewModel: ObservableObject {
 
     @Published var items: [ShoppingCartCellViewModel] = []
     @Published var sortedBy: SortingOrder = .byName
-    @Published var isSelectingSort = false
-    @Published var itemToDelete: NftDeleteViewModel?
+    @Published var destination: Destination?
 
-    var onPurchase: () -> Void
+    private var onPurchase: () -> Void
 
     var isCartEmpty: Bool { items.isEmpty }
     var totalPrice: Float { items.map(\.price).reduce(0, +) }
@@ -28,6 +27,13 @@ final class ShoppingCartViewModel: ObservableObject {
     init(deps: Dependencies, onPurchase: @escaping () -> Void) {
         self.deps = deps
         self.onPurchase = onPurchase
+    }
+}
+
+extension ShoppingCartViewModel {
+    enum Destination {
+        case selectingSort
+        case deleteItem(NftDeleteViewModel)
     }
 }
 
@@ -60,27 +66,29 @@ extension ShoppingCartViewModel {
     }
 
     func requestSorting() {
-        isSelectingSort = true
+        destination = .selectingSort
     }
 
     func selectSorting(by sortedBy: SortingOrder) {
         self.sortedBy = sortedBy
-        isSelectingSort = false
+        destination = nil
     }
 
     func cancelSorting() {
-        isSelectingSort = false
+        destination = nil
     }
 
     func delete(itemId: Nft.ID) {
         guard let item = items.first(where: { $0.id == itemId }) else { return }
 
-        itemToDelete = .init(avatarURL: item.avatarUrl) { [weak self] in
+        let itemToDelete = NftDeleteViewModel(avatarURL: item.avatarUrl) { [weak self] in
             self?.items.removeAll { $0.id == itemId }
-            self?.itemToDelete = nil
+            self?.destination = nil
         } onCancel: { [weak self] in
-            self?.itemToDelete = nil
+            self?.destination = nil
         }
+
+        destination = .deleteItem(itemToDelete)
     }
 
     func purchase() {
