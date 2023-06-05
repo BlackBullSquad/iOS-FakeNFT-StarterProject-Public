@@ -4,7 +4,7 @@ final class CurrencySelectViewModel: ObservableObject {
     let deps: Dependencies
 
     @Published var items: [CurrencySelectCellViewModel] = []
-    @Published var errorLoadingData: StatusViewModel?
+    @Published var destination: Destination?
 
     var isPurchaseAvailable: Bool { selectedItemId != nil }
 
@@ -14,6 +14,13 @@ final class CurrencySelectViewModel: ObservableObject {
     init(deps: Dependencies, onPurchase: @escaping (Int) -> Void) {
         self.deps = deps
         self.onPurchase = onPurchase
+    }
+}
+
+extension CurrencySelectViewModel {
+    enum Destination {
+        case webInfo(URL)
+        case errorLoading(StatusViewModel)
     }
 }
 
@@ -57,6 +64,10 @@ extension CurrencySelectViewModel {
         guard let selectedItemId else { return }
         onPurchase(selectedItemId)
     }
+
+    func openTermsAndConditions() {
+        destination = .webInfo(.init(string: "https://practicum.com/")!)
+    }
 }
 
 // MARK: - External Data
@@ -74,13 +85,15 @@ private extension CurrencySelectViewModel {
             case let .success(currencies):
                 self.items = currencies.map { .init($0, isSelected: $0.id == self.selectedItemId) }
             case let .failure(error):
-                self.errorLoadingData = .init(
-                    continueLabel: "Попробовать еще раз",
-                    statusDescription: error.localizedDescription,
-                    imageAsset: "statusFailure"
-                ) { [weak self] in
-                    self?.retryLoadingData()
-                }
+                self.destination = .errorLoading(
+                    .init(
+                        continueLabel: "Попробовать еще раз",
+                        statusDescription: error.localizedDescription,
+                        imageAsset: "statusFailure"
+                    ) { [weak self] in
+                        self?.retryLoadingData()
+                    }
+                )
             }
         }
     }
