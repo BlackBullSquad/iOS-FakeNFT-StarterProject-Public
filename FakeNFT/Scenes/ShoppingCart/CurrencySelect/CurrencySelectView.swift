@@ -44,6 +44,10 @@ final class CurrencySelectView: UIViewController {
         secondLine.textColor = .asset(.blueUniversal)
         secondLine.font = .asset(.regular13)
         secondLine.textAlignment = .left
+        secondLine.isUserInteractionEnabled = true
+        secondLine.addGestureRecognizer(
+            UITapGestureRecognizer(target: self, action: #selector(didTapTermsAndConditions))
+        )
 
         let vStack = UIStackView(arrangedSubviews: [firstLine, secondLine])
         vStack.axis = .vertical
@@ -95,8 +99,17 @@ extension CurrencySelectView {
 
         applySnapshot()
 
-        if let viewModel = viewModel.errorLoadingData {
+        switch viewModel.destination {
+
+        case .none:
+            break
+
+        case let .errorLoading(viewModel):
             showErrorDialog(viewModel)
+
+        case let .webInfo(url):
+            pushUrlView(url)
+
         }
     }
 }
@@ -136,6 +149,11 @@ private extension CurrencySelectView {
 extension CurrencySelectView: UICollectionViewDelegate {
     @objc private func didTapPurchaseButton() {
         viewModel.purchase()
+    }
+
+    @objc private func didTapTermsAndConditions() {
+        print("tapped")
+        viewModel.openTermsAndConditions()
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -185,5 +203,11 @@ private extension CurrencySelectView {
         statusView.modalPresentationStyle = .fullScreen
 
         present(statusView, animated: true)
+    }
+
+    func pushUrlView(_ viewModel: URL) {
+        let webView = WebView(url: viewModel)
+
+        navigationController?.pushViewController(webView, animated: true)
     }
 }
