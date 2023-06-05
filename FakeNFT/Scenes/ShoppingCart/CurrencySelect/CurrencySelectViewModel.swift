@@ -68,6 +68,10 @@ extension CurrencySelectViewModel {
     func openTermsAndConditions() {
         destination = .webInfo(.init(string: "https://practicum.com/")!)
     }
+
+    func active() {
+        destination = nil
+    }
 }
 
 // MARK: - External Data

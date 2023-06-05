@@ -93,6 +93,11 @@ extension CurrencySelectView {
         collectionView.frame = view.bounds
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        viewModel.active()
+    }
+
     private func viewModelDidUpdate() {
         purchaseButton.layer.opacity = viewModel.isPurchaseAvailable ? 1 : 0.5
         purchaseButton.isEnabled = viewModel.isPurchaseAvailable
