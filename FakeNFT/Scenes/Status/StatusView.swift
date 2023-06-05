@@ -1,11 +1,11 @@
 import UIKit
 import Combine
 
-final class PurchaseStatusView: UIViewController {
-    private let viewModel: PurchaseStatusViewModel
+final class StatusView: UIViewController {
+    private let viewModel: StatusViewModel
     private var cancellable: AnyCancellable?
 
-    init(_ viewModel: PurchaseStatusViewModel) {
+    init(_ viewModel: StatusViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         cancellable = viewModel.bind { [weak self] in self?.viewModelDidUpdate() }
@@ -19,10 +19,7 @@ final class PurchaseStatusView: UIViewController {
 
     private lazy var continueButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle(
-            viewModel.isSuccess ? "Вернуться в каталог" : "Попробовать еще раз",
-            for: .normal
-        )
+        button.setTitle(viewModel.continueLabel, for: .normal )
         button.setTitleColor(.asset(.white), for: .normal)
         button.titleLabel?.font = .asset(.bold17)
         button.backgroundColor = .asset(.black)
@@ -34,10 +31,7 @@ final class PurchaseStatusView: UIViewController {
 
     private lazy var infoLabel: UILabel = {
         let label = UILabel()
-        label.text = viewModel.isSuccess
-        ? "Успех! Оплата прошла,\nпоздравляем с покупкой!"
-        : "Упс! Что-то пошло не так :(\nПопробуйте ещё раз!"
-
+        label.text = viewModel.statusDescription
         label.textColor = .asset(.black)
         label.font = .asset(.bold22)
         label.textAlignment = .center
@@ -46,13 +40,13 @@ final class PurchaseStatusView: UIViewController {
     }()
 
     private lazy var statusImage = UIImageView(
-        image: UIImage(named: viewModel.isSuccess ? "purchaseSuccess" : "purchaseFailure")
+        image: UIImage(named: viewModel.imageAsset)
     )
 }
 
 // MARK: - Lifecycle
 
-extension PurchaseStatusView {
+extension StatusView {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
@@ -67,7 +61,7 @@ extension PurchaseStatusView {
 
 // MARK: - Initial Setup
 
-private extension PurchaseStatusView {
+private extension StatusView {
     func setupViews() {
         view.backgroundColor = .asset(.white)
 
@@ -85,6 +79,8 @@ private extension PurchaseStatusView {
         NSLayoutConstraint.activate([
             vStack.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             vStack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            vStack.leadingAnchor.constraint(equalTo: guide.leadingAnchor, constant: 16),
+            vStack.trailingAnchor.constraint(equalTo: guide.trailingAnchor, constant: -16),
             continueButton.heightAnchor.constraint(equalToConstant: 60),
             continueButton.leadingAnchor.constraint(equalTo: guide.leadingAnchor, constant: 16),
             continueButton.trailingAnchor.constraint(equalTo: guide.trailingAnchor, constant: -16),
@@ -95,7 +91,7 @@ private extension PurchaseStatusView {
 
 // MARK: - User Actions
 
-private extension PurchaseStatusView {
+private extension StatusView {
     @objc func didTapContinueButton() {
         viewModel.didContinue()
     }

@@ -4,6 +4,7 @@ final class CurrencySelectViewModel: ObservableObject {
     let deps: Dependencies
 
     @Published var items: [CurrencySelectCellViewModel] = []
+    @Published var errorLoadingData: StatusViewModel?
 
     var isPurchaseAvailable: Bool { selectedItemId != nil }
 
@@ -28,20 +29,11 @@ extension CurrencySelectViewModel {
 
 extension CurrencySelectViewModel {
     func start() {
-        UIBlockingProgressHUD.show()
+        reloadExternalData()
+    }
 
-        deps.currencyProvider.getCurrencies { [weak self] result in
-            defer { UIBlockingProgressHUD.dismiss() }
-
-            guard let self else { return }
-
-            switch result {
-            case let .success(currencies):
-                self.items = currencies.map { .init($0, isSelected: $0.id == self.selectedItemId) }
-            case let .failure(error):
-                print(error)
-            }
-        }
+    func retryLoadingData() {
+        reloadExternalData()
     }
 
     func selectedItem(_ index: Int) {
@@ -64,5 +56,32 @@ extension CurrencySelectViewModel {
     func purchase() {
         guard let selectedItemId else { return }
         onPurchase(selectedItemId)
+    }
+}
+
+// MARK: - External Data
+
+private extension CurrencySelectViewModel {
+    func reloadExternalData() {
+        UIBlockingProgressHUD.show()
+
+        deps.currencyProvider.getCurrencies { [weak self] result in
+            defer { UIBlockingProgressHUD.dismiss() }
+
+            guard let self else { return }
+
+            switch result {
+            case let .success(currencies):
+                self.items = currencies.map { .init($0, isSelected: $0.id == self.selectedItemId) }
+            case let .failure(error):
+                self.errorLoadingData = .init(
+                    continueLabel: "Попробовать еще раз",
+                    statusDescription: error.localizedDescription,
+                    imageAsset: "statusFailure"
+                ) { [weak self] in
+                    self?.retryLoadingData()
+                }
+            }
+        }
     }
 }

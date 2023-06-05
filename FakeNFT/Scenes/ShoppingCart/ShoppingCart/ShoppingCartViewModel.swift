@@ -34,6 +34,7 @@ extension ShoppingCartViewModel {
     enum Destination {
         case selectingSort
         case deleteItem(NftDeleteViewModel)
+        case errorLoading(StatusViewModel)
     }
 }
 
@@ -106,7 +107,6 @@ private extension ShoppingCartViewModel {
 
         deps.nftProvider.getNfts(Set(ids)) { [weak self] result in
             defer { UIBlockingProgressHUD.dismiss() }
-
             guard let self else { return }
 
             switch result {
@@ -122,8 +122,15 @@ private extension ShoppingCartViewModel {
                 }
 
             case let .failure(error):
-                print(error)
+                let viewModel = StatusViewModel(
+                    continueLabel: "Попробовать еще раз",
+                    statusDescription: error.localizedDescription,
+                    imageAsset: "statusFailure"
+                ) { [weak self] in
+                    self?.refresh()
+                }
 
+                self.destination = .errorLoading(viewModel)
             }
         }
     }

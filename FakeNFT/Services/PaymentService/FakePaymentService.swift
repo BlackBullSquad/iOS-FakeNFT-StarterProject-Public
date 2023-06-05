@@ -14,8 +14,7 @@ extension FakePaymentService: PaymentService {
             switch result {
             case let .success(data):
                 handler(data.success)
-            case let .failure(error):
-                print(error)
+            case .failure:
                 handler(false)
             }
         }
