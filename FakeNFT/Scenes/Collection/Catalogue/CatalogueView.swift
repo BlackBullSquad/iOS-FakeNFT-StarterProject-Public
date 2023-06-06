@@ -39,7 +39,7 @@ final class CatalogueView: UIViewController {
         let guide = view.safeAreaLayoutGuide
         let hInset: CGFloat = 16
 
-        tableView.backgroundColor = .clear
+        tableView.backgroundColor = .asset(.additional(.white))
         tableView.separatorStyle = .none
         tableView.allowsSelection = true
         tableView.layer.masksToBounds = false
