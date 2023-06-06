@@ -198,14 +198,11 @@ final class CollectionView: UIViewController {
                 let itemSize = NSCollectionLayoutSize(widthDimension: .estimated(108),
                                                       heightDimension: .estimated(192))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                
                 let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                                        heightDimension: .estimated(192))
-                
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
                                                                subitem: item,
                                                                count: 3)
-                
                 group.interItemSpacing = .fixed(8)
                 
                 let section = NSCollectionLayoutSection(group: group)
@@ -256,12 +253,14 @@ extension CollectionView: UICollectionViewDataSource {
                 cell.configure(with: item)
             }
             return cell
+            
         case .description:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DescriptionCell.identifier, for: indexPath) as! DescriptionCell
             if let item = collectionViewModel.viewModel {
                 cell.configure(with: item)
             }
             return cell
+            
         case .collection:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CollectionCell.identifier, for: indexPath) as! CollectionCell
             if let item = collectionViewModel.viewModel?.nfts[indexPath.item] {

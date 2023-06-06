@@ -3,6 +3,7 @@ import UIKit
 protocol CollectionsCoordinatorProtocol: AnyObject {
     func start()
     func openCollectionDetail(withId id: Int)
+    func openAuthorLink(url: URL)
 }
 
 final class CollectionsCoordinator {
@@ -31,6 +32,12 @@ final class CollectionsCoordinator {
         let collectionViewController = CollectionView(viewModel: collectionViewModel)
         collectionViewController.hidesBottomBarWhenPushed = true
         navigationController.pushViewController(collectionViewController, animated: true)
+    }
+    
+    func openAuthorLink(url: URL) {
+        let webViewController = WebView(url: url)
+        webViewController.hidesBottomBarWhenPushed = true
+        navigationController.pushViewController(webViewController, animated: true)
     }
 }
 

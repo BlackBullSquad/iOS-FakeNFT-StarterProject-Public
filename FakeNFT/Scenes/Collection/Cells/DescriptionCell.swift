@@ -33,8 +33,12 @@ final class DescriptionCell: UICollectionViewCell {
         label.textColor = .asset(.additional(.blue))
         label.font = .asset(.regular15)
         label.textAlignment = .natural
-        label.isUserInteractionEnabled = true
         label.translatesAutoresizingMaskIntoConstraints = false
+        
+        label.isUserInteractionEnabled = true
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleAuthorTap))
+        label.addGestureRecognizer(tap)
+        
         return label
     }()
     
@@ -83,15 +87,20 @@ final class DescriptionCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func configure(with viewModel: CollectionCellViewModel) {
+        self.viewModel = viewModel
+    }
+    
     private func didUpdateViewModel() {
         titleLabel.text = viewModel?.title
         authorLabel.text = "Автор:"
         authorLinkLabel.text = viewModel?.author
         textLabel.text = viewModel?.description
     }
-
     
-    func configure(with viewModel: CollectionCellViewModel) {
-        self.viewModel = viewModel
+    @objc private func handleAuthorTap() {
+        print("AuthorLink Tapped")
+        guard let authorURL = viewModel?.authorURL else { return }
+        viewModel?.authorLinkTapped(authorURL)
     }
 }

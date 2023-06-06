@@ -1,5 +1,6 @@
 import UIKit
 import WebKit
+import ProgressHUD
 
 final class WebView: UIViewController, WKNavigationDelegate {
     private let url: URL
@@ -32,6 +33,7 @@ extension WebView {
 // MARK: - Initial Setup
 
 private extension WebView {
+    
     func setupViews() {
         let navigationBarAppearance = UINavigationBarAppearance()
         navigationBarAppearance.configureWithDefaultBackground()
@@ -49,5 +51,25 @@ private extension WebView {
         webView.allowsBackForwardNavigationGestures = true
 
         view.addSubview(webView)
+    }
+}
+
+// MARK: - WKNavigationDelegate
+
+extension WebView {
+    func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+        ProgressHUD.show()
+    }
+
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        ProgressHUD.dismiss()
+    }
+
+    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+        ProgressHUD.dismiss()
+    }
+
+    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+        ProgressHUD.dismiss()
     }
 }
