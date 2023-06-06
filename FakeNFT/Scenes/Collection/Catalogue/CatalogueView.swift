@@ -1,6 +1,6 @@
 import UIKit
 
-final class CatalogueViewController: UIViewController {
+final class CatalogueView: UIViewController {
 
     private let catalogueViewModel: CatalogueViewModel
     private let tableView = UITableView()
@@ -18,7 +18,7 @@ final class CatalogueViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .asset(.additional(.white))
         setupTableView()
         setupNavBar()
     }
@@ -30,6 +30,7 @@ final class CatalogueViewController: UIViewController {
     }
 
     private func setupTableView() {
+        
         tableView.dataSource = dataSource
         tableView.delegate = self
         tableView.register(CatalogueCell.self, forCellReuseIdentifier: CatalogueCell.catalogueIdentifier)
@@ -38,6 +39,7 @@ final class CatalogueViewController: UIViewController {
         let guide = view.safeAreaLayoutGuide
         let hInset: CGFloat = 16
 
+        tableView.backgroundColor = .clear
         tableView.separatorStyle = .none
         tableView.allowsSelection = true
         tableView.layer.masksToBounds = false
@@ -116,7 +118,7 @@ final class CatalogueViewController: UIViewController {
     }
 }
 
-extension CatalogueViewController: UITableViewDelegate {
+extension CatalogueView: UITableViewDelegate {
     
     // MARK: Footer
     
@@ -132,7 +134,7 @@ extension CatalogueViewController: UITableViewDelegate {
     }
 }
 
-extension CatalogueViewController: CatalogueViewModelUpdateListener {
+extension CatalogueView: CatalogueViewModelUpdateListener {
     func didUpdateCollections() {
         updateSnapshot()
     }

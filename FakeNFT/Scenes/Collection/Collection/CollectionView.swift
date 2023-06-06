@@ -1,12 +1,17 @@
 import UIKit
 import Kingfisher
 
-final class CollectionViewController: UIViewController {
+private enum Section {
+    case cover
+    case description
+    case collection
+}
+
+final class CollectionView: UIViewController {
     
     private let collectionViewModel: CollectionViewModel
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
-        
         return collectionView
     }()
     
@@ -21,13 +26,15 @@ final class CollectionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
-        collectionViewModel.loadCollection(with: collectionViewModel.collectionID) {
-            self.setupUI()
-            
+        view.backgroundColor = .asset(.additional(.white))
+        collectionViewModel.loadCollection(with: collectionViewModel.collectionID) { [weak self] in
+            DispatchQueue.main.async {
+                self?.setupUI()
+                self?.collectionView.reloadData()
+            }
         }
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
@@ -74,15 +81,14 @@ final class CollectionViewController: UIViewController {
             return label
         }()
         
-        lazy var text: UITextView = {
-            let text = UITextView()
-            text.font = .asset(.regular13)
-            text.textColor = .asset(.main(.primary))
-            text.textAlignment = .natural
-            text.textContainerInset = .zero
-            text.textContainer.lineFragmentPadding = 0
-            text.translatesAutoresizingMaskIntoConstraints = false
-            return text
+        lazy var text: UILabel = {
+            let label = UILabel()
+            label.font = .asset(.regular13)
+            label.textColor = .asset(.main(.primary))
+            label.textAlignment = .natural
+            label.numberOfLines = 0
+            label.translatesAutoresizingMaskIntoConstraints = false
+            return label
         }()
         
         lazy var hStack: UIStackView = {
@@ -120,8 +126,18 @@ final class CollectionViewController: UIViewController {
             return stack
         }()
         
+        collectionView.backgroundColor = .clear
+        
+        collectionView.register(CollectionCell.self, forCellWithReuseIdentifier: CollectionCell.collectionIdentifier)
+        
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        
         view.addSubview(coverImage)
         view.addSubview(vStackMain)
+        view.addSubview(collectionView)
         
         let guide = view.safeAreaLayoutGuide
         let inset: CGFloat = 16
@@ -135,7 +151,11 @@ final class CollectionViewController: UIViewController {
             vStackMain.topAnchor.constraint(equalTo: coverImage.bottomAnchor, constant: inset),
             vStackMain.leadingAnchor.constraint(equalTo: guide.leadingAnchor, constant: inset),
             vStackMain.trailingAnchor.constraint(equalTo: guide.trailingAnchor, constant: -inset),
-            vStackMain.bottomAnchor.constraint(equalTo: guide.bottomAnchor, constant: -20)
+            
+            collectionView.topAnchor.constraint(equalTo: vStackMain.bottomAnchor, constant: 24),
+            collectionView.bottomAnchor.constraint(equalTo: guide.bottomAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: inset),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -inset)
         ])
         
         titleLabel.text = collectionViewModel.viewModel?.title
@@ -153,15 +173,54 @@ final class CollectionViewController: UIViewController {
                 .transition(.fade(1))
             ]
         )
-
     }
     
     
     private func createLayout() -> UICollectionViewLayout {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .estimated(108),
+                                              heightDimension: .estimated(192))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                               heightDimension: .estimated(192))
+
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
+                                                       subitem: item,
+                                                       count: 3)
         
-        return .init()
+        group.interItemSpacing = .fixed(8)
         
+        let section = NSCollectionLayoutSection(group: group)
+        section.interGroupSpacing = 0
+        //section.contentInsets = NSDirectionalEdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16)
+        
+        let layout = UICollectionViewCompositionalLayout(section: section)
+        return layout
     }
+
+}
+
+extension CollectionView: UICollectionViewDelegate {
     
 }
 
+extension CollectionView: UICollectionViewDataSource {
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CollectionCell.collectionIdentifier, for: indexPath) as? CollectionCell else {
+            fatalError("Could not dequeue cell of type CollectionCell")
+        }
+        
+        if let item = collectionViewModel.viewModel?.nfts[indexPath.item] {
+            cell.configure(with: item)
+            print("ITEM === \(item)")
+        }
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return collectionViewModel.viewModel!.nftsCount
+        
+    }
+}

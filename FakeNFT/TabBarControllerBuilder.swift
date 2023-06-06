@@ -24,7 +24,7 @@ struct TabBarControllerBuilder {
         }
         
         let catalogueViewModel = CatalogueViewModel(dataService: catalogueDataService, coordinator: collectionsCoordinator)
-        let catalogueVC = CatalogueViewController(viewModel: catalogueViewModel)
+        let catalogueVC = CatalogueView(viewModel: catalogueViewModel)
         
         let cartVC = CartVC()
 

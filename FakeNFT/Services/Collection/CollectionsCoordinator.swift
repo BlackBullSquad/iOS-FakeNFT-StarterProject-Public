@@ -19,7 +19,7 @@ final class CollectionsCoordinator {
 
     func start() {
         let catalogueViewModel = CatalogueViewModel(dataService: dataService, coordinator: self)
-        let catalogueViewController = CatalogueViewController(viewModel: catalogueViewModel)
+        let catalogueViewController = CatalogueView(viewModel: catalogueViewModel)
         navigationController.viewControllers = [catalogueViewController]
     }
     
@@ -28,7 +28,7 @@ final class CollectionsCoordinator {
             dataService: dataService,
             coordinator: self,
             collectionID: id)
-        let collectionViewController = CollectionViewController(viewModel: collectionViewModel)
+        let collectionViewController = CollectionView(viewModel: collectionViewModel)
         collectionViewController.hidesBottomBarWhenPushed = true
         navigationController.pushViewController(collectionViewController, animated: true)
     }
