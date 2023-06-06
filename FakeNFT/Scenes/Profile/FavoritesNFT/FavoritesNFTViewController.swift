@@ -23,6 +23,14 @@ class FavoritesNFTViewController: UIViewController {
         return collectionView
     }()
     
+    private let placeholderLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 17, weight: .bold)
+        label.textColor = .label
+        label.text = "У Вас ещё нет избранных NFT"
+        return label
+    }()
+    
     // MARK: - Initialiser
     init(profileService: ProfileService) {
         self.profileService = profileService
@@ -41,6 +49,7 @@ class FavoritesNFTViewController: UIViewController {
         setNavBar()
         getFavoritesNfts()
         layout()
+        updateView()
     }
     
     // MARK: - Methods
@@ -49,20 +58,26 @@ class FavoritesNFTViewController: UIViewController {
             switch result{
             case .success(let myNfts):
                 self?.favoriteNfts = myNfts
-                self?.nftCollectionView.reloadData()
+                self?.updateView()
             case .failure:
                 return
             }
-            
         }
     }
+    
     private func setNavBar() {
-        navigationController?.navigationBar.tintColor = UIColor.asset(Asset.main(.backround))
+        navigationController?.navigationBar.tintColor = .label
         navigationController?.navigationBar.topItem?.title = " "
     }
     
+    private func updateView() {
+        nftCollectionView.reloadData()
+        nftCollectionView.isHidden = favoriteNfts.isEmpty
+        placeholderLabel.isHidden = !favoriteNfts.isEmpty
+    }
+    
     private func layout() {
-        [nftCollectionView].forEach { view in
+        [nftCollectionView, placeholderLabel].forEach { view in
             view.translatesAutoresizingMaskIntoConstraints = false
             self.view.addSubview(view)
         }
@@ -71,7 +86,10 @@ class FavoritesNFTViewController: UIViewController {
             nftCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             nftCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             nftCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            nftCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            nftCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            
+            placeholderLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            placeholderLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
 }
@@ -91,8 +109,8 @@ extension FavoritesNFTViewController: UICollectionViewDataSource {
         let nft = favoriteNfts[indexPath.row]
         cell.setupCell(with: nft)
         cell.likeButtonAction = { [weak self] in
-            print("likeButtonAction")
-            collectionView.reloadItems(at: [indexPath])
+            self?.favoriteNfts.remove(at: indexPath.row)
+            self?.nftCollectionView.reloadData()
         }
         return cell
     }
@@ -109,17 +127,6 @@ extension FavoritesNFTViewController: UICollectionViewDelegateFlowLayout {
         return CGSize(width: width, height: 80)
     }
 
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-//
-//        let indexPath = IndexPath(row: 0, section: section)
-//        let headerView = self.collectionView(collectionView, viewForSupplementaryElementOfKind: UICollectionView.elementKindSectionHeader, at: indexPath)
-//
-//        return headerView.systemLayoutSizeFitting(CGSize(width: collectionView.frame.width,
-//                                                         height: UIView.layoutFittingExpandedSize.height),
-//                                                  withHorizontalFittingPriority: .required,
-//                                                  verticalFittingPriority: .fittingSizeLevel)
-//    }
-
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         lineSpacing
     }
@@ -131,13 +138,3 @@ extension FavoritesNFTViewController: UICollectionViewDelegateFlowLayout {
         UIEdgeInsets(top: 20, left: sideInset, bottom: 20, right: sideInset)
     }
 }
-
-//MARK: - UICollectionViewDelegate
-extension FavoritesNFTViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-
-    }
-}
-
-
-

@@ -16,14 +16,14 @@ class MyNFTTableViewCell: UITableViewCell {
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 17, weight: .bold)
-        label.textColor = UIColor.asset(Asset.main(.backround))
+        label.textColor = .label
         return label
     }()
     
     private let authorLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-        label.textColor = UIColor.asset(Asset.main(.backround))
+        label.textColor = .label
         label.text = "от John Doe"
         return label
     }()
@@ -31,7 +31,7 @@ class MyNFTTableViewCell: UITableViewCell {
     private let priceLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-        label.textColor = UIColor.asset(Asset.main(.backround))
+        label.textColor = .label
         label.text = "Цена"
         return label
     }()
@@ -39,7 +39,7 @@ class MyNFTTableViewCell: UITableViewCell {
     private let priceValueLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 17, weight: .bold)
-        label.textColor = UIColor.asset(Asset.main(.backround))
+        label.textColor = .label
         return label
     }()
     
@@ -76,7 +76,6 @@ class MyNFTTableViewCell: UITableViewCell {
     func setupCell(with nft: NFT, isLiked: Bool) {
         nftView.viewModel = NFTAvatarViewModel(imageSize: .large, imageURL: nft.images.first, isLiked: isLiked) { [weak self] in
             self?.likeButtonAction?()
-            print("liked")
         }
         nameLabel.text = nft.name
         ratingView.rating = nft.rating

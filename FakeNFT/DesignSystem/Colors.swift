@@ -29,7 +29,7 @@ enum ColorAsset: String {
 }
 
 enum Main: String {
-    case backround, bg, green, lightGray, primary, red, whiteAlpha50 // swiftlint:disable:this identifier_name
+    case background, bg, green, lightGray, primary, red, whiteAlpha50 // swiftlint:disable:this identifier_name
 }
 
 enum Additional: String {

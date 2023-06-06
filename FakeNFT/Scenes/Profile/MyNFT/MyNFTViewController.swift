@@ -7,6 +7,12 @@
 
 import UIKit
 
+enum SortDescriptor {
+    case price
+    case name
+    case rating
+}
+
 class MyNFTViewController: UIViewController {
     
     // MARK: - Properties
@@ -58,14 +64,50 @@ class MyNFTViewController: UIViewController {
         }
     private func setNavBar() {
         // Additional bar button items
-        navigationController?.navigationBar.tintColor = UIColor.asset(Asset.main(.backround))
+        navigationController?.navigationBar.tintColor = .label
         navigationController?.navigationBar.topItem?.title = " "
         let button = UIBarButtonItem(image: UIImage(named: "sort"), style: .plain, target: self, action: #selector(sortNFT))
         navigationItem.setRightBarButtonItems([button], animated: true)
     }
     
     @objc private func sortNFT() {
-        print("sortNFT")
+        showAlert()
+    }
+    
+    private func showAlert() {
+        let alert = UIAlertController(
+            title: nil,
+            message: "Сортировка",
+            preferredStyle: .actionSheet)
+        
+        let actionFirst = UIAlertAction(title: "По цене", style: .default) { [weak self] (_) in
+            self?.sort(by: .price)
+        }
+        alert.addAction(actionFirst)
+        let actionSecond = UIAlertAction(title: "По Рейтингу", style: .default) { [weak self] (_) in
+            self?.sort(by: .rating)
+        }
+        alert.addAction(actionSecond)
+        let actionThird = UIAlertAction(title: "По Названию", style: .default) { [weak self] (_) in
+            self?.sort(by: .name)
+        }
+        alert.addAction(actionThird)
+        let actionCancel = UIAlertAction(title: "Закрыть", style: .cancel)
+        alert.addAction(actionCancel)
+        
+        navigationController?.present(alert, animated: true, completion: nil)
+    }
+    
+    private func sort(by descriptor: SortDescriptor) {
+        switch descriptor {
+        case .price:
+            myNfts.sort(by: { $0.price < $1.price } )
+        case .name:
+            myNfts.sort(by: { $0.name < $1.name } )
+        case .rating:
+            myNfts.sort(by: { $0.rating < $1.rating } )
+        }
+        nftTableView.reloadData()
     }
     
     private func layout() {
@@ -92,7 +134,6 @@ extension MyNFTViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: MyNFTTableViewCell.identifier, for: indexPath) as! MyNFTTableViewCell
         let myNft = myNfts[indexPath.row]
-        print("rating = \(myNft.rating)")
         let isLiked = profile.likes.contains(Int(myNft.id) ?? 0)
         cell.setupCell(with: myNft, isLiked: isLiked)
         return cell

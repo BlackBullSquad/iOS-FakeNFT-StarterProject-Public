@@ -17,16 +17,14 @@ class FavoritesNFTCollectionViewCell: UICollectionViewCell {
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 17, weight: .bold)
-        label.textColor = UIColor.asset(Asset.main(.backround))
-//        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .label
         return label
     }()
     
     private let priceValueLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 15, weight: .regular)
-        label.textColor = UIColor.asset(Asset.main(.backround))
-//        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .label
         return label
     }()
     
@@ -40,14 +38,6 @@ class FavoritesNFTCollectionViewCell: UICollectionViewCell {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
-    
-//    private lazy var ratingVStack: UIStackView = {
-//        let stack = UIStackView(arrangedSubviews: [titleLabel, ratingView])
-//        stack.axis = .vertical
-//        stack.alignment = .leading
-//        stack.spacing = 4
-//        return stack
-//    }()
     
     var likeButtonAction: (() -> Void)?
     
@@ -64,7 +54,6 @@ class FavoritesNFTCollectionViewCell: UICollectionViewCell {
     func setupCell(with nft: NFT) {
         nftView.viewModel = NFTAvatarViewModel(imageSize: .small, imageURL: nft.images.first, isLiked: true) { [weak self] in
             self?.likeButtonAction?()
-            print("liked")
         }
         nameLabel.text = nft.name
         ratingView.rating = nft.rating
@@ -72,17 +61,16 @@ class FavoritesNFTCollectionViewCell: UICollectionViewCell {
     }
     
     private func layout() {
-//        [nameLabel,
-//         ratingView,
-//         priceValueLabel
-//        ].forEach { view in
-//            view.translatesAutoresizingMaskIntoConstraints = false
-//            firstVerticalStackView.addArrangedSubview(view)
-//        }
+        [nameLabel,
+         ratingView,
+         priceValueLabel
+        ].forEach { view in
+            view.translatesAutoresizingMaskIntoConstraints = false
+            firstVerticalStackView.addArrangedSubview(view)
+        }
         
         [nftView,
-         firstVerticalStackView,
-//         ratingView
+         firstVerticalStackView
         ].forEach { view in
             view.translatesAutoresizingMaskIntoConstraints = false
             self.addSubview(view)
@@ -91,10 +79,6 @@ class FavoritesNFTCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             nftView.topAnchor.constraint(equalTo: topAnchor),
             nftView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            
-//            ratingView.widthAnchor.constraint(equalTo: firstVerticalStackView.widthAnchor),
-//            ratingView.topAnchor.constraint(equalTo: firstVerticalStackView.bottomAnchor, constant: 10),
-//            ratingView.leadingAnchor.constraint(equalTo: firstVerticalStackView.leadingAnchor),
             
             firstVerticalStackView.centerYAnchor.constraint(equalTo: nftView.centerYAnchor),
             firstVerticalStackView.leadingAnchor.constraint(equalTo: nftView.trailingAnchor, constant: 12),

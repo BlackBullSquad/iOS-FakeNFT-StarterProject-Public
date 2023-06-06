@@ -14,14 +14,14 @@ final class ProfileVC: UIViewController {
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 22, weight: .bold)
-        label.textColor = UIColor.asset(Asset.main(.backround))
+        label.textColor = .label
         return label
     }()
 
     private let descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-        label.textColor = UIColor.asset(Asset.main(.backround))
+        label.textColor = .label
         label.numberOfLines = 0
         return label
     }()
@@ -33,13 +33,15 @@ final class ProfileVC: UIViewController {
         return image
     }()
 
-    private let urlLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 15, weight: .regular)
-        label.textColor = UIColor.asset(Asset.main(.backround))
-        return label
+    private let urlTextView: UITextView = {
+        let textView = UITextView()
+        textView.font = UIFont.systemFont(ofSize: 15, weight: .regular)
+        textView.textColor = .label
+        textView.isEditable = false
+        textView.dataDetectorTypes = .link
+        return textView
     }()
-
+    
     private lazy var profileTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.register(ProfileTableViewCell.self, forCellReuseIdentifier: ProfileTableViewCell.identifier)
@@ -71,12 +73,11 @@ final class ProfileVC: UIViewController {
     private func setNavBar() {
         // Additional bar button items
         let button = UIBarButtonItem(image: UIImage(named: "editProfile"), style: .plain, target: self, action: #selector(editProfile))
-        button.tintColor = UIColor.asset(Asset.main(.backround))
+        button.tintColor = .label
         navigationItem.setRightBarButtonItems([button], animated: true)
     }
     
     @objc private func editProfile() {
-        print("Edit profile")
         guard let profile = profile else { return }
         let editProfileVC = UINavigationController(rootViewController: EditProfileViewController(profile: profile, profileService: profileService))
         present(editProfileVC, animated: true)
@@ -97,15 +98,16 @@ final class ProfileVC: UIViewController {
     private func setupView(profile: Profile) {
         nameLabel.text = profile.name
         descriptionLabel.text = profile.description
-        urlLabel.text = profile.website.absoluteString
+        urlTextView.text = profile.website.absoluteString
         profileImage.kf.setImage(with: profile.avatar)
+        profileTableView.reloadData()
     }
 
     private func layout() {
         [nameLabel,
          profileImage,
          descriptionLabel,
-         urlLabel,
+         urlTextView,
          profileTableView
         ].forEach { view in
             view.translatesAutoresizingMaskIntoConstraints = false
@@ -126,12 +128,14 @@ final class ProfileVC: UIViewController {
             descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             descriptionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -18),
 
-            urlLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            urlLabel.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 12),
+            urlTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            urlTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 16),
+            urlTextView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 12),
+            urlTextView.heightAnchor.constraint(equalToConstant: 30),
 
             profileTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             profileTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            profileTableView.topAnchor.constraint(equalTo: urlLabel.bottomAnchor, constant: 44),
+            profileTableView.topAnchor.constraint(equalTo: urlTextView.bottomAnchor, constant: 44),
             profileTableView.heightAnchor.constraint(equalToConstant: 375*3),
         ])
     }

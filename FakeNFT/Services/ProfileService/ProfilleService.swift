@@ -11,6 +11,8 @@ protocol ProfileService: Any {
     func getUser(completion: @escaping (Result<Profile, Error>) -> Void)
     func getMyNFT(with profile: Profile, completion: @escaping (Result<[NFT], Error>) -> Void)
     func getFavoritesNFT(completion: @escaping (Result<[NFT], Error>) -> Void)
+    func updateProfile(_ profile: Profile)
+    
 }
 
 final class ProfileServiceImpl: ProfileService {
@@ -36,6 +38,10 @@ final class ProfileServiceImpl: ProfileService {
                 completion(.failure(error))
             }
         }
+    }
+    
+    func updateProfile(_ profile: Profile) {
+        nftApi.updateProfile(name: profile.name, description: profile.description, website: profile.website, likes: profile.likes) { _ in }
     }
     
     func getMyNFT(with profile: Profile, completion: @escaping (Result<[NFT], Error>) -> Void) {
@@ -75,6 +81,19 @@ final class ProfileServiceImpl: ProfileService {
                 DispatchQueue.main.async {
                     completion(.failure(error))
                 }
+            }
+        }
+    }
+    
+    func updateFavoritesNFT(likes: [NFT]) {
+        let likesId = likes.compactMap { Int($0.id) }
+        getUser { [weak self] result in
+            switch result{
+            case .success(let profile):
+                let newProfile = Profile(id: profile.id, name: profile.name, description: profile.description, avatar: profile.avatar, website: profile.website, nfts: profile.nfts, likes: likesId)
+                self?.updateProfile(newProfile)
+            case .failure:
+                return
             }
         }
     }
