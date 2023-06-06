@@ -248,23 +248,29 @@ extension CollectionView: UICollectionViewDataSource {
         
         switch sectionType {
         case .cover:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CoverCell.identifier, for: indexPath) as! CoverCell
-            if let item = collectionViewModel.viewModel {
-                cell.configure(with: item)
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CoverCell.identifier, for: indexPath)
+            if
+                let coverCell = cell as? CoverCell,
+                let item = collectionViewModel.viewModel {
+                coverCell.configure(with: item)
             }
             return cell
             
         case .description:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DescriptionCell.identifier, for: indexPath) as! DescriptionCell
-            if let item = collectionViewModel.viewModel {
-                cell.configure(with: item)
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DescriptionCell.identifier, for: indexPath)
+            if
+                let descriptionCell = cell as? DescriptionCell,
+                let item = collectionViewModel.viewModel {
+                descriptionCell.configure(with: item)
             }
             return cell
             
         case .collection:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CollectionCell.identifier, for: indexPath) as! CollectionCell
-            if let item = collectionViewModel.viewModel?.nfts[indexPath.item] {
-                cell.configure(with: item)
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CollectionCell.identifier, for: indexPath)
+            if
+                let collectionCell = cell as? CollectionCell,
+                let item = collectionViewModel.viewModel?.nfts[indexPath.item] {
+                collectionCell.configure(with: item)
             }
             return cell
         }

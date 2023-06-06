@@ -57,7 +57,6 @@ struct TabBarControllerBuilder {
         return tabBarController
     }
 
-
     private static func createNavigationController(with rootController: UIViewController, title: String, imageName: String) -> UINavigationController {
 
         let navigationController = UINavigationController(rootViewController: rootController)
