@@ -83,6 +83,16 @@ final class ShoppingCartView: UIViewController {
 
         return panel
     }()
+
+    private lazy var sortButton: UIBarButtonItem = {
+        let button = UIBarButtonItem()
+        button.tintColor = .asset(.black)
+        button.style = .plain
+        button.image = UIImage(named: "sortIcon")
+        button.target = self
+        button.action = #selector(didTapSortButton)
+        return button
+    }()
 }
 
 // MARK: - Lifecycle
@@ -91,7 +101,6 @@ extension ShoppingCartView {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-        setupNavBar()
         viewModel.start()
     }
 
@@ -101,6 +110,8 @@ extension ShoppingCartView {
     }
 
     private func viewModelDidUpdate() {
+        navigationItem.rightBarButtonItem = !viewModel.isCartEmpty ? sortButton : nil
+
         priceLabel.text = viewModel.priceLabel
         countLabel.text = viewModel.countLabel
 
@@ -129,21 +140,9 @@ extension ShoppingCartView {
 // MARK: - Initial Setup
 
 private extension ShoppingCartView {
-    func setupNavBar() {
-        let sortButton: UIBarButtonItem = {
-            let button = UIBarButtonItem()
-            button.tintColor = .asset(.black)
-            button.style = .plain
-            button.image = UIImage(named: "sortIcon")
-            button.target = self
-            button.action = #selector(didTapSortButton)
-            return button
-        }()
-
-        navigationItem.rightBarButtonItem = sortButton
-    }
-
     func setupViews() {
+        navigationItem.rightBarButtonItem = sortButton
+
         view.backgroundColor = .asset(.white)
 
         tableView.rowHeight = UITableView.automaticDimension
