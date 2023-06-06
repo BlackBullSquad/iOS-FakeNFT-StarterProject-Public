@@ -56,6 +56,9 @@
 		8DE489C32A2AD5520006B6AD /* CollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE489C22A2AD5520006B6AD /* CollectionCell.swift */; };
 		8DE489C52A2AD5680006B6AD /* CollectionCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE489C42A2AD5680006B6AD /* CollectionCellViewModel.swift */; };
 		8DEA6E072A2E1B8E0065AD15 /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DEA6E062A2E1B8E0065AD15 /* RatingView.swift */; };
+		8DEA6E092A2F16AD0065AD15 /* CoverCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DEA6E082A2F16AD0065AD15 /* CoverCell.swift */; };
+		8DEA6E0B2A2F17580065AD15 /* DescriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DEA6E0A2A2F17580065AD15 /* DescriptionCell.swift */; };
+		8DEA6E0D2A2F2B020065AD15 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DEA6E0C2A2F2B020065AD15 /* WebView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -127,6 +130,9 @@
 		8DE489C22A2AD5520006B6AD /* CollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionCell.swift; sourceTree = "<group>"; };
 		8DE489C42A2AD5680006B6AD /* CollectionCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionCellViewModel.swift; sourceTree = "<group>"; };
 		8DEA6E062A2E1B8E0065AD15 /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
+		8DEA6E082A2F16AD0065AD15 /* CoverCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoverCell.swift; sourceTree = "<group>"; };
+		8DEA6E0A2A2F17580065AD15 /* DescriptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionCell.swift; sourceTree = "<group>"; };
+		8DEA6E0C2A2F2B020065AD15 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -173,6 +179,8 @@
 				3802C1C62A29DA3000AFFADE /* CatalogueCellViewModel.swift */,
 				8DE489C22A2AD5520006B6AD /* CollectionCell.swift */,
 				8DE489C42A2AD5680006B6AD /* CollectionCellViewModel.swift */,
+				8DEA6E082A2F16AD0065AD15 /* CoverCell.swift */,
+				8DEA6E0A2A2F17580065AD15 /* DescriptionCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -314,6 +322,7 @@
 				3F6806C829CBBC8100B4F915 /* ProductDetails */,
 				8D883AC02A15CD8F000B7DA4 /* ProfileVC.swift */,
 				8D883AC22A15CDEB000B7DA4 /* CartVC.swift */,
+				8DEA6E0E2A2F2B0F0065AD15 /* Web */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -379,6 +388,14 @@
 				8DE489C02A2AD47B0006B6AD /* CollectionViewModel.swift */,
 			);
 			path = Collection;
+			sourceTree = "<group>";
+		};
+		8DEA6E0E2A2F2B0F0065AD15 /* Web */ = {
+			isa = PBXGroup;
+			children = (
+				8DEA6E0C2A2F2B020065AD15 /* WebView.swift */,
+			);
+			path = Web;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -542,6 +559,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D8AA64C2A2B0E290009F293 /* CollectionsCoordinator.swift in Sources */,
+				8DEA6E0D2A2F2B020065AD15 /* WebView.swift in Sources */,
 				3FC8C38B29D242E90081F015 /* ProductDetailsTableViewCell.swift in Sources */,
 				38BEBFAC2A1AC35E007B1297 /* FakeAPIRequest.swift in Sources */,
 				38BEBFB12A27D024007B1297 /* Nft.swift in Sources */,
@@ -570,6 +588,7 @@
 				3802C1CD2A29DA3000AFFADE /* CatalogueViewModel.swift in Sources */,
 				38BEBFA62A1ABECE007B1297 /* PaymentResultDTO.swift in Sources */,
 				8DEA6E072A2E1B8E0065AD15 /* RatingView.swift in Sources */,
+				8DEA6E0B2A2F17580065AD15 /* DescriptionCell.swift in Sources */,
 				3802C1CA2A29DA3000AFFADE /* CatalogueCell.swift in Sources */,
 				38BEBFB42A27D0CA007B1297 /* FakeShoppingCart.swift in Sources */,
 				38BEBFA22A1ABC06007B1297 /* CurrencyDTO.swift in Sources */,
@@ -582,6 +601,7 @@
 				8DE489C52A2AD5680006B6AD /* CollectionCellViewModel.swift in Sources */,
 				38BEBFA42A1ABD8A007B1297 /* OrderDTO.swift in Sources */,
 				3F6806D129CBBE6B00B4F915 /* NetworkClient.swift in Sources */,
+				8DEA6E092A2F16AD0065AD15 /* CoverCell.swift in Sources */,
 				3802C1D62A29DA6F00AFFADE /* CollectionProvider.swift in Sources */,
 				8DD0007D2A19B05600C751E6 /* NFTAvatarViewModel.swift in Sources */,
 			);

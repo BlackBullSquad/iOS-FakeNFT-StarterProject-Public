@@ -3,7 +3,7 @@ import Kingfisher
 
 final class CollectionCell: UICollectionViewCell {
     
-    static let collectionIdentifier = "CollectionCell"
+    static let identifier = "CollectionCell"
     
     var viewModel: NftCellViewModel? {
         didSet {

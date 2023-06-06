@@ -1,8 +1,8 @@
 import UIKit
 import Kingfisher
 
-private enum Section {
-    case cover
+private enum Section: Int {
+    case cover = 0
     case description
     case collection
 }
@@ -127,35 +127,24 @@ final class CollectionView: UIViewController {
         }()
         
         collectionView.backgroundColor = .clear
+        collectionView.contentInsetAdjustmentBehavior = .never
         
-        collectionView.register(CollectionCell.self, forCellWithReuseIdentifier: CollectionCell.collectionIdentifier)
+        collectionView.register(CoverCell.self, forCellWithReuseIdentifier: CoverCell.identifier)
+        collectionView.register(DescriptionCell.self, forCellWithReuseIdentifier: DescriptionCell.identifier)
+        collectionView.register(CollectionCell.self, forCellWithReuseIdentifier: CollectionCell.identifier)
         
         collectionView.delegate = self
         collectionView.dataSource = self
         
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         
-        view.addSubview(coverImage)
-        view.addSubview(vStackMain)
         view.addSubview(collectionView)
         
-        let guide = view.safeAreaLayoutGuide
-        let inset: CGFloat = 16
-        
         NSLayoutConstraint.activate([
-            coverImage.topAnchor.constraint(equalTo: view.topAnchor),
-            coverImage.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            coverImage.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            coverImage.heightAnchor.constraint(equalTo: coverImage.widthAnchor, multiplier: 0.83),
-            
-            vStackMain.topAnchor.constraint(equalTo: coverImage.bottomAnchor, constant: inset),
-            vStackMain.leadingAnchor.constraint(equalTo: guide.leadingAnchor, constant: inset),
-            vStackMain.trailingAnchor.constraint(equalTo: guide.trailingAnchor, constant: -inset),
-            
-            collectionView.topAnchor.constraint(equalTo: vStackMain.bottomAnchor, constant: 24),
-            collectionView.bottomAnchor.constraint(equalTo: guide.bottomAnchor),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: inset),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -inset)
+            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
         
         titleLabel.text = collectionViewModel.viewModel?.title
@@ -175,52 +164,110 @@ final class CollectionView: UIViewController {
         )
     }
     
-    
     private func createLayout() -> UICollectionViewLayout {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .estimated(108),
-                                              heightDimension: .estimated(192))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                               heightDimension: .estimated(192))
-
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
-                                                       subitem: item,
-                                                       count: 3)
         
-        group.interItemSpacing = .fixed(8)
+        let layout = UICollectionViewCompositionalLayout { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
+            
+            guard let sectionType = Section(rawValue: sectionIndex) else {
+                fatalError("Invalid section")
+            }
+            
+            let inset: CGFloat = 16
+            
+            switch sectionType {
+            case .cover:
+                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                      heightDimension: .fractionalWidth(0.83))
+                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: itemSize, subitem: item, count: 1)
+                let section = NSCollectionLayoutSection(group: group)
+                return section
+                
+            case .description:
+                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                      heightDimension: .estimated(100))
+                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: itemSize, subitem: item, count: 1)
+                
+                let section = NSCollectionLayoutSection(group: group)
+                section.contentInsets = NSDirectionalEdgeInsets(top: inset, leading: inset, bottom: 21, trailing: inset)
+                
+                return section
+                
+            case .collection:
+                let itemSize = NSCollectionLayoutSize(widthDimension: .estimated(108),
+                                                      heightDimension: .estimated(192))
+                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                
+                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                       heightDimension: .estimated(192))
+                
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
+                                                               subitem: item,
+                                                               count: 3)
+                
+                group.interItemSpacing = .fixed(8)
+                
+                let section = NSCollectionLayoutSection(group: group)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: inset, bottom: 0, trailing: inset)
+                section.interGroupSpacing = 0
+                
+                return section
+            }
+        }
         
-        let section = NSCollectionLayoutSection(group: group)
-        section.interGroupSpacing = 0
-        //section.contentInsets = NSDirectionalEdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16)
-        
-        let layout = UICollectionViewCompositionalLayout(section: section)
         return layout
     }
-
 }
 
 extension CollectionView: UICollectionViewDelegate {
     
+    func numberOfSections(in collectionView: UICollectionView) -> Int { 3 }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
+        guard let sectionType = Section(rawValue: section) else {
+            fatalError("Invalid section")
+        }
+        
+        switch sectionType {
+        case .cover:
+            return 1
+        case .description:
+            return 1
+        case .collection:
+            return collectionViewModel.viewModel?.nftsCount ?? 0
+        }
+    }
 }
 
 extension CollectionView: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CollectionCell.collectionIdentifier, for: indexPath) as? CollectionCell else {
-            fatalError("Could not dequeue cell of type CollectionCell")
+        
+        guard let sectionType = Section(rawValue: indexPath.section) else {
+            fatalError("Invalid section")
         }
         
-        if let item = collectionViewModel.viewModel?.nfts[indexPath.item] {
-            cell.configure(with: item)
-            print("ITEM === \(item)")
+        switch sectionType {
+        case .cover:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CoverCell.identifier, for: indexPath) as! CoverCell
+            if let item = collectionViewModel.viewModel {
+                cell.configure(with: item)
+            }
+            return cell
+        case .description:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DescriptionCell.identifier, for: indexPath) as! DescriptionCell
+            if let item = collectionViewModel.viewModel {
+                cell.configure(with: item)
+            }
+            return cell
+        case .collection:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CollectionCell.identifier, for: indexPath) as! CollectionCell
+            if let item = collectionViewModel.viewModel?.nfts[indexPath.item] {
+                cell.configure(with: item)
+            }
+            return cell
         }
-        
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return collectionViewModel.viewModel!.nftsCount
-        
     }
 }

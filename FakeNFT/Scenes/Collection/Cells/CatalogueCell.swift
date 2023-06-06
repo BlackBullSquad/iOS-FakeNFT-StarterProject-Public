@@ -3,7 +3,7 @@ import Kingfisher
 
 final class CatalogueCell: UITableViewCell {
 
-    static let catalogueIdentifier = "CatalogueCell"
+    static let identifier = "CatalogueCell"
 
     private lazy var coverImage: UIImageView = {
         let imageView = UIImageView()

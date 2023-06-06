@@ -33,7 +33,7 @@ final class CatalogueView: UIViewController {
         
         tableView.dataSource = dataSource
         tableView.delegate = self
-        tableView.register(CatalogueCell.self, forCellReuseIdentifier: CatalogueCell.catalogueIdentifier)
+        tableView.register(CatalogueCell.self, forCellReuseIdentifier: CatalogueCell.identifier)
         tableView.translatesAutoresizingMaskIntoConstraints = false
 
         let guide = view.safeAreaLayoutGuide
@@ -83,7 +83,7 @@ final class CatalogueView: UIViewController {
 
             guard
                 let cell = tableView.dequeueReusableCell(
-                    withIdentifier: CatalogueCell.catalogueIdentifier,
+                    withIdentifier: CatalogueCell.identifier,
                     for: indexPath
                 ) as? CatalogueCell
             else {
