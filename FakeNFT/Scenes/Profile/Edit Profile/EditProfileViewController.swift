@@ -11,8 +11,8 @@ import Kingfisher
 final class EditProfileViewController: UIViewController {
   
     // MARK: - Properties
-    private let nftApi: NftAPI
-    private let profile: ProfileDTO
+    private let profileService: ProfileService
+    private let profile: Profile
     
     private let nameLabel: UILabel = {
         let label = UILabel()
@@ -78,9 +78,9 @@ final class EditProfileViewController: UIViewController {
     }()
     
     // MARK: - Initialiser
-    init(profile: ProfileDTO, nftApi: NftAPI) {
+    init(profile: Profile, profileService: ProfileService) {
         self.profile = profile
-        self.nftApi = nftApi
+        self.profileService = profileService
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -115,7 +115,7 @@ final class EditProfileViewController: UIViewController {
         dismiss(animated: true)
     }
     
-    private func setupView(profile: ProfileDTO) {
+    private func setupView(profile: Profile) {
         nameTextField.text = profile.name
         descriptionTextField.text = profile.description
         urlTextField.text = profile.website.absoluteString

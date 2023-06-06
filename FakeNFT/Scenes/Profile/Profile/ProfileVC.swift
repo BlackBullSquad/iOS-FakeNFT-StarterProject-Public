@@ -3,10 +3,13 @@ import Kingfisher
 
 final class ProfileVC: UIViewController {
   
-    private let nftApi: NftAPI = FakeNftAPI()
-    private var profile: ProfileDTO?
-    private var nfts: [Int] = []
-    private var likes: [Int] = []
+//    private let nftApi: NftAPI = FakeNftAPI()
+//    private var profile: ProfileDTO?
+//    private var nfts: [Int] = []
+//    private var likes: [Int] = []
+    
+    private let profileService: ProfileService
+    private var profile: Profile?
     
     private let nameLabel: UILabel = {
         let label = UILabel()
@@ -47,6 +50,16 @@ final class ProfileVC: UIViewController {
         return tableView
     }()
 
+    // MARK: - Initialiser
+    init(profileService: ProfileService) {
+        self.profileService = profileService
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -65,29 +78,23 @@ final class ProfileVC: UIViewController {
     @objc private func editProfile() {
         print("Edit profile")
         guard let profile = profile else { return }
-        let editProfileVC = UINavigationController(rootViewController: EditProfileViewController(profile: profile, nftApi: nftApi))
+        let editProfileVC = UINavigationController(rootViewController: EditProfileViewController(profile: profile, profileService: profileService))
         present(editProfileVC, animated: true)
     }
     
     private func getProfile() {
-        nftApi.getProfile { [weak self] result in
-            switch result {
+        profileService.getUser { [weak self] result in
+            switch result{
             case .success(let profile):
-                DispatchQueue.main.async {
-                    self?.setupView(profile: profile)
-                    self?.nfts = profile.nfts
-                    self?.likes = profile.likes
-                    self?.profileTableView.reloadData()
-                    self?.profile = profile
-                }
-                print(profile)
-            case .failure(let error):
-                print(error.localizedDescription)
+                self?.profile = profile
+                self?.setupView(profile: profile)
+            case .failure:
+                return
             }
         }
     }
     
-    private func setupView(profile: ProfileDTO) {
+    private func setupView(profile: Profile) {
         nameLabel.text = profile.name
         descriptionLabel.text = profile.description
         urlLabel.text = profile.website.absoluteString
@@ -115,7 +122,7 @@ final class ProfileVC: UIViewController {
             nameLabel.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 16),
             nameLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
 
-            descriptionLabel.topAnchor.constraint(equalTo: profileImage.bottomAnchor, constant: 13),
+            descriptionLabel.topAnchor.constraint(equalTo: profileImage.bottomAnchor, constant: 20),
             descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             descriptionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -18),
 
@@ -140,8 +147,8 @@ extension ProfileVC: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: ProfileTableViewCell.identifier, for: indexPath) as! ProfileTableViewCell
         var labelString = ""
         switch indexPath.row {
-        case 0: labelString = "Мои NFT (\(nfts.count))"
-        case 1: labelString = "Избранные NFT (\(likes.count))"
+        case 0: labelString = "Мои NFT (\(profile?.nfts.count ?? 0))"
+        case 1: labelString = "Избранные NFT (\(profile?.likes.count ?? 0))"
         case 2: labelString = "О разработчике"
         default:
             labelString = ""
@@ -157,9 +164,19 @@ extension ProfileVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 54
     }
-
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //
+        switch indexPath.row {
+        case 0: showMyNftVC()
+        case 1: navigationController?.pushViewController(FavoritesNFTViewController(profileService: profileService), animated: true)
+        default:
+            return
+        }
+    }
+    
+    private func showMyNftVC() {
+        guard let profile = profile else { return }
+        navigationController?.pushViewController(MyNFTViewController(profileService: profileService, profile: profile), animated: true)
     }
 }
     

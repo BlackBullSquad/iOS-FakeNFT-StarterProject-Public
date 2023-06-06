@@ -52,9 +52,7 @@ final class ProfileTableViewCell: UITableViewCell {
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
 
             arrowImage.centerYAnchor.constraint(equalTo: centerYAnchor),
-            arrowImage.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            arrowImage.heightAnchor.constraint(equalToConstant: 20),
-            arrowImage.widthAnchor.constraint(equalToConstant: 20),
+            arrowImage.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16)
         ])
     }
 }
