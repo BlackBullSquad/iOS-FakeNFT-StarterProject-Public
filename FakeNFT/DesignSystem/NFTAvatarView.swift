@@ -100,7 +100,7 @@ extension NFTAvatarView {
 
         imageView.kf.setImage(with: viewModel.imageURL, placeholder: placeholder, options: [.scaleFactor(UIScreen.main.scale), .transition(.fade(1))])
 
-        likeButton.tintColor = viewModel.isLiked ? .asset(.main(.red)) : .asset(.main(.primary))
+        likeButton.tintColor = viewModel.isLiked ? .asset(.main(.red)) : .asset(.additional(.white))
         likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
     }
 }

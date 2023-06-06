@@ -30,6 +30,7 @@ final class CatalogueCell: UITableViewCell {
         ])
         stack.axis = .vertical
         stack.spacing = 4
+        stack.backgroundColor = .asset(.additional(.white))
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
     }()
