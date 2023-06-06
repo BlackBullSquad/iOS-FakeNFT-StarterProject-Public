@@ -38,12 +38,11 @@ final class CollectionViewModel {
         }
     }
     
+    // MARK: - Private Methods
+    
     private func handleAuthorLinkTap(url: URL) {
-        print("Hello Cell i see you. CollectionViewModel")
+        print("Hello Cell I see you. CollectionViewModel")
         coordinator?.openAuthorLink(url: url)
-    }
-
-    func authorLabelDidTapped() {
     }
 
     private func convertToViewModel(from collection: Collection) -> CollectionCellViewModel {
