@@ -28,7 +28,7 @@ final class ShoppingCartCellView: UITableViewCell {
         let label = UILabel()
         label.textColor = .asset(.black)
         label.font = .asset(.bold17)
-        label.textAlignment = .left
+        label.textAlignment = .natural
         return label
     }()
 
@@ -39,7 +39,7 @@ final class ShoppingCartCellView: UITableViewCell {
         label.text = "Цена"
         label.textColor = .asset(.black)
         label.font = .asset(.regular13)
-        label.textAlignment = .left
+        label.textAlignment = .natural
         return label
     }()
 
@@ -47,7 +47,7 @@ final class ShoppingCartCellView: UITableViewCell {
         let label = UILabel()
         label.textColor = .asset(.black)
         label.font = .asset(.bold17)
-        label.textAlignment = .left
+        label.textAlignment = .natural
         return label
     }()
 

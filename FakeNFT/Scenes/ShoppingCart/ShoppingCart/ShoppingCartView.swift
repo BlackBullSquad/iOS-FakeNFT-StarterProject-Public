@@ -29,7 +29,7 @@ final class ShoppingCartView: UIViewController {
         let label = UILabel()
         label.textColor = .asset(.black)
         label.font = .asset(.regular15)
-        label.textAlignment = .left
+        label.textAlignment = .natural
         return label
     }()
 
@@ -37,7 +37,7 @@ final class ShoppingCartView: UIViewController {
         let label = UILabel()
         label.textColor = .asset(.greenUniversal)
         label.font = .asset(.bold17)
-        label.textAlignment = .left
+        label.textAlignment = .natural
         return label
     }()
 

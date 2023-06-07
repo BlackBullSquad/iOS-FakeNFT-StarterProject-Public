@@ -37,13 +37,13 @@ final class CurrencySelectView: UIViewController {
         firstLine.text = "Совершая покупку, вы соглашаетесь с условиями"
         firstLine.textColor = .asset(.black)
         firstLine.font = .asset(.regular13)
-        firstLine.textAlignment = .left
+        firstLine.textAlignment = .natural
 
         let secondLine = UILabel()
         secondLine.text = "Пользовательского соглашения"
         secondLine.textColor = .asset(.blueUniversal)
         secondLine.font = .asset(.regular13)
-        secondLine.textAlignment = .left
+        secondLine.textAlignment = .natural
         secondLine.isUserInteractionEnabled = true
         secondLine.addGestureRecognizer(
             UITapGestureRecognizer(target: self, action: #selector(didTapTermsAndConditions))

@@ -30,7 +30,7 @@ final class CurrencySelectCellView: UICollectionViewCell {
         let label = UILabel()
         label.textColor = .asset(.black)
         label.font = .asset(.regular13)
-        label.textAlignment = .left
+        label.textAlignment = .natural
         return label
     }()
 
@@ -38,7 +38,7 @@ final class CurrencySelectCellView: UICollectionViewCell {
         let label = UILabel()
         label.textColor = .asset(.greenUniversal)
         label.font = .asset(.regular13)
-        label.textAlignment = .left
+        label.textAlignment = .natural
         return label
     }()
 }
