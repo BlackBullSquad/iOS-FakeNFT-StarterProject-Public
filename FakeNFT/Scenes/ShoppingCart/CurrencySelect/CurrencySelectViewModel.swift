@@ -44,20 +44,11 @@ extension CurrencySelectViewModel {
     }
 
     func selectedItem(_ index: Int) {
-        let newSelectedId = items[index].id
-
-        if selectedItemId == newSelectedId {
-            items[index].isSelected = false
-            selectedItemId = nil
-            return
+        if selectedItemId == items[index].id {
+            deselectItem(index)
+        } else {
+            selectItem(index)
         }
-
-        if let currentIndex = items.firstIndex(where: { $0.id == selectedItemId }) {
-            items[currentIndex].isSelected = false
-        }
-
-        items[index].isSelected = true
-        selectedItemId = newSelectedId
     }
 
     func purchase() {
@@ -71,6 +62,26 @@ extension CurrencySelectViewModel {
 
     func active() {
         destination = nil
+    }
+}
+
+// MARK: - Helpers
+
+private extension CurrencySelectViewModel {
+    var selectedItemIndex: Int? { items.firstIndex(where: { $0.id == selectedItemId }) }
+
+    func selectItem(_ index: Int) {
+        if let selectedItemIndex {
+            items[selectedItemIndex].isSelected = false
+        }
+
+        items[index].isSelected = true
+        selectedItemId = items[index].id
+    }
+
+    func deselectItem(_ index: Int) {
+        items[index].isSelected = false
+        selectedItemId = nil
     }
 }
 
