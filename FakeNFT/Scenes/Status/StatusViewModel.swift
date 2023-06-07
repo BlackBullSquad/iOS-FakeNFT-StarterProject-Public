@@ -7,13 +7,13 @@ final class StatusViewModel: ObservableObject {
 
     @Published var isPresented = true
 
-    private var onContinue: () -> Void
+    private var onContinue: (() -> Void)?
 
     init(
         continueLabel: String,
         statusDescription: String,
         imageAsset: ImageAsset,
-        onContinue: @escaping () -> Void
+        onContinue: (() -> Void)? = nil
     ) {
         self.continueLabel = continueLabel
         self.statusDescription = statusDescription
@@ -26,7 +26,7 @@ final class StatusViewModel: ObservableObject {
 
 extension StatusViewModel {
     func didContinue() {
-        onContinue()
+        onContinue?()
         isPresented = false
     }
 }

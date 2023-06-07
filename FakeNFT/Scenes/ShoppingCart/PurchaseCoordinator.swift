@@ -76,7 +76,7 @@ private extension PurchaseCoordinator {
                 continueLabel: "Попробовать еще раз",
                 statusDescription: "Упс! Что-то пошло не так :(\nПопробуйте ещё раз!",
                 imageAsset: .statusFailure
-            ) {}
+            )
         }
 
         let resultVC = StatusView(viewModel)
