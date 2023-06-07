@@ -9,7 +9,7 @@ final class RatingView: UIView {
     // MARK: - Initializers
 
     override init(frame: CGRect) {
-        self.stars = (1...5).map { _ in
+        stars = (1...5).map { _ in
             let view = UIImageView()
             view.image = .asset(.ratingStar)
             return view
