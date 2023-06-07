@@ -98,7 +98,7 @@ extension NFTAvatarView {
             heightAnchor.constraint(equalToConstant: imageSize)
         ])
 
-        let placeholder = UIImage(named: "placeholder")
+        let placeholder = UIImage.asset(.placeholder)
 
         imageView.kf.setImage(
             with: viewModel.imageURL,

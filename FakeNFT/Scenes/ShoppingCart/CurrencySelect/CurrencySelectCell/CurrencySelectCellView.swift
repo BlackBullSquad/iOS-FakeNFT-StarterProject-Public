@@ -52,7 +52,7 @@ extension CurrencySelectCellView {
     }
 
     private func viewModelDidUpdate() {
-        let placeholder = UIImage(named: "placeholder")
+        let placeholder = UIImage.asset(.placeholder)
 
         nameLabel.text = viewModel?.name
         codeLabel.text = viewModel?.code

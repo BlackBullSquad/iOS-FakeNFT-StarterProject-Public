@@ -93,7 +93,7 @@ private extension CurrencySelectViewModel {
                     .init(
                         continueLabel: "Попробовать еще раз",
                         statusDescription: error.localizedDescription,
-                        imageAsset: "statusFailure"
+                        imageAsset: .statusFailure
                     ) { [weak self] in
                         self?.retryLoadingData()
                     }

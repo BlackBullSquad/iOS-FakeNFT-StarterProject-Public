@@ -55,6 +55,7 @@
 		38D3B0272A2CD96E00D0B1B8 /* SortingOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D3B0262A2CD96E00D0B1B8 /* SortingOrder.swift */; };
 		38D3B0292A2E27AD00D0B1B8 /* UIBlockingProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D3B0282A2E27AD00D0B1B8 /* UIBlockingProgressHUD.swift */; };
 		38D3B02C2A2E41C900D0B1B8 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D3B02B2A2E41C900D0B1B8 /* WebView.swift */; };
+		38D3B0322A3126AC00D0B1B8 /* ImageAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D3B0312A3126AC00D0B1B8 /* ImageAsset.swift */; };
 		38E6B52D2A2BCBE0006ABA74 /* NftDeleteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E6B52C2A2BCBE0006ABA74 /* NftDeleteViewModel.swift */; };
 		3F478ECF29DB474E00F6D39E /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F478ECE29DB474E00F6D39E /* Colors.swift */; };
 		3F478ED129DB476500F6D39E /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F478ED029DB476500F6D39E /* Fonts.swift */; };
@@ -146,6 +147,7 @@
 		38D3B0262A2CD96E00D0B1B8 /* SortingOrder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortingOrder.swift; sourceTree = "<group>"; };
 		38D3B0282A2E27AD00D0B1B8 /* UIBlockingProgressHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBlockingProgressHUD.swift; sourceTree = "<group>"; };
 		38D3B02B2A2E41C900D0B1B8 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
+		38D3B0312A3126AC00D0B1B8 /* ImageAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAsset.swift; sourceTree = "<group>"; };
 		38E6B52C2A2BCBE0006ABA74 /* NftDeleteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftDeleteViewModel.swift; sourceTree = "<group>"; };
 		3F478ECE29DB474E00F6D39E /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		3F478ED029DB476500F6D39E /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
@@ -391,6 +393,7 @@
 				3835D01A2A28CAE10046B354 /* NftAvatar */,
 				3F478ECE29DB474E00F6D39E /* Colors.swift */,
 				3F478ED029DB476500F6D39E /* Fonts.swift */,
+				38D3B0312A3126AC00D0B1B8 /* ImageAsset.swift */,
 			);
 			path = DesignSystem;
 			sourceTree = "<group>";
@@ -741,6 +744,7 @@
 				38BEBFA62A1ABECE007B1297 /* PaymentResultDTO.swift in Sources */,
 				3802C1CA2A29DA3000AFFADE /* CatalogueCell.swift in Sources */,
 				38BEBFB42A27D0CA007B1297 /* FakeShoppingCart.swift in Sources */,
+				38D3B0322A3126AC00D0B1B8 /* ImageAsset.swift in Sources */,
 				38BEBFA22A1ABC06007B1297 /* CurrencyDTO.swift in Sources */,
 				38BEBFBA2A27D421007B1297 /* ShoppingCartViewModel.swift in Sources */,
 				3802C1CB2A29DA3000AFFADE /* CatalogueCellViewModel.swift in Sources */,

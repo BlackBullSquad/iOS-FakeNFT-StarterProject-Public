@@ -67,7 +67,7 @@ private extension PurchaseCoordinator {
             viewModel = .init(
                 continueLabel: "Вернуться в каталог",
                 statusDescription: "Успех! Оплата прошла,\nпоздравляем с покупкой!",
-                imageAsset: "statusSuccess"
+                imageAsset: .statusSuccess
             ) { [weak self] in
                 self?.finalizePurchase()
             }
@@ -75,7 +75,7 @@ private extension PurchaseCoordinator {
             viewModel = .init(
                 continueLabel: "Попробовать еще раз",
                 statusDescription: "Упс! Что-то пошло не так :(\nПопробуйте ещё раз!",
-                imageAsset: "statusFailure"
+                imageAsset: .statusFailure
             ) {}
         }
 

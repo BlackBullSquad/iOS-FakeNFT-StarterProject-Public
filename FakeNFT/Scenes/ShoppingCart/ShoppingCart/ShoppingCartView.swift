@@ -88,7 +88,7 @@ final class ShoppingCartView: UIViewController {
         let button = UIBarButtonItem()
         button.tintColor = .asset(.black)
         button.style = .plain
-        button.image = UIImage(named: "sortIcon")
+        button.image = .asset(.sortIcon)
         button.target = self
         button.action = #selector(didTapSortButton)
         return button

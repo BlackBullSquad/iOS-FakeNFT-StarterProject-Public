@@ -40,7 +40,7 @@ final class StatusView: UIViewController {
     }()
 
     private lazy var statusImage = UIImageView(
-        image: UIImage(named: viewModel.imageAsset)
+        image: .asset(viewModel.imageAsset)
     )
 }
 

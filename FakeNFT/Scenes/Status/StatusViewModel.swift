@@ -3,7 +3,7 @@ import Foundation
 final class StatusViewModel: ObservableObject {
     let continueLabel: String
     let statusDescription: String
-    let imageAsset: String
+    let imageAsset: ImageAsset
 
     @Published var isPresented = true
 
@@ -12,7 +12,7 @@ final class StatusViewModel: ObservableObject {
     init(
         continueLabel: String,
         statusDescription: String,
-        imageAsset: String,
+        imageAsset: ImageAsset,
         onContinue: @escaping () -> Void
     ) {
         self.continueLabel = continueLabel

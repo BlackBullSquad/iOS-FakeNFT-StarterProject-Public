@@ -19,7 +19,7 @@ final class ShoppingCartCellView: UITableViewCell {
     private lazy var deleteButton: UIButton = {
         let button = UIButton(type: .system)
         button.tintColor = .asset(.black)
-        button.setImage(.init(named: "deleteFromCart"), for: .normal)
+        button.setImage(.asset(.deleteFromCart), for: .normal)
         button.addTarget(self, action: #selector(didTapDeleteButton), for: .touchUpInside)
         return button
     }()

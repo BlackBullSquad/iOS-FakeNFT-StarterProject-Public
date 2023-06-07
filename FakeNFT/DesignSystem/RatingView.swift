@@ -11,7 +11,7 @@ final class RatingView: UIView {
     override init(frame: CGRect) {
         self.stars = (1...5).map { _ in
             let view = UIImageView()
-            view.image = UIImage(named: "ratingStar")
+            view.image = .asset(.ratingStar)
             return view
         }
 

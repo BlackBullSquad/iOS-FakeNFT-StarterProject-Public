@@ -125,7 +125,7 @@ private extension ShoppingCartViewModel {
                 let viewModel = StatusViewModel(
                     continueLabel: "Попробовать еще раз",
                     statusDescription: error.localizedDescription,
-                    imageAsset: "statusFailure"
+                    imageAsset: .statusFailure
                 ) { [weak self] in
                     self?.refresh()
                 }
