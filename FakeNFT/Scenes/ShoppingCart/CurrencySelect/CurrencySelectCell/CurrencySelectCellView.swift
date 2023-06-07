@@ -48,21 +48,30 @@ final class CurrencySelectCellView: UICollectionViewCell {
 extension CurrencySelectCellView {
     override func prepareForReuse() {
         super.prepareForReuse()
-        viewModel = nil
+        resetView()
     }
 
     private func viewModelDidUpdate() {
+        guard let viewModel else { return }
+
         let placeholder = UIImage.asset(.placeholder)
 
-        nameLabel.text = viewModel?.name
-        codeLabel.text = viewModel?.code
-        contentView.layer.borderWidth = viewModel?.isSelected == true ? 1 : 0
+        nameLabel.text = viewModel.name
+        codeLabel.text = viewModel.code
+        contentView.layer.borderWidth = viewModel.isSelected ? 1 : 0
 
         currencyImage.kf.setImage(
-            with: viewModel?.currencyImage,
+            with: viewModel.currencyImage,
             placeholder: placeholder,
             options: [.scaleFactor(UIScreen.main.scale), .transition(.fade(1))]
         )
+    }
+
+    private func resetView() {
+        nameLabel.text = nil
+        codeLabel.text = nil
+        contentView.layer.borderWidth = 0
+        currencyImage.image = nil
     }
 }
 

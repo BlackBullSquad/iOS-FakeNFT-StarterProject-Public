@@ -89,16 +89,27 @@ final class ShoppingCartCellView: UITableViewCell {
 extension ShoppingCartCellView {
     override func prepareForReuse() {
         super.prepareForReuse()
-        viewModel = nil
+        resetView()
     }
 
     private func viewModelDidUpdate() {
-        titleLabel.text = viewModel?.name
-        priceLabel.text = viewModel?.priceLabel
+        guard let viewModel else { return }
+
+        titleLabel.text = viewModel.name
+        priceLabel.text = viewModel.priceLabel
         avatar.viewModel = .init(imageSize: .large,
-                                 imageURL: viewModel?.avatarUrl,
+                                 imageURL: viewModel.avatarUrl,
                                  likeButtonAction: nil)
-        ratingView.rating = viewModel?.rating
+        ratingView.rating = viewModel.rating
+    }
+
+    private func resetView() {
+        titleLabel.text = nil
+        priceLabel.text = nil
+        avatar.viewModel = .init(imageSize: .large,
+                                 imageURL: nil,
+                                 likeButtonAction: nil)
+        ratingView.rating = nil
     }
 }
 
