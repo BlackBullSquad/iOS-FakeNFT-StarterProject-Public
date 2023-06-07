@@ -11,7 +11,13 @@ struct ShoppingCartCellViewModel {
 
     var onDelete: () -> Void
 
-    var priceLabel: String { "\(deps.priceFormatter.string(from: .init(value: price))!) ETH" }
+    var priceLabel: String {
+        guard let priceString = deps.priceFormatter.string(from: .init(value: price)) else {
+            return ""
+        }
+
+        return "\(priceString) ETH"
+    }
 
     init?(nftModel model: Nft, deps: Dependencies, onDelete: @escaping () -> Void) {
         guard let avatarUrl = model.images.first else { return nil }

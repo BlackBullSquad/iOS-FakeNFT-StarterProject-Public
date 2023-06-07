@@ -11,7 +11,13 @@ final class ShoppingCartViewModel: ObservableObject {
 
     var isCartEmpty: Bool { items.isEmpty }
     var totalPrice: Float { items.map(\.price).reduce(0, +) }
-    var priceLabel: String { "\(deps.priceFormatter.string(from: .init(value: totalPrice))!) ETH" }
+    var priceLabel: String {
+        guard let priceString = deps.priceFormatter.string(from: .init(value: totalPrice)) else {
+            return ""
+        }
+
+        return "\(priceString) ETH"
+    }
     var countLabel: String { "\(items.count) NFT" }
     var sortedItems: [ShoppingCartCellViewModel] {
         switch sortedBy {
