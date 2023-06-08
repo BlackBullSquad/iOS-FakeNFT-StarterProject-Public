@@ -68,7 +68,6 @@ final class CollectionProvider {
         case .failure(let error):
             handleCollectionFailure(error, completion: completion)
         }
-
     }
 
     private func handleCollectionsSuccess(_ collections: Collections, for id: Int, completion: (Result<Collection, ApplicationError>) -> Void) {

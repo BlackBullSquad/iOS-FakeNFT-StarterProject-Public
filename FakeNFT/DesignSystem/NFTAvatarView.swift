@@ -89,13 +89,6 @@ extension NftAvatarView {
             return
         }
 
-        let imageSize = viewModel.imageSize.rawValue
-
-        NSLayoutConstraint.activate([
-            widthAnchor.constraint(equalToConstant: imageSize),
-            heightAnchor.constraint(equalToConstant: imageSize)
-        ])
-
         let placeholder = UIImage(named: "placeholder")
 
         imageView.kf.setImage(with: viewModel.imageURL, placeholder: placeholder, options: [.scaleFactor(UIScreen.main.scale), .transition(.fade(1))])
