@@ -53,23 +53,3 @@ private extension WebView {
         view.addSubview(webView)
     }
 }
-
-// MARK: - WKNavigationDelegate
-
-extension WebView {
-    func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-        ProgressHUD.show()
-    }
-
-    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        ProgressHUD.dismiss()
-    }
-
-    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-        ProgressHUD.dismiss()
-    }
-
-    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
-        ProgressHUD.dismiss()
-    }
-}
