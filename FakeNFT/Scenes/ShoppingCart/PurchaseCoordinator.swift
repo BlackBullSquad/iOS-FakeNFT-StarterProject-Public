@@ -34,28 +34,17 @@ extension PurchaseCoordinator: Coordinator {
 private extension PurchaseCoordinator {
     func displayCurrencySelector() {
         let viewModel = CurrencySelectViewModel(
-            deps: .init(currencyProvider: deps.currencyProvider)
-        ) { [weak self] id in
-            self?.performPayment(with: id)
+            deps: .init(currencyProvider: deps.currencyProvider,
+                        paymentService: deps.paymentService,
+                        shoppingCart: deps.shoppingCart)
+        ) { [weak self] result in
+            self?.displayPurchaseResult(isSuccess: result)
         }
 
         let currencyVC = CurrencySelectView(viewModel)
         currencyVC.hidesBottomBarWhenPushed = true
 
         navigationController?.pushViewController(currencyVC, animated: true)
-    }
-
-    func performPayment(with currencyId: Currency.ID) {
-        UIBlockingProgressHUD.show()
-
-        deps.paymentService.pay(with: currencyId) { [weak self] result in
-            defer { UIBlockingProgressHUD.dismiss() }
-            guard let self else { return }
-
-            DispatchQueue.main.async {
-                self.displayPurchaseResult(isSuccess: result)
-            }
-        }
     }
 
     func displayPurchaseResult(isSuccess: Bool) {
@@ -69,7 +58,7 @@ private extension PurchaseCoordinator {
                 statusDescription: "Успех! Оплата прошла,\nпоздравляем с покупкой!",
                 imageAsset: .statusSuccess
             ) { [weak self] in
-                self?.finalizePurchase()
+                self?.closeShoppingCart()
             }
         } else {
             viewModel = .init(
@@ -85,13 +74,8 @@ private extension PurchaseCoordinator {
         navigationController.present(resultVC, animated: true)
     }
 
-    func finalizePurchase() {
-        deps.shoppingCart.nfts.forEach { id in
-            deps.shoppingCart.removeFromCart(id)
-        }
-
+    func closeShoppingCart() {
         navigationController?.popViewController(animated: false)
-
         tabBarController?.selectedIndex = 1
     }
 }

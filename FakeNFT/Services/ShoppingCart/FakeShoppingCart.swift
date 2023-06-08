@@ -24,6 +24,10 @@ extension FakeShoppingCart {
 }
 
 extension FakeShoppingCart: ShoppingCart {
+    func purchaseCompleted() {
+        nfts.forEach(removeFromCart)
+    }
+
     func addToCart(_ id: Nft.ID) {
         contents.insert(id)
     }

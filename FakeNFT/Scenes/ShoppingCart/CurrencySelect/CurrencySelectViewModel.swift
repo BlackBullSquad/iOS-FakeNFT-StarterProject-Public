@@ -10,11 +10,11 @@ final class CurrencySelectViewModel: ObservableObject {
     var isPurchaseAvailable: Bool { selectedItemId != nil }
 
     private var selectedItemId: CurrencySelectCellViewModel.ID?
-    private var onPurchase: (Int) -> Void
+    private var onPurchaseResult: (Bool) -> Void
 
-    init(deps: Dependencies, onPurchase: @escaping (Int) -> Void) {
+    init(deps: Dependencies, onPurchaseResult: @escaping (Bool) -> Void) {
         self.deps = deps
-        self.onPurchase = onPurchase
+        self.onPurchaseResult = onPurchaseResult
     }
 }
 
@@ -30,6 +30,8 @@ extension CurrencySelectViewModel {
 extension CurrencySelectViewModel {
     struct Dependencies {
         let currencyProvider: CurrencyProvider
+        let paymentService: PaymentService
+        let shoppingCart: ShoppingCart
     }
 }
 
@@ -54,7 +56,7 @@ extension CurrencySelectViewModel {
 
     func purchase() {
         guard let selectedItemId else { return }
-        onPurchase(selectedItemId)
+        performPayment(with: selectedItemId)
     }
 
     func openTermsAndConditions() {
@@ -109,6 +111,23 @@ private extension CurrencySelectViewModel {
                         self?.retryLoadingData()
                     }
                 )
+            }
+        }
+    }
+
+    func performPayment(with currencyId: Currency.ID) {
+        isLoading = true
+
+        deps.paymentService.pay(with: currencyId) { [weak self] result in
+            guard let self else { return }
+            defer { self.isLoading = false }
+
+            DispatchQueue.main.async {
+                if result {
+                    self.deps.shoppingCart.purchaseCompleted()
+                }
+
+                self.onPurchaseResult(result)
             }
         }
     }
