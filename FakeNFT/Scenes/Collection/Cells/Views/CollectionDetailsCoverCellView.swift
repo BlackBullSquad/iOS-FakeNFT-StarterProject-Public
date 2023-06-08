@@ -1,11 +1,11 @@
 import UIKit
 import Kingfisher
 
-final class CoverCell: UICollectionViewCell {
+final class CollectionDetailsCoverCellView: UICollectionViewCell {
     
     static let identifier = "CoverCell"
     
-    var viewModel: CollectionCellViewModel? {
+    var viewModel: CollectionDetailsCellViewModel? {
         didSet {
             didUpdateViewModel()
         }
@@ -48,7 +48,7 @@ final class CoverCell: UICollectionViewCell {
         )
     }
     
-    func configure(with viewModel: CollectionCellViewModel) {
+    func configure(with viewModel: CollectionDetailsCellViewModel) {
         self.viewModel = viewModel
     }
 }

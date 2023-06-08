@@ -25,11 +25,11 @@ final class CollectionsCoordinator {
     }
     
     func openCollectionDetail(withId id: Int) {
-        let collectionViewModel = CollectionViewModel(
+        let collectionViewModel = CollectionDetailsViewModel(
             dataService: dataService,
             coordinator: self,
             collectionID: id)
-        let collectionViewController = CollectionView(viewModel: collectionViewModel)
+        let collectionViewController = CollectionDetailsView(viewModel: collectionViewModel)
         collectionViewController.hidesBottomBarWhenPushed = true
         navigationController.pushViewController(collectionViewController, animated: true)
     }

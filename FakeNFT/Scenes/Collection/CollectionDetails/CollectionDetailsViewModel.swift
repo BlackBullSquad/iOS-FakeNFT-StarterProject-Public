@@ -1,13 +1,13 @@
 import Foundation
 
-final class CollectionViewModel {
+final class CollectionDetailsViewModel {
     
     private let dataService: CollectionProviderProtocol
     let collectionID: Int
     
     weak var coordinator: CollectionsCoordinatorProtocol?
     
-    var viewModel: CollectionCellViewModel?
+    var viewModel: CollectionDetailsCellViewModel?
     
     init(
         dataService: CollectionProviderProtocol,
@@ -45,8 +45,8 @@ final class CollectionViewModel {
         coordinator?.openAuthorLink(url: url)
     }
 
-    private func convertToViewModel(from collection: Collection) -> CollectionCellViewModel {
-        return CollectionCellViewModel(collection) { [weak self] url in
+    private func convertToViewModel(from collection: Collection) -> CollectionDetailsCellViewModel {
+        return CollectionDetailsCellViewModel(collection) { [weak self] url in
             self?.handleAuthorLinkTap(url: url)
         }
     }

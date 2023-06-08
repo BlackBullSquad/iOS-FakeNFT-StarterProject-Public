@@ -1,6 +1,6 @@
 import Foundation
 
-struct CollectionCellViewModel {
+struct CollectionDetailsCellViewModel {
     let collectionId: Int
     let cover: URL?
     let title: String

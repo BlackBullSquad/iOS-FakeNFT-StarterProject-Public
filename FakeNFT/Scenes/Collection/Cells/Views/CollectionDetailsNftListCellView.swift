@@ -1,7 +1,7 @@
 import UIKit
 import Kingfisher
 
-final class CollectionCell: UICollectionViewCell {
+final class CollectionDetailsNftListCellView: UICollectionViewCell {
     
     static let identifier = "CollectionCell"
     
@@ -13,8 +13,14 @@ final class CollectionCell: UICollectionViewCell {
     
     private var isInCart: Bool = false
     
-    
     // MARK: - Layout Element Properties
+    
+    // Constants
+    
+    let stackSpacingHalf: CGFloat = 4
+    let stackSpacing: CGFloat = 8
+    
+    // Properties
     
     private lazy var avatarView = NftAvatarView()
     private lazy var rating = RatingView()
@@ -54,7 +60,6 @@ final class CollectionCell: UICollectionViewCell {
         return view
     }()
     
-    
     // MARK: - Stacks
     
     private lazy var vStackRating: UIStackView = {
@@ -69,7 +74,7 @@ final class CollectionCell: UICollectionViewCell {
         stack.axis = .vertical
         stack.alignment = .leading
         stack.distribution = .fillEqually
-        stack.spacing = 4
+        stack.spacing = stackSpacingHalf
         return stack
     }()
     
@@ -84,14 +89,14 @@ final class CollectionCell: UICollectionViewCell {
     private lazy var vStackRateTitlePriceCart: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [vStackRating, hStackTitlePriceCart])
         stack.axis = .vertical
-        stack.spacing = 4
+        stack.spacing = stackSpacingHalf
         return stack
     }()
     
     private lazy var vStackMain: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [avatarView, vStackRateTitlePriceCart, spacerView])
         stack.axis = .vertical
-        stack.spacing = 8
+        stack.spacing = stackSpacing
         stack.backgroundColor = .asset(.additional(.white))
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
@@ -110,7 +115,6 @@ final class CollectionCell: UICollectionViewCell {
         setupSubviews()
     }
     
-    
     // MARK: - Setup
     
     private func setupSubviews() {
@@ -119,20 +123,22 @@ final class CollectionCell: UICollectionViewCell {
         
         NSLayoutConstraint.activate([
             
-            avatarView.widthAnchor.constraint(equalToConstant: 108),
-            avatarView.heightAnchor.constraint(equalTo: avatarView.widthAnchor),
-
+            // TODO: make var
+            avatarView.widthAnchor.constraint(equalTo: contentView.widthAnchor),
+            avatarView.heightAnchor.constraint(equalTo: contentView.widthAnchor),
+            
             cartButton.widthAnchor.constraint(equalToConstant: 40),
             cartButton.heightAnchor.constraint(equalTo: cartButton.widthAnchor),
             
-            spacerView.heightAnchor.constraint(equalToConstant: 20-8) // To compensate .spacing = 8
+            // I need a spacer with a height of 20, but must compensate
+            // the indentation between the stacks
+            spacerView.heightAnchor.constraint(equalToConstant: 20 - stackSpacing)
         ])
     }
     
     func configure(with viewModel: NftCellViewModel) {
         self.viewModel = viewModel
     }
-    
     
     // MARK: - Private Methods
     

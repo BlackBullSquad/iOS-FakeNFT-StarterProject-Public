@@ -1,10 +1,18 @@
 import UIKit
 import Kingfisher
 
-final class CatalogueCell: UITableViewCell {
+final class CatalogueCellView: UITableViewCell {
 
     static let identifier = "CatalogueCell"
-
+    
+    // MARK: - Layout Element Properties
+    
+    // Constants
+    
+    let stackSpacingHalf: CGFloat = 4
+    
+    // Properties
+    
     private lazy var coverImage: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -24,12 +32,12 @@ final class CatalogueCell: UITableViewCell {
         return label
     }()
 
+    // MARK: - Stack
+    
     private lazy var vStack: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [
-            coverImage, titleLabel
-        ])
+        let stack = UIStackView(arrangedSubviews: [coverImage, titleLabel])
         stack.axis = .vertical
-        stack.spacing = 4
+        stack.spacing = stackSpacingHalf
         stack.backgroundColor = .asset(.additional(.white))
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
@@ -52,7 +60,7 @@ final class CatalogueCell: UITableViewCell {
         contentView.addSubview(vStack)
 
         NSLayoutConstraint.activate([
-            coverImage.heightAnchor.constraint(equalToConstant: 140),
+            coverImage.heightAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.41),
 
             vStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             vStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
@@ -62,7 +70,7 @@ final class CatalogueCell: UITableViewCell {
     }
 }
 
-extension CatalogueCell {
+extension CatalogueCellView {
 
     func configure(title: String, coverURL imageURL: URL?, nftCount: Int) {
         titleLabel.text = "\(title) (\(nftCount))"

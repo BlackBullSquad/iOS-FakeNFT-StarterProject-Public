@@ -7,15 +7,15 @@ private enum Section: Int {
     case collection
 }
 
-final class CollectionView: UIViewController {
+final class CollectionDetailsView: UIViewController {
     
-    private let collectionViewModel: CollectionViewModel
+    private let collectionViewModel: CollectionDetailsViewModel
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
         return collectionView
     }()
     
-    init(viewModel: CollectionViewModel) {
+    init(viewModel: CollectionDetailsViewModel) {
         self.collectionViewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -137,9 +137,9 @@ final class CollectionView: UIViewController {
         collectionView.backgroundColor = .clear
         collectionView.contentInsetAdjustmentBehavior = .never
         
-        collectionView.register(CoverCell.self, forCellWithReuseIdentifier: CoverCell.identifier)
-        collectionView.register(DescriptionCell.self, forCellWithReuseIdentifier: DescriptionCell.identifier)
-        collectionView.register(CollectionCell.self, forCellWithReuseIdentifier: CollectionCell.identifier)
+        collectionView.register(CollectionDetailsCoverCellView.self, forCellWithReuseIdentifier: CollectionDetailsCoverCellView.identifier)
+        collectionView.register(CollectionDetailsDescriptionCellView.self, forCellWithReuseIdentifier: CollectionDetailsDescriptionCellView.identifier)
+        collectionView.register(CollectionDetailsNftListCellView.self, forCellWithReuseIdentifier: CollectionDetailsNftListCellView.identifier)
         
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -209,43 +209,32 @@ final class CollectionView: UIViewController {
                 return section
                 
             case .collection:
-                let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(108), heightDimension: .estimated(192))
-//                let item = NSCollectionLayoutItem(layoutSize: itemSize)
-
-                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(192))
-
-                let group = NSCollectionLayoutGroup.custom(layoutSize: groupSize) { environment -> [NSCollectionLayoutGroupCustomItem] in
-                    
-                    // Расчитываю отступы между items исходя из ширины экрана
-                    let totalItemWidth = itemSize.widthDimension.dimension
-                    let totalItemsInRow: CGFloat = 3
-                    let totalWidth = environment.container.effectiveContentSize.width
-                    let totalSpacing = totalWidth - (totalItemsInRow * totalItemWidth) - (2 * inset)
-                    let interItemSpacing = totalSpacing / (totalItemsInRow - 1)
-
-                    // Создание custom items с учетом рассчитанных отступов
-                    var customItems = [NSCollectionLayoutGroupCustomItem]()
-                    
-                    for index in 0..<Int(totalItemsInRow) {
-                        let xPosition = inset + (totalItemWidth + interItemSpacing) * CGFloat(index)
-                        let itemFrame = CGRect(x: xPosition,
-                                               y: 0,
-                                               width: totalItemWidth,
-                                               height: CGFloat(itemSize.heightDimension.dimension))
-                        let customItem = NSCollectionLayoutGroupCustomItem(frame: itemFrame)
-                        customItems.append(customItem)
-                    }
-
-                    return customItems
-                }
-
+                let itemSize = NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1/3),
+                    heightDimension: .estimated(192)
+                )
+                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                let groupSize = NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1.0),
+                    heightDimension: .estimated(192)
+                )
+                let group = NSCollectionLayoutGroup.horizontal(
+                    layoutSize: groupSize,
+                    subitem: item,
+                    count: 3
+                )
+                group.interItemSpacing = .fixed(10)
+                
                 let section = NSCollectionLayoutSection(group: group)
-                section.contentInsets = NSDirectionalEdgeInsets.zero
-                section.interGroupSpacing = 0
-
+                section.contentInsets = NSDirectionalEdgeInsets(
+                    top: 0,
+                    leading: inset,
+                    bottom: 0,
+                    trailing: inset
+                )
+                section.interGroupSpacing = 8
+                
                 return section
-
-
             }
         }
         
@@ -253,7 +242,7 @@ final class CollectionView: UIViewController {
     }
 }
 
-extension CollectionView: UICollectionViewDelegate {
+extension CollectionDetailsView: UICollectionViewDelegate {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int { 3 }
     
@@ -274,7 +263,7 @@ extension CollectionView: UICollectionViewDelegate {
     }
 }
 
-extension CollectionView: UICollectionViewDataSource {
+extension CollectionDetailsView: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
@@ -284,27 +273,36 @@ extension CollectionView: UICollectionViewDataSource {
         
         switch sectionType {
         case .cover:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CoverCell.identifier, for: indexPath)
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: CollectionDetailsCoverCellView.identifier,
+                for: indexPath
+            )
             if
-                let coverCell = cell as? CoverCell,
+                let coverCell = cell as? CollectionDetailsCoverCellView,
                 let item = collectionViewModel.viewModel {
                 coverCell.configure(with: item)
             }
             return cell
             
         case .description:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DescriptionCell.identifier, for: indexPath)
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: CollectionDetailsDescriptionCellView.identifier,
+                for: indexPath
+            )
             if
-                let descriptionCell = cell as? DescriptionCell,
+                let descriptionCell = cell as? CollectionDetailsDescriptionCellView,
                 let item = collectionViewModel.viewModel {
                 descriptionCell.configure(with: item)
             }
             return cell
             
         case .collection:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CollectionCell.identifier, for: indexPath)
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: CollectionDetailsNftListCellView.identifier,
+                for: indexPath
+            )
             if
-                let collectionCell = cell as? CollectionCell,
+                let collectionCell = cell as? CollectionDetailsNftListCellView,
                 let item = collectionViewModel.viewModel?.nfts[indexPath.item] {
                 collectionCell.configure(with: item)
             }
