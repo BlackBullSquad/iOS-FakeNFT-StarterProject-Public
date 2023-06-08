@@ -5,6 +5,7 @@ final class CurrencySelectViewModel: ObservableObject {
 
     @Published var items: [CurrencySelectCellViewModel] = []
     @Published var destination: Destination?
+    @Published var isLoading: Bool = false
 
     var isPurchaseAvailable: Bool { selectedItemId != nil }
 
@@ -89,12 +90,11 @@ private extension CurrencySelectViewModel {
 
 private extension CurrencySelectViewModel {
     func reloadExternalData() {
-        UIBlockingProgressHUD.show()
+        isLoading = true
 
         deps.currencyProvider.getCurrencies { [weak self] result in
-            defer { UIBlockingProgressHUD.dismiss() }
-
             guard let self else { return }
+            defer { self.isLoading = false }
 
             switch result {
             case let .success(currencies):

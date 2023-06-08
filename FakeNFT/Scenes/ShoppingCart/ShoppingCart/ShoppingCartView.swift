@@ -118,6 +118,12 @@ extension ShoppingCartView {
         emptyLabel.isHidden = !viewModel.isCartEmpty
         buttonPanel.isHidden = viewModel.isCartEmpty
 
+        if viewModel.isLoading {
+            UIBlockingProgressHUD.show()
+        } else {
+            UIBlockingProgressHUD.dismiss()
+        }
+
         updateSnapshot()
 
         switch viewModel.destination {

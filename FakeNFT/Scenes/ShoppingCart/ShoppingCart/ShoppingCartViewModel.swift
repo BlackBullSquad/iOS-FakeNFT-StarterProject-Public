@@ -6,6 +6,7 @@ final class ShoppingCartViewModel: ObservableObject {
     @Published var items: [ShoppingCartCellViewModel] = []
     @Published var sortedBy: SortingOrder = .byName
     @Published var destination: Destination?
+    @Published var isLoading = false
 
     private var onPurchase: () -> Void
 
@@ -107,13 +108,13 @@ extension ShoppingCartViewModel {
 
 private extension ShoppingCartViewModel {
     func reloadExternalData() {
-        UIBlockingProgressHUD.show()
+        isLoading = true
 
         let ids = deps.shoppingCart.nfts
 
         deps.nftProvider.getNfts(Set(ids)) { [weak self] result in
-            defer { UIBlockingProgressHUD.dismiss() }
             guard let self else { return }
+            defer { self.isLoading = false }
 
             switch result {
 

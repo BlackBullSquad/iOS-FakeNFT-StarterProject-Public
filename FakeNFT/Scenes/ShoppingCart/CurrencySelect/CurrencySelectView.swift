@@ -103,6 +103,12 @@ extension CurrencySelectView {
 
         applySnapshot()
 
+        if viewModel.isLoading {
+            UIBlockingProgressHUD.show()
+        } else {
+            UIBlockingProgressHUD.dismiss()
+        }
+
         switch viewModel.destination {
 
         case .none:
