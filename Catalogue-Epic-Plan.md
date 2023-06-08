@@ -4,25 +4,20 @@
 
 # Предварительные работы:
 
-## Удалить сториборды — [#21](https://github.com/BlackBullSquad/iOS-FakeNFT-StarterProject-Public/issues/21) (eta: 0:05)
+- [x] Удалить сториборды — (eta: 0:05)
 
 ## Обновить дизайн систему:
-- Добавить стилевые цвета — [#54](https://github.com/BlackBullSquad/iOS-FakeNFT-StarterProject-Public/pull/54) — (eta: 0:30, spent: 2:00 )
-- Добавить стилевые шрифты — [#3](https://github.com/orgs/BlackBullSquad/projects/1?pane=issue&itemId=28074953)
-- Реализовать переиспользуемый объект иконку-аватарку (фото NFT, с лайком (действие по closure) и возможностью при создании экземпляра этого объекта задать его размер). Использовать KIngfisher. — [#5](https://github.com/BlackBullSquad/iOS-FakeNFT-StarterProject-Public/issues/37) — (eta: 1:00, spent: 4:00)
+- [x] Добавить стилевые цвета (eta: 0:30, spent: 2:00 )
+- [x] Добавить стилевые шрифты
+- [x] Реализовать переиспользуемый объект иконку-аватарку (фото NFT, с лайком (действие по closure) и возможностью при создании экземпляра этого объекта задать его размер). Использовать KIngfisher. (eta: 1:00, spent: 4:00)
 
-## Таббар — [#21](https://github.com/BlackBullSquad/iOS-FakeNFT-StarterProject-Public/issues/21) — (eta: 0:30, spent: 0:30)
-- Переделать таббар кодом
-	- Сделать настройку таббара в отдельной структуре
-	- Убрать вкладку "Статистика"
-	- Сделать вьюконтроллеры-заглушки для каждого таба
-- Добавить навбар 
+- [x] Таббар — [#21](https://github.com/BlackBullSquad/iOS-FakeNFT-StarterProject-Public/issues/21) — (eta: 0:30, spent: 0:30)
 
 Промежуточный итог: ETA — 2:05, а реальность 6:30
 
 ---
 
-# Каталог:
+# Каталог -`MVVM`:
 *Каталог коллекций NFT*
 
 ---
