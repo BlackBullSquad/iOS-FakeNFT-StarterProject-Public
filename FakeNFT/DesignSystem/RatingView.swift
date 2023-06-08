@@ -30,7 +30,6 @@ extension RatingView {
     private func setupViews() {
         let stack = UIStackView(arrangedSubviews: stars)
         stack.axis = .horizontal
-        stack.alignment = .center
         stack.spacing = 2
         stack.translatesAutoresizingMaskIntoConstraints = false
 

@@ -42,6 +42,8 @@ final class CollectionView: UIViewController {
     
     private func setupUI() {
         
+        // MARK: - Layout Element Properties
+        
         lazy var coverImage: UIImageView = {
             let imageView = UIImageView()
             imageView.contentMode = .scaleAspectFill
@@ -91,6 +93,9 @@ final class CollectionView: UIViewController {
             return label
         }()
         
+        
+        // MARK: - Stacks
+        
         lazy var hStack: UIStackView = {
             let stack = UIStackView(arrangedSubviews: [
                 authorLabel, authorLinkLabel
@@ -126,6 +131,9 @@ final class CollectionView: UIViewController {
             return stack
         }()
         
+    
+        // MARK: - Collection View Setup
+        
         collectionView.backgroundColor = .clear
         collectionView.contentInsetAdjustmentBehavior = .never
         
@@ -138,6 +146,9 @@ final class CollectionView: UIViewController {
         
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         
+        
+        // MARK: - Layout constraints
+        
         view.addSubview(collectionView)
         
         NSLayoutConstraint.activate([
@@ -146,6 +157,9 @@ final class CollectionView: UIViewController {
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
+        
+        
+        // MARK: - Filling interface elements with data
         
         titleLabel.text = collectionViewModel.viewModel?.title
         authorLabel.text = "Автор коллекции"
@@ -195,21 +209,43 @@ final class CollectionView: UIViewController {
                 return section
                 
             case .collection:
-                let itemSize = NSCollectionLayoutSize(widthDimension: .estimated(108),
-                                                      heightDimension: .estimated(192))
-                let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                                       heightDimension: .estimated(192))
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
-                                                               subitem: item,
-                                                               count: 3)
-                group.interItemSpacing = .fixed(8)
-                
+                let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(108), heightDimension: .estimated(192))
+//                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+
+                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(192))
+
+                let group = NSCollectionLayoutGroup.custom(layoutSize: groupSize) { environment -> [NSCollectionLayoutGroupCustomItem] in
+                    
+                    // Расчитываю отступы между items исходя из ширины экрана
+                    let totalItemWidth = itemSize.widthDimension.dimension
+                    let totalItemsInRow: CGFloat = 3
+                    let totalWidth = environment.container.effectiveContentSize.width
+                    let totalSpacing = totalWidth - (totalItemsInRow * totalItemWidth) - (2 * inset)
+                    let interItemSpacing = totalSpacing / (totalItemsInRow - 1)
+
+                    // Создание custom items с учетом рассчитанных отступов
+                    var customItems = [NSCollectionLayoutGroupCustomItem]()
+                    
+                    for index in 0..<Int(totalItemsInRow) {
+                        let xPosition = inset + (totalItemWidth + interItemSpacing) * CGFloat(index)
+                        let itemFrame = CGRect(x: xPosition,
+                                               y: 0,
+                                               width: totalItemWidth,
+                                               height: CGFloat(itemSize.heightDimension.dimension))
+                        let customItem = NSCollectionLayoutGroupCustomItem(frame: itemFrame)
+                        customItems.append(customItem)
+                    }
+
+                    return customItems
+                }
+
                 let section = NSCollectionLayoutSection(group: group)
-                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: inset, bottom: 0, trailing: inset)
+                section.contentInsets = NSDirectionalEdgeInsets.zero
                 section.interGroupSpacing = 0
-                
+
                 return section
+
+
             }
         }
         

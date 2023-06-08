@@ -12,7 +12,11 @@ final class CollectionCell: UICollectionViewCell {
     }
     
     private var isInCart: Bool = false
-    private lazy var avatarView = NFTAvatarView()
+    
+    
+    // MARK: - Layout Element Properties
+    
+    private lazy var avatarView = NftAvatarView()
     private lazy var rating = RatingView()
     
     private lazy var titleLabel: UILabel = {
@@ -43,39 +47,49 @@ final class CollectionCell: UICollectionViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
-
     
-    lazy var vStackNamePrice: UIStackView = {
+    private lazy var spacerView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    
+    // MARK: - Stacks
+    
+    private lazy var vStackRating: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [rating])
+        stack.axis = .vertical
+        stack.alignment = .leading
+        return stack
+    }()
+    
+    private lazy var vStackTitlePrice: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [titleLabel, priceLabel ])
         stack.axis = .vertical
         stack.alignment = .leading
         stack.distribution = .fillEqually
         stack.spacing = 4
-        stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
     }()
-
-    lazy var hStackNamePriceCart: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [vStackNamePrice, cartButton])
+    
+    private lazy var hStackTitlePriceCart: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [vStackTitlePrice, cartButton])
         stack.axis = .horizontal
         stack.spacing = 0
         stack.distribution = .fillProportionally
-        stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
     }()
     
-    lazy var vStackRateHstack: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [rating, hStackNamePriceCart])
+    private lazy var vStackRateTitlePriceCart: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [vStackRating, hStackTitlePriceCart])
         stack.axis = .vertical
-        stack.spacing = 5
-        stack.alignment = .leading
-        stack.distribution = .fillProportionally
-        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.spacing = 4
         return stack
     }()
     
-    lazy var vStackMain: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [avatarView, vStackRateHstack])
+    private lazy var vStackMain: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [avatarView, vStackRateTitlePriceCart, spacerView])
         stack.axis = .vertical
         stack.spacing = 8
         stack.backgroundColor = .asset(.additional(.white))
@@ -85,48 +99,44 @@ final class CollectionCell: UICollectionViewCell {
     
     
     // MARK: - Initialization
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupSubviews()
     }
-
+    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupSubviews()
     }
-
+    
     
     // MARK: - Setup
     
     private func setupSubviews() {
         contentView.addSubview(vStackMain)
+        avatarView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             
-            avatarView.widthAnchor.constraint(equalTo: vStackMain.widthAnchor),
-            avatarView.heightAnchor.constraint(equalTo: vStackMain.widthAnchor),
-            
-            vStackNamePrice.widthAnchor.constraint(greaterThanOrEqualToConstant: 100),
-            
+            avatarView.widthAnchor.constraint(equalToConstant: 108),
+            avatarView.heightAnchor.constraint(equalTo: avatarView.widthAnchor),
+
             cartButton.widthAnchor.constraint(equalToConstant: 40),
-            cartButton.heightAnchor.constraint(equalToConstant: 40),
+            cartButton.heightAnchor.constraint(equalTo: cartButton.widthAnchor),
             
-            vStackMain.topAnchor.constraint(equalTo: contentView.topAnchor),
-            vStackMain.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            vStackMain.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            vStackMain.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -21)
+            spacerView.heightAnchor.constraint(equalToConstant: 20-8) // To compensate .spacing = 8
         ])
     }
     
     func configure(with viewModel: NftCellViewModel) {
         self.viewModel = viewModel
     }
-
-
+    
+    
     // MARK: - Private Methods
     
     private func didUpdateViewModel() {
-        print("APPLYING MODEL")
         avatarView.viewModel = .init(imageSize: .large,
                                      imageURL: viewModel?.imageURL,
                                      isLiked: false,
@@ -140,7 +150,7 @@ final class CollectionCell: UICollectionViewCell {
         isInCart.toggle()
         updateCartButtonImage()
     }
-
+    
     private func updateCartButtonImage() {
         if isInCart {
             cartButton.image = UIImage(named: "deleteFromCart")
