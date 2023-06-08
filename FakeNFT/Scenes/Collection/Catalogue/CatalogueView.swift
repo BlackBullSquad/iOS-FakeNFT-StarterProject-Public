@@ -73,7 +73,7 @@ final class CatalogueView: UIViewController {
             return button
         }()
         
-        navigationController?.navigationBar.tintColor = .black
+        navigationController?.navigationBar.tintColor = .asset(.main(.primary))
         navigationItem.rightBarButtonItem = sortButton
     }
 
