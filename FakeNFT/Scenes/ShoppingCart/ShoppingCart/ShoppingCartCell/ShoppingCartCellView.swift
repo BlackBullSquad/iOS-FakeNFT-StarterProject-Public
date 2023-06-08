@@ -14,7 +14,7 @@ final class ShoppingCartCellView: UITableViewCell {
 
     // MARK: - Components
 
-    private lazy var avatar = NFTAvatarView()
+    private lazy var avatar = NftAvatarView()
 
     private lazy var deleteButton: UIButton = {
         let button = UIButton(type: .system)

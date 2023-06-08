@@ -1,12 +1,12 @@
 import UIKit
 import Kingfisher
 
-final class NFTAvatarView: UIView {
+final class NftAvatarView: UIView {
 
     private let imageView = UIImageView()
     private let likeButton = UIButton()
 
-    var viewModel: NFTAvatarViewModel? {
+    var viewModel: NftAvatarViewModel? {
         didSet {
             configure(with: viewModel)
         }
@@ -45,7 +45,7 @@ final class NFTAvatarView: UIView {
 
 // MARK: - Setup
 
-extension NFTAvatarView {
+extension NftAvatarView {
 
     private func setupViews() {
 
@@ -81,9 +81,9 @@ extension NFTAvatarView {
 
 // MARK: - Configuration
 
-extension NFTAvatarView {
+extension NftAvatarView {
 
-    private func configure(with viewModel: NFTAvatarViewModel?) {
+    private func configure(with viewModel: NftAvatarViewModel?) {
 
         guard let viewModel = viewModel
         else {

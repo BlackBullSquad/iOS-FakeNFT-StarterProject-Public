@@ -17,8 +17,8 @@ final class NftDeleteView: UIViewController {
 
     // MARK: - Components
 
-    private lazy var avatar: NFTAvatarView = {
-        let avatar = NFTAvatarView()
+    private lazy var avatar: NftAvatarView = {
+        let avatar = NftAvatarView()
         avatar.viewModel = .init(imageSize: .large, imageURL: viewModel.avatarURL, likeButtonAction: nil)
         return avatar
     }()
