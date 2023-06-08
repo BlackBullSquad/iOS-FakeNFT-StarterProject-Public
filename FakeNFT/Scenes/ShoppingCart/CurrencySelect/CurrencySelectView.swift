@@ -32,30 +32,29 @@ final class CurrencySelectView: UIViewController {
         return button
     }()
 
-    private lazy var infoText: UIStackView = {
-        let firstLine = UILabel()
-        firstLine.text = "Совершая покупку, вы соглашаетесь с условиями"
-        firstLine.textColor = .asset(.black)
-        firstLine.font = .asset(.regular13)
-        firstLine.textAlignment = .natural
+    private lazy var infoText: UITextView = {
+        let textView = UITextView()
 
-        let secondLine = UILabel()
-        secondLine.text = "Пользовательского соглашения"
-        secondLine.textColor = .asset(.blueUniversal)
-        secondLine.font = .asset(.regular13)
-        secondLine.textAlignment = .natural
-        secondLine.isUserInteractionEnabled = true
-        secondLine.addGestureRecognizer(
-            UITapGestureRecognizer(target: self, action: #selector(didTapTermsAndConditions))
+        let url = URL(string: "https://fake.url.com")!
+        let attributedString = NSMutableAttributedString(
+            string: "Совершая покупку, вы соглашаетесь с условиями "
         )
+        attributedString.append(.init(string: "Пользовательского соглашения",
+                                      attributes: [.link: url]))
 
-        let vStack = UIStackView(arrangedSubviews: [firstLine, secondLine])
-        vStack.axis = .vertical
-        vStack.alignment = .leading
-        vStack.spacing = 4
-        vStack.translatesAutoresizingMaskIntoConstraints = false
+        textView.attributedText = attributedString
+        textView.linkTextAttributes = [.foregroundColor: UIColor.asset(.blueUniversal)]
+        textView.textColor = .asset(.black)
+        textView.font = .asset(.regular13)
 
-        return vStack
+        textView.isScrollEnabled = false
+        textView.isUserInteractionEnabled = true
+        textView.isEditable = false
+        textView.delegate = self
+
+        textView.translatesAutoresizingMaskIntoConstraints = false
+
+        return textView
     }()
 
     private lazy var collectionView: UICollectionView = {
@@ -151,17 +150,22 @@ private extension CurrencySelectView {
 
 // MARK: - User Actions
 
-extension CurrencySelectView: UICollectionViewDelegate {
+extension CurrencySelectView: UICollectionViewDelegate, UITextViewDelegate {
     @objc private func didTapPurchaseButton() {
         viewModel.purchase()
     }
 
-    @objc private func didTapTermsAndConditions() {
-        viewModel.openTermsAndConditions()
-    }
-
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         viewModel.selectedItem(indexPath.row)
+    }
+
+    func textView(_ textView: UITextView,
+                  shouldInteractWith URL: URL,
+                  in characterRange: NSRange,
+                  interaction: UITextItemInteraction
+    ) -> Bool {
+        viewModel.openTermsAndConditions()
+        return false
     }
 }
 
