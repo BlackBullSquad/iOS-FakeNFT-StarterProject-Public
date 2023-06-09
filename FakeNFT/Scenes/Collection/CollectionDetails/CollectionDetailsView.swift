@@ -39,7 +39,6 @@ final class CollectionDetailsView: UIViewController {
         super.viewWillAppear(animated)
     }
     
-    
     private func setupUI() {
         
         // MARK: - Layout Element Properties
@@ -93,13 +92,10 @@ final class CollectionDetailsView: UIViewController {
             return label
         }()
         
-        
         // MARK: - Stacks
         
         lazy var hStack: UIStackView = {
-            let stack = UIStackView(arrangedSubviews: [
-                authorLabel, authorLinkLabel
-            ])
+            let stack = UIStackView(arrangedSubviews: [authorLabel, authorLinkLabel])
             stack.axis = .horizontal
             stack.spacing = 4
             stack.alignment = .center
@@ -109,9 +105,7 @@ final class CollectionDetailsView: UIViewController {
         }()
         
         lazy var vStackInside: UIStackView = {
-            let stack = UIStackView(arrangedSubviews: [
-                titleLabel, hStack
-            ])
+            let stack = UIStackView(arrangedSubviews: [titleLabel, hStack])
             stack.axis = .vertical
             stack.spacing = 8
             stack.alignment = .leading
@@ -121,31 +115,36 @@ final class CollectionDetailsView: UIViewController {
         }()
         
         lazy var vStackMain: UIStackView = {
-            let stack = UIStackView(arrangedSubviews: [
-                vStackInside, text
-            ])
+            let stack = UIStackView(arrangedSubviews: [vStackInside, text])
             stack.axis = .vertical
             stack.spacing = 0
             stack.distribution = .fill
             stack.translatesAutoresizingMaskIntoConstraints = false
             return stack
         }()
-        
     
         // MARK: - Collection View Setup
         
         collectionView.backgroundColor = .clear
         collectionView.contentInsetAdjustmentBehavior = .never
         
-        collectionView.register(CollectionDetailsCoverCellView.self, forCellWithReuseIdentifier: CollectionDetailsCoverCellView.identifier)
-        collectionView.register(CollectionDetailsDescriptionCellView.self, forCellWithReuseIdentifier: CollectionDetailsDescriptionCellView.identifier)
-        collectionView.register(CollectionDetailsNftListCellView.self, forCellWithReuseIdentifier: CollectionDetailsNftListCellView.identifier)
+        collectionView.register(
+            CollectionDetailsCoverCellView.self,
+            forCellWithReuseIdentifier: CollectionDetailsCoverCellView.identifier
+        )
+        collectionView.register(
+            CollectionDetailsDescriptionCellView.self,
+            forCellWithReuseIdentifier: CollectionDetailsDescriptionCellView.identifier
+        )
+        collectionView.register(
+            CollectionDetailsNftListCellView.self,
+            forCellWithReuseIdentifier: CollectionDetailsNftListCellView.identifier
+        )
         
         collectionView.delegate = self
         collectionView.dataSource = self
         
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        
         
         // MARK: - Layout constraints
         
@@ -157,7 +156,6 @@ final class CollectionDetailsView: UIViewController {
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
-        
         
         // MARK: - Filling interface elements with data
         
@@ -178,6 +176,8 @@ final class CollectionDetailsView: UIViewController {
         )
     }
     
+    // MARK: -  UICollectionView layout setup
+    
     private func createLayout() -> UICollectionViewLayout {
         
         let layout = UICollectionViewCompositionalLayout { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
@@ -189,25 +189,46 @@ final class CollectionDetailsView: UIViewController {
             let inset: CGFloat = 16
             
             switch sectionType {
+        
+            // Collection cover image
             case .cover:
-                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                                      heightDimension: .fractionalWidth(0.83))
+                let itemSize = NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1.0),
+                    heightDimension: .fractionalWidth(0.83)
+                )
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: itemSize, subitem: item, count: 1)
+                let group = NSCollectionLayoutGroup.horizontal(
+                    layoutSize: itemSize,
+                    subitem: item,
+                    count: 1
+                )
                 let section = NSCollectionLayoutSection(group: group)
                 return section
-                
+            
+            // Collection text description
             case .description:
-                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                                      heightDimension: .estimated(100))
+                let itemSize = NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1.0),
+                    heightDimension: .estimated(100)
+                )
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: itemSize, subitem: item, count: 1)
+                let group = NSCollectionLayoutGroup.horizontal(
+                    layoutSize: itemSize,
+                    subitem: item,
+                    count: 1
+                )
                 
                 let section = NSCollectionLayoutSection(group: group)
-                section.contentInsets = NSDirectionalEdgeInsets(top: inset, leading: inset, bottom: 21, trailing: inset)
+                section.contentInsets = NSDirectionalEdgeInsets(
+                    top: inset,
+                    leading: inset,
+                    bottom: 21,
+                    trailing: inset
+                )
                 
                 return section
                 
+            // Collection NFT list
             case .collection:
                 let itemSize = NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(1/3),
@@ -242,6 +263,8 @@ final class CollectionDetailsView: UIViewController {
     }
 }
 
+// MARK: - Delegate
+
 extension CollectionDetailsView: UICollectionViewDelegate {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int { 3 }
@@ -253,15 +276,14 @@ extension CollectionDetailsView: UICollectionViewDelegate {
         }
         
         switch sectionType {
-        case .cover:
-            return 1
-        case .description:
-            return 1
-        case .collection:
-            return collectionViewModel.viewModel?.nftsCount ?? 0
+        case .cover: return 1
+        case .description: return 1
+        case .collection: return collectionViewModel.viewModel?.nftsCount ?? 0
         }
     }
 }
+
+// MARK: - Data Source
 
 extension CollectionDetailsView: UICollectionViewDataSource {
     

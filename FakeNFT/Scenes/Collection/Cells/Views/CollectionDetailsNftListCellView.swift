@@ -102,7 +102,6 @@ final class CollectionDetailsNftListCellView: UICollectionViewCell {
         return stack
     }()
     
-    
     // MARK: - Initialization
     
     override init(frame: CGRect) {
