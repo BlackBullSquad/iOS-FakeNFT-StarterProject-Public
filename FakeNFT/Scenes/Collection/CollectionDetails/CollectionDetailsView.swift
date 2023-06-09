@@ -253,9 +253,7 @@ final class CollectionDetailsView: UIViewController {
                     bottom: 0,
                     trailing: inset
                 )
-                
-                let spacer: CGFloat = 20
-                section.interGroupSpacing = 8 + spacer
+                section.interGroupSpacing = 28
                 
                 return section
             }
