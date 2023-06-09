@@ -53,13 +53,7 @@ final class CollectionDetailsNftListCellView: UICollectionViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
-    
-    private lazy var spacerView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
+        
     // MARK: - Stacks
     
     private lazy var vStackRating: UIStackView = {
@@ -94,7 +88,7 @@ final class CollectionDetailsNftListCellView: UICollectionViewCell {
     }()
     
     private lazy var vStackMain: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [avatarView, vStackRateTitlePriceCart, spacerView])
+        let stack = UIStackView(arrangedSubviews: [avatarView, vStackRateTitlePriceCart])
         stack.axis = .vertical
         stack.spacing = stackSpacing
         stack.backgroundColor = .asset(.additional(.white))
@@ -128,10 +122,6 @@ final class CollectionDetailsNftListCellView: UICollectionViewCell {
             
             cartButton.widthAnchor.constraint(equalToConstant: 40),
             cartButton.heightAnchor.constraint(equalTo: cartButton.widthAnchor),
-            
-            // I need a spacer with a height of 20, but must compensate
-            // the indentation between the stacks
-            spacerView.heightAnchor.constraint(equalToConstant: 20 - stackSpacing)
         ])
     }
     
@@ -142,15 +132,17 @@ final class CollectionDetailsNftListCellView: UICollectionViewCell {
     // MARK: - Private Methods
     
     private func didUpdateViewModel() {
-        avatarView.viewModel = .init(imageSize: .large,
-                                     imageURL: viewModel?.imageURL,
-                                     isLiked: false,
-                                     likeButtonAction: { return })
+        avatarView.viewModel = .init(
+            imageSize: .large,
+            imageURL: viewModel?.imageURL,
+            isLiked: false,
+            likeButtonAction: { return }
+        )
         rating.rating = viewModel?.rating
         titleLabel.text = viewModel?.name
         priceLabel.text = viewModel?.price
     }
-    
+
     @objc private func cartButtonTapped() {
         isInCart.toggle()
         updateCartButtonImage()

@@ -77,6 +77,9 @@ extension CatalogueCellView {
 
         let placeholder = UIImage(named: "placeholder")
 
-        coverImage.kf.setImage(with: imageURL, placeholder: placeholder, options: [.scaleFactor(UIScreen.main.scale), .transition(.fade(1))])
+        coverImage.kf.setImage(with: imageURL,
+                               placeholder: placeholder,
+                               options: [.scaleFactor(UIScreen.main.scale),
+                               .transition(.fade(1))])
     }
 }
