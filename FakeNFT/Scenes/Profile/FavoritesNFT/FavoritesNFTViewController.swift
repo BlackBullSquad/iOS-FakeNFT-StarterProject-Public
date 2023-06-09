@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FavoritesNFTViewController: UIViewController {
+class FavoritesNftViewController: UIViewController {
     
     // MARK: - Properties
     private let profileService: ProfileService
@@ -17,7 +17,7 @@ class FavoritesNFTViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
 
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.register(FavoritesNFTCollectionViewCell.self, forCellWithReuseIdentifier: FavoritesNFTCollectionViewCell.identifier)
+        collectionView.register(FavoritesNftCollectionViewCell.self, forCellWithReuseIdentifier: FavoritesNftCollectionViewCell.identifier)
         collectionView.dataSource = self
         collectionView.delegate = self
         return collectionView
@@ -54,7 +54,7 @@ class FavoritesNFTViewController: UIViewController {
     
     // MARK: - Methods
     private func getFavoritesNfts() {
-        profileService.getFavoritesNFT { [weak self] result in
+        profileService.getFavoritesNft { [weak self] result in
             switch result{
             case .success(let myNfts):
                 self?.favoriteNfts = myNfts
@@ -95,7 +95,7 @@ class FavoritesNFTViewController: UIViewController {
 }
 
 // MARK: - UICollectionViewDataSource
-extension FavoritesNFTViewController: UICollectionViewDataSource {
+extension FavoritesNftViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         1
     }
@@ -105,19 +105,25 @@ extension FavoritesNFTViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FavoritesNFTCollectionViewCell.identifier, for: indexPath) as! FavoritesNFTCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FavoritesNftCollectionViewCell.identifier, for: indexPath) as! FavoritesNftCollectionViewCell
         let nft = favoriteNfts[indexPath.row]
         cell.setupCell(with: nft)
         cell.likeButtonAction = { [weak self] in
-            self?.favoriteNfts.remove(at: indexPath.row)
-            self?.nftCollectionView.reloadData()
+            self?.likeButtonHandle(indexPath: indexPath)
         }
         return cell
     }
+    
+    private func likeButtonHandle(indexPath: IndexPath) {
+        favoriteNfts.remove(at: indexPath.row)
+        nftCollectionView.reloadData()
+        profileService.updateFavoritesNft(likes: favoriteNfts)
+    }
+    
 }
 
 //MARK: - UICollectionViewDelegateFlowLayout
-extension FavoritesNFTViewController: UICollectionViewDelegateFlowLayout {
+extension FavoritesNftViewController: UICollectionViewDelegateFlowLayout {
     private var lineSpacing: CGFloat { return 20 }
     private var interitemSpacing: CGFloat { return 7 }
     private var sideInset: CGFloat { return 16 }

@@ -7,8 +7,8 @@
 
 import UIKit
 
-class MyNFTTableViewCell: UITableViewCell {
-    static let identifier = "MyNFTTableViewCell"
+class MyNftTableViewCell: UITableViewCell {
+    static let identifier = "MyNftTableViewCell"
     
     // MARK: - Properties
     private let nftView: NFTAvatarView = NFTAvatarView()
@@ -43,12 +43,14 @@ class MyNFTTableViewCell: UITableViewCell {
         return label
     }()
     
-    private lazy var ratingView = RatingView()
+    private let ratingView = RatingView()
     
-    private let firstVerticalStackView: UIStackView = {
-        let stackView = UIStackView()
+    private lazy var firstVerticalStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [nameLabel,
+                                                       ratingView,
+                                                       authorLabel])
         stackView.axis = .vertical
-        stackView.distribution = .fillEqually
+        stackView.alignment = .leading
         stackView.spacing = 4
         return stackView
     }()
@@ -56,7 +58,6 @@ class MyNFTTableViewCell: UITableViewCell {
     private let priceVerticalStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
-        stackView.distribution = .fillEqually
         stackView.spacing = 2
         return stackView
     }()
@@ -66,6 +67,7 @@ class MyNFTTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = .systemBackground
+        selectionStyle = .none
         layout()
     }
 
@@ -87,7 +89,7 @@ class MyNFTTableViewCell: UITableViewCell {
          ratingView,
          authorLabel
         ].forEach { view in
-//            view.translatesAutoresizingMaskIntoConstraints = false
+            view.translatesAutoresizingMaskIntoConstraints = false
             firstVerticalStackView.addArrangedSubview(view)
         }
         
@@ -103,20 +105,19 @@ class MyNFTTableViewCell: UITableViewCell {
          priceVerticalStackView
         ].forEach { view in
             view.translatesAutoresizingMaskIntoConstraints = false
-            self.addSubview(view)
+            self.contentView.addSubview(view)
         }
         
         NSLayoutConstraint.activate([
-            nftView.topAnchor.constraint(equalTo: topAnchor, constant: 16),
-            nftView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            nftView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
+            nftView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             
             firstVerticalStackView.centerYAnchor.constraint(equalTo: nftView.centerYAnchor),
             firstVerticalStackView.leadingAnchor.constraint(equalTo: nftView.trailingAnchor, constant: 20),
-            firstVerticalStackView.trailingAnchor.constraint(equalTo: priceVerticalStackView.leadingAnchor, constant: -16),
             
             priceVerticalStackView.centerYAnchor.constraint(equalTo: nftView.centerYAnchor),
-            priceVerticalStackView.leadingAnchor.constraint(equalTo: trailingAnchor, constant: -114),
-            priceVerticalStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16)
+            priceVerticalStackView.leadingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -114),
+            priceVerticalStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
         ])
     }
 }

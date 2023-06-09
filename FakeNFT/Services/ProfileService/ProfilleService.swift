@@ -9,10 +9,10 @@ import Foundation
 
 protocol ProfileService: Any {
     func getUser(completion: @escaping (Result<Profile, Error>) -> Void)
-    func getMyNFT(with profile: Profile, completion: @escaping (Result<[NFT], Error>) -> Void)
-    func getFavoritesNFT(completion: @escaping (Result<[NFT], Error>) -> Void)
+    func getMyNft(with profile: Profile, completion: @escaping (Result<[NFT], Error>) -> Void)
+    func getFavoritesNft(completion: @escaping (Result<[NFT], Error>) -> Void)
+    func updateFavoritesNft(likes: [NFT])
     func updateProfile(_ profile: Profile)
-    
 }
 
 final class ProfileServiceImpl: ProfileService {
@@ -44,7 +44,7 @@ final class ProfileServiceImpl: ProfileService {
         nftApi.updateProfile(name: profile.name, description: profile.description, website: profile.website, likes: profile.likes) { _ in }
     }
     
-    func getMyNFT(with profile: Profile, completion: @escaping (Result<[NFT], Error>) -> Void) {
+    func getMyNft(with profile: Profile, completion: @escaping (Result<[NFT], Error>) -> Void) {
         nftApi.getNfts { result in
             switch result {
             case .success(let nftsDTO):
@@ -61,7 +61,7 @@ final class ProfileServiceImpl: ProfileService {
         }
     }
     
-    func getFavoritesNFT(completion: @escaping (Result<[NFT], Error>) -> Void) {
+    func getFavoritesNft(completion: @escaping (Result<[NFT], Error>) -> Void) {
         getUser { [weak self] result in
             switch result{
             case .success(let profile):
@@ -85,7 +85,7 @@ final class ProfileServiceImpl: ProfileService {
         }
     }
     
-    func updateFavoritesNFT(likes: [NFT]) {
+    func updateFavoritesNft(likes: [NFT]) {
         let likesId = likes.compactMap { Int($0.id) }
         getUser { [weak self] result in
             switch result{

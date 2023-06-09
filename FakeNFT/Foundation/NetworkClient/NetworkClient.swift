@@ -21,14 +21,23 @@ protocol NetworkClient {
 struct DefaultNetworkClient: NetworkClient {
     private let session: URLSession
     private let decoder: JSONDecoder
+    private let encoder: JSONEncoder
 
-    init(session: URLSession = URLSession.shared, decoder: JSONDecoder = JSONDecoder()) {
+    init(
+        session: URLSession = URLSession.shared,
+        decoder: JSONDecoder = JSONDecoder(),
+        encoder: JSONEncoder = JSONEncoder()
+    ) {
         self.session = session
         self.decoder = decoder
+        self.encoder = encoder
     }
 
     @discardableResult
-    func send(request: NetworkRequest, onResponse: @escaping (Result<Data, Error>) -> Void) -> NetworkTask? {
+    func send(
+        request: NetworkRequest,
+        onResponse: @escaping (Result<Data, Error>) -> Void
+    ) -> NetworkTask? {
         guard let urlRequest = create(request: request) else { return nil }
 
         let task = session.dataTask(with: urlRequest) { data, response, error in
@@ -60,7 +69,11 @@ struct DefaultNetworkClient: NetworkClient {
     }
 
     @discardableResult
-    func send<T: Decodable>(request: NetworkRequest, type: T.Type, onResponse: @escaping (Result<T, Error>) -> Void) -> NetworkTask? {
+    func send<T: Decodable>(
+        request: NetworkRequest,
+        type: T.Type,
+        onResponse: @escaping (Result<T, Error>) -> Void
+    ) -> NetworkTask? {
         return send(request: request) { result in
             switch result {
             case let .success(data):
@@ -72,7 +85,6 @@ struct DefaultNetworkClient: NetworkClient {
     }
 
     // MARK: - Private
-
     private func create(request: NetworkRequest) -> URLRequest? {
         guard let endpoint = request.endpoint else { return nil }
         guard var components = URLComponents(url: endpoint, resolvingAgainstBaseURL: true) else { return nil }
@@ -80,10 +92,15 @@ struct DefaultNetworkClient: NetworkClient {
         components.queryItems = request.queryParameters?.map { key, value in
             URLQueryItem(name: key, value: value)
         }
-
         guard let url = components.url else { return nil }
 
         var urlRequest = URLRequest(url: url)
+
+        if let payload = request.payload {
+            urlRequest.httpBody = try? encoder.encode(payload)
+            urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        }
+
         urlRequest.httpMethod = request.httpMethod.rawValue
 
         return urlRequest

@@ -2,11 +2,6 @@ import UIKit
 import Kingfisher
 
 final class ProfileVC: UIViewController {
-  
-//    private let nftApi: NftAPI = FakeNftAPI()
-//    private var profile: ProfileDTO?
-//    private var nfts: [Int] = []
-//    private var likes: [Int] = []
     
     private let profileService: ProfileService
     private var profile: Profile?
@@ -33,13 +28,22 @@ final class ProfileVC: UIViewController {
         return image
     }()
 
-    private let urlTextView: UITextView = {
-        let textView = UITextView()
-        textView.font = UIFont.systemFont(ofSize: 15, weight: .regular)
-        textView.textColor = .label
-        textView.isEditable = false
-        textView.dataDetectorTypes = .link
-        return textView
+//    private let urlTextButton: UITextView = {
+//        let textView = UITextView()
+//        textView.font = UIFont.systemFont(ofSize: 15, weight: .regular)
+//        textView.textColor = .label
+//        textView.isEditable = false
+//        textView.dataDetectorTypes = .link
+//        return textView
+//    }()
+    
+    private let urlTextButton: UIButton = {
+        let button = UIButton()
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .regular)
+        button.contentHorizontalAlignment = .left
+        button.setTitleColor(.systemBlue, for: .normal)
+        button.addTarget(self, action: #selector(showWebView), for: .touchUpInside)
+        return button
     }()
     
     private lazy var profileTableView: UITableView = {
@@ -70,11 +74,22 @@ final class ProfileVC: UIViewController {
         layout()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        getProfile()
+    }
+    
     private func setNavBar() {
         // Additional bar button items
         let button = UIBarButtonItem(image: UIImage(named: "editProfile"), style: .plain, target: self, action: #selector(editProfile))
         button.tintColor = .label
         navigationItem.setRightBarButtonItems([button], animated: true)
+    }
+    
+    @objc private func showWebView() {
+        guard let url = profile?.website else { return }
+        let webView = WebView(url: url)
+        present(webView, animated: true)
     }
     
     @objc private func editProfile() {
@@ -98,7 +113,7 @@ final class ProfileVC: UIViewController {
     private func setupView(profile: Profile) {
         nameLabel.text = profile.name
         descriptionLabel.text = profile.description
-        urlTextView.text = profile.website.absoluteString
+        urlTextButton.setTitle(profile.website.absoluteString, for: .normal)
         profileImage.kf.setImage(with: profile.avatar)
         profileTableView.reloadData()
     }
@@ -107,7 +122,7 @@ final class ProfileVC: UIViewController {
         [nameLabel,
          profileImage,
          descriptionLabel,
-         urlTextView,
+         urlTextButton,
          profileTableView
         ].forEach { view in
             view.translatesAutoresizingMaskIntoConstraints = false
@@ -128,14 +143,14 @@ final class ProfileVC: UIViewController {
             descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             descriptionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -18),
 
-            urlTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            urlTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 16),
-            urlTextView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 12),
-            urlTextView.heightAnchor.constraint(equalToConstant: 30),
+            urlTextButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            urlTextButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            urlTextButton.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 12),
+            urlTextButton.heightAnchor.constraint(equalToConstant: 30),
 
             profileTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             profileTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            profileTableView.topAnchor.constraint(equalTo: urlTextView.bottomAnchor, constant: 44),
+            profileTableView.topAnchor.constraint(equalTo: urlTextButton.bottomAnchor, constant: 44),
             profileTableView.heightAnchor.constraint(equalToConstant: 375*3),
         ])
     }
@@ -172,7 +187,7 @@ extension ProfileVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row {
         case 0: showMyNftVC()
-        case 1: navigationController?.pushViewController(FavoritesNFTViewController(profileService: profileService), animated: true)
+        case 1: navigationController?.pushViewController(FavoritesNftViewController(profileService: profileService), animated: true)
         default:
             return
         }
@@ -180,7 +195,7 @@ extension ProfileVC: UITableViewDelegate {
     
     private func showMyNftVC() {
         guard let profile = profile else { return }
-        navigationController?.pushViewController(MyNFTViewController(profileService: profileService, profile: profile), animated: true)
+        navigationController?.pushViewController(MyNftViewController(profileService: profileService, profile: profile), animated: true)
     }
 }
     

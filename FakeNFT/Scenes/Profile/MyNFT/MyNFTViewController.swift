@@ -1,5 +1,5 @@
 //
-//  MyNFTViewController.swift
+//  MyNftViewController.swift
 //  FakeNFT
 //
 //  Created by MacBook on 01.06.2023.
@@ -13,16 +13,17 @@ enum SortDescriptor {
     case rating
 }
 
-class MyNFTViewController: UIViewController {
+class MyNftViewController: UIViewController {
     
     // MARK: - Properties
     private let profileService: ProfileService
-    private var profile: Profile
+    private let profile: Profile
     private var myNfts: [NFT] = []
+    private var likes: [Int] = []
     
     private lazy var nftTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
-        tableView.register(MyNFTTableViewCell.self, forCellReuseIdentifier: MyNFTTableViewCell.identifier)
+        tableView.register(MyNftTableViewCell.self, forCellReuseIdentifier: MyNftTableViewCell.identifier)
         tableView.separatorStyle = .none
         tableView.delegate = self
         tableView.dataSource = self
@@ -33,6 +34,7 @@ class MyNFTViewController: UIViewController {
     init(profileService: ProfileService, profile: Profile) {
         self.profileService = profileService
         self.profile = profile
+        self.likes = profile.likes
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -52,7 +54,7 @@ class MyNFTViewController: UIViewController {
     
         // MARK: - Methods
         private func getMyNfts(with: Profile) {
-            profileService.getMyNFT(with: profile) { [weak self] result in
+            profileService.getMyNft(with: profile) { [weak self] result in
                 switch result{
                 case .success(let myNfts):
                     self?.myNfts = myNfts
@@ -126,23 +128,46 @@ class MyNFTViewController: UIViewController {
 }
 
 // MARK: - UITableViewDataSource
-extension MyNFTViewController: UITableViewDataSource {
+extension MyNftViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         myNfts.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: MyNFTTableViewCell.identifier, for: indexPath) as! MyNFTTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: MyNftTableViewCell.identifier, for: indexPath) as! MyNftTableViewCell
         let myNft = myNfts[indexPath.row]
-        let isLiked = profile.likes.contains(Int(myNft.id) ?? 0)
+        let isLiked = likes.contains(Int(myNft.id) ?? 0)
         cell.setupCell(with: myNft, isLiked: isLiked)
+        cell.likeButtonAction = { [weak self] in
+            self?.likeButtonHandle(indexPath: indexPath)
+        }
         return cell
+    }
+    
+    private func likeButtonHandle(indexPath: IndexPath) {
+        guard let idNftLikeChange = Int(myNfts[indexPath.row].id) else { return }
+        if likes.contains(idNftLikeChange) {
+            likes.removeAll { $0 == idNftLikeChange }
+        } else {
+            likes.append(idNftLikeChange)
+        }
+        let newProfile = Profile(
+            id: profile.id,
+            name: profile.name,
+            description: profile.description,
+            avatar: profile.avatar,
+            website: profile.website,
+            nfts: profile.nfts,
+            likes: likes
+        )
+        nftTableView.reloadData()
+        profileService.updateProfile(newProfile)
     }
     
 }
 
 // MARK: - UITableViewDelegate
-extension MyNFTViewController: UITableViewDelegate {
+extension MyNftViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 140
     }

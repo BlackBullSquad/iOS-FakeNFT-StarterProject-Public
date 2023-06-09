@@ -7,9 +7,9 @@
 
 import UIKit
 
-class FavoritesNFTCollectionViewCell: UICollectionViewCell {
+class FavoritesNftCollectionViewCell: UICollectionViewCell {
     // MARK: - Properties
-    static let identifier = "FavoritesNFTCollectionViewCell"
+    static let identifier = "FavoritesNftCollectionViewCell"
 
     // MARK: - Properties
     private let nftView: NFTAvatarView = NFTAvatarView()
