@@ -60,12 +60,8 @@ final class CatalogueCellView: UITableViewCell {
         contentView.addSubview(vStack)
 
         NSLayoutConstraint.activate([
-            coverImage.heightAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.41),
-
-            vStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            vStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            vStack.topAnchor.constraint(equalTo: contentView.topAnchor),
-            vStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            coverImage.widthAnchor.constraint(equalTo: contentView.widthAnchor),
+            coverImage.heightAnchor.constraint(equalToConstant: 140)
         ])
     }
 }
@@ -76,7 +72,7 @@ extension CatalogueCellView {
         titleLabel.text = "\(title) (\(nftCount))"
 
         let placeholder = UIImage(named: "placeholder")
-
+        
         coverImage.kf.setImage(with: imageURL,
                                placeholder: placeholder,
                                options: [.scaleFactor(UIScreen.main.scale),

@@ -126,6 +126,8 @@ extension CatalogueView: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? { UIView() }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat { 140 + 4 + 22 }
+        
     // MARK: User Interaction
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

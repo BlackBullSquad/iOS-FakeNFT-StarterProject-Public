@@ -35,10 +35,6 @@ final class CollectionDetailsView: UIViewController {
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-    }
-    
     private func setupUI() {
         
         // MARK: - Layout Element Properties
@@ -253,7 +249,8 @@ final class CollectionDetailsView: UIViewController {
                     bottom: 0,
                     trailing: inset
                 )
-                section.interGroupSpacing = 28
+                // spacer size + interGroupSpacing
+                section.interGroupSpacing = 20 + 8
                 
                 return section
             }
