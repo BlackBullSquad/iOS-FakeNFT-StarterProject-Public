@@ -29,6 +29,8 @@ final class CollectionDetailsNftListCellView: UICollectionViewCell {
         let label = UILabel()
         label.font = .asset(.bold17)
         label.textColor = .asset(.main(.primary))
+        label.numberOfLines = 1
+        label.lineBreakMode = .byTruncatingTail
         label.textAlignment = .natural
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -39,6 +41,8 @@ final class CollectionDetailsNftListCellView: UICollectionViewCell {
         label.font = .asset(.medium10)
         label.textColor = .asset(.main(.primary))
         label.textAlignment = .natural
+        label.numberOfLines = 1
+        label.lineBreakMode = .byTruncatingTail
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -114,14 +118,15 @@ final class CollectionDetailsNftListCellView: UICollectionViewCell {
         contentView.addSubview(vStackMain)
         avatarView.translatesAutoresizingMaskIntoConstraints = false
         
+        let avatarSize = contentView.widthAnchor
+        let cartIconSize: CGFloat = 40
+        
         NSLayoutConstraint.activate([
+            avatarView.widthAnchor.constraint(equalTo: avatarSize),
+            avatarView.heightAnchor.constraint(equalTo: avatarSize),
             
-            // TODO: make var
-            avatarView.widthAnchor.constraint(equalTo: contentView.widthAnchor),
-            avatarView.heightAnchor.constraint(equalTo: contentView.widthAnchor),
-            
-            cartButton.widthAnchor.constraint(equalToConstant: 40),
-            cartButton.heightAnchor.constraint(equalTo: cartButton.widthAnchor),
+            cartButton.widthAnchor.constraint(equalToConstant: cartIconSize),
+            cartButton.heightAnchor.constraint(equalToConstant: cartIconSize)
         ])
     }
     

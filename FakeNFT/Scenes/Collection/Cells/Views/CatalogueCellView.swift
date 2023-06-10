@@ -28,6 +28,8 @@ final class CatalogueCellView: UITableViewCell {
         label.textColor = .asset(.main(.primary))
         label.font = .asset(.bold17)
         label.textAlignment = .natural
+        label.numberOfLines = 1
+        label.lineBreakMode = .byTruncatingTail
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
