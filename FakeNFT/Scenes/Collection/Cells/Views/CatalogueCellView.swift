@@ -61,7 +61,9 @@ final class CatalogueCellView: UITableViewCell {
 
         NSLayoutConstraint.activate([
             coverImage.widthAnchor.constraint(equalTo: contentView.widthAnchor),
-            coverImage.heightAnchor.constraint(equalToConstant: 140)
+            coverImage.heightAnchor.constraint(equalToConstant: 140),
+            
+            titleLabel.heightAnchor.constraint(equalToConstant: 22)
         ])
     }
 }
