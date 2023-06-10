@@ -11,6 +11,8 @@ final class CollectionDetailsCoverCellView: UICollectionViewCell {
         }
     }
     
+    var onBackButtonTap: (() -> Void)?
+    
     private lazy var coverImage: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -22,16 +24,30 @@ final class CollectionDetailsCoverCellView: UICollectionViewCell {
         return imageView
     }()
     
+    private lazy var backButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
+        button.tintColor = .asset(.main(.primary))
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
+        return button
+    }()
+
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         contentView.addSubview(coverImage)
+        contentView.addSubview(backButton)
         
         NSLayoutConstraint.activate([
             coverImage.topAnchor.constraint(equalTo: contentView.topAnchor),
             coverImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             coverImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             coverImage.heightAnchor.constraint(equalTo: coverImage.widthAnchor, multiplier: 0.83),
+            
+            backButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 55),
+            backButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 9)
         ])
     }
     
@@ -48,6 +64,10 @@ final class CollectionDetailsCoverCellView: UICollectionViewCell {
         )
     }
     
+    @objc private func didTapBackButton() {
+        onBackButtonTap?()
+    }
+
     func configure(with viewModel: CollectionDetailsCellViewModel) {
         self.viewModel = viewModel
     }

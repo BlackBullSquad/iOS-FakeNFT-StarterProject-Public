@@ -8,8 +8,8 @@ final class CatalogueCellView: UITableViewCell {
     // MARK: - Layout Element Properties
     
     // Constants
-    
-    let stackSpacingHalf: CGFloat = 4
+
+    private let stackSpacingHalf: CGFloat = 4
     
     // Properties
     

@@ -310,8 +310,14 @@ extension CollectionDetailsView: UICollectionViewDataSource {
                 let coverCell = cell as? CollectionDetailsCoverCellView,
                 let item = collectionViewModel.viewModel {
                 coverCell.configure(with: item)
+                
+                coverCell.onBackButtonTap = { [weak self] in
+                    guard let self = self else { return }
+                    self.collectionViewModel.coordinator?.goBack()
+                }
             }
             return cell
+
             
         case .description:
             let cell = collectionView.dequeueReusableCell(
