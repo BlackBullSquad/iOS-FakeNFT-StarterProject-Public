@@ -2,49 +2,33 @@ import UIKit
 
 struct TabBarControllerBuilder {
     
-    static var collectionsCoordinator: CollectionsCoordinator?
-
-    static func makeRootVC() -> UITabBarController? {
+    static var collectionsCoordinator: CollectionsCoordinator = {
         let api: NftAPI = FakeNftAPI()
         let catalogueDataService: CollectionProviderProtocol = CollectionProvider(api: api)
-        
-        // MARK: - View Controllers
-        let profileVC = ProfileVC()
-
         let collectionsNavController = UINavigationController()
-        collectionsCoordinator = CollectionsCoordinator(
+        let collectionsCoordinator = CollectionsCoordinator(
             api: api,
             navigationController: collectionsNavController,
             dataService: catalogueDataService
         )
-        collectionsCoordinator?.start()
+        collectionsCoordinator.start()
+        return collectionsCoordinator
+    }()
 
-        guard let collectionsCoordinator = collectionsCoordinator else {
-            return nil
-        }
+    static func makeRootVC() -> UITabBarController {
+        let profileVC = ProfileVC()
+        let profileNavController = UINavigationController(rootViewController: profileVC, title: "Профиль", imageName: "person.crop.circle.fill")
         
-        let cartVC = CartVC()
-
-        // MARK: - Navigation Controllers
-        let profileNavController = createNavigationController(
-            with: profileVC,
-            title: "Профиль",
-            imageName: "person.crop.circle.fill"
-        )
         let catalogueNavController = collectionsCoordinator.navigationController
         catalogueNavController.tabBarItem = UITabBarItem(
             title: "Каталог",
             image: UIImage(systemName: "rectangle.stack.fill"),
             tag: 1
         )
-            
-        let cartNavController = createNavigationController(
-            with: cartVC,
-            title: "Корзина",
-            imageName: "bag.fill"
-        )
 
-        // MARK: - Tab Bar Controller
+        let cartVC = CartVC()
+        let cartNavController = UINavigationController(rootViewController: cartVC, title: "Корзина", imageName: "bag.fill")
+
         let tabBarController = UITabBarController()
         tabBarController.viewControllers = [
             profileNavController,
@@ -52,17 +36,27 @@ struct TabBarControllerBuilder {
             cartNavController]
         tabBarController.selectedIndex = 1
         tabBarController.tabBar.backgroundColor = .asset(.additional(.white))
-        tabBarController.tabBar.tintColor = .asset(.main(.primary))
+        tabBarController.tabBar.tintColor = .asset(.additional(.blue))
+        tabBarController.tabBar.isTranslucent = false
+        tabBarController.tabBar.standardAppearance = tabBarAppearance
 
         return tabBarController
     }
 
-    private static func createNavigationController(with rootController: UIViewController, title: String, imageName: String) -> UINavigationController {
-
-        let navigationController = UINavigationController(rootViewController: rootController)
-        navigationController.tabBarItem = UITabBarItem(title: title, image: UIImage(systemName: imageName), tag: 0)
-
-        return navigationController
+    private static var tabBarAppearance: UITabBarAppearance {
+        let tabBarAppearance = UITabBarAppearance()
+        tabBarAppearance.configureWithOpaqueBackground()
+        tabBarAppearance.backgroundColor = .asset(.additional(.white))
+        tabBarAppearance.stackedLayoutAppearance.normal.iconColor = .asset(.main(.primary))
+        tabBarAppearance.shadowImage = nil
+        tabBarAppearance.shadowColor = nil
+        return tabBarAppearance
     }
+}
 
+extension UINavigationController {
+    convenience init(rootViewController: UIViewController, title: String, imageName: String) {
+        self.init(rootViewController: rootViewController)
+        self.tabBarItem = UITabBarItem(title: title, image: UIImage(systemName: imageName), tag: 0)
+    }
 }

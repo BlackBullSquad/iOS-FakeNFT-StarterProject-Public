@@ -4,6 +4,7 @@ protocol CollectionsCoordinatorProtocol: AnyObject {
     func start()
     func openCollectionDetail(withId id: Int)
     func openAuthorLink(url: URL)
+    func goBack()
 }
 
 final class CollectionsCoordinator {
@@ -38,6 +39,10 @@ final class CollectionsCoordinator {
         let webViewController = WebView(url: url)
         webViewController.hidesBottomBarWhenPushed = true
         navigationController.pushViewController(webViewController, animated: true)
+    }
+    
+    func goBack() {
+        navigationController.popViewController(animated: true)
     }
 }
 

@@ -56,24 +56,27 @@ final class CatalogueView: UIViewController {
     }
 
     private func setupNavBar() {
-        
         navigationItem.backBarButtonItem = UIBarButtonItem(
             title: "",
             style: .plain,
             target: nil,
-            action: nil)
-        
-        let sortButton: UIBarButtonItem = {
-            let button = UIBarButtonItem()
-            button.tintColor = .asset(.main(.primary))
-            button.style = .plain
-            button.image = UIImage(named: "sortIcon")
-            button.target = self
-            button.action = #selector(didTapSortButton)
-            return button
-        }()
-        
+            action: nil
+        )
+
+        let sortButton = UIBarButtonItem(
+            image: UIImage(named: "sortIcon"),
+            style: .plain,
+            target: self,
+            action: #selector(didTapSortButton)
+        )
+        sortButton.tintColor = .asset(.main(.primary))
+
+        let navBarAppearance = UINavigationBarAppearance()
+        navBarAppearance.backgroundColor = .asset(.additional(.white))
+        navBarAppearance.shadowColor = .none
+
         navigationController?.navigationBar.tintColor = .asset(.main(.primary))
+        navigationController?.navigationBar.standardAppearance = navBarAppearance
         navigationItem.rightBarButtonItem = sortButton
     }
 
