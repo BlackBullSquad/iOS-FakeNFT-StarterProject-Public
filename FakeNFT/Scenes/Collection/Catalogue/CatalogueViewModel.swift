@@ -14,6 +14,7 @@ final class CatalogueViewModel {
     
     private let dataService: CollectionProviderProtocol
     private let sortStateService: CollectionsSortOptionPersistenceServiceProtocol
+    private let loadingService: LoadingHUDServiceProtocol
 
     weak var coordinator: CollectionsCoordinatorProtocol?
     weak var updateListener: CatalogueViewModelUpdateListener?
@@ -28,26 +29,30 @@ final class CatalogueViewModel {
         self.dataService = dataService
         self.sortStateService = sortStateService
         self.coordinator = coordinator
+        self.loadingService = LoadingHUDService.shared
     }
 
     // MARK: - Public methods
     
     func didLoadCollections() {
+        
+        loadingService.showLoading()
+
         dataService.getCollections { [weak self] result in
             guard let self = self else { return }
             
-            switch result {
-            case .success(let collection):
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                self.loadingService.hideLoading()
+                
+                switch result {
+                case .success(let collection):
                     self.viewModels = collection.map { CatalogueCellViewModel($0) }
                     
                     let sortOption = self.loadSortOption()
                     self.sortModels(sortOption)
 
                     self.updateListener?.didUpdateCollections()
-                }
-            case .failure(let error):
-                DispatchQueue.main.async {
+                case .failure(let error):
                     self.updateListener?.didFailWithError(error)
                 }
             }

@@ -1,6 +1,5 @@
 import UIKit
 import WebKit
-import ProgressHUD
 
 final class WebView: UIViewController, WKNavigationDelegate {
     private let url: URL
