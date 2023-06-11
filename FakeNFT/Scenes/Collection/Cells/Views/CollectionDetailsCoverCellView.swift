@@ -32,7 +32,7 @@ final class CollectionDetailsCoverCellView: UICollectionViewCell {
         button.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
         return button
     }()
-
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -67,11 +67,11 @@ final class CollectionDetailsCoverCellView: UICollectionViewCell {
                                          .transition(.fade(1))]
         )
     }
-    
+
     @objc private func didTapBackButton() {
         onBackButtonTap?()
     }
-
+    
     func configure(with viewModel: CollectionDetailsCellViewModel) {
         self.viewModel = viewModel
     }
