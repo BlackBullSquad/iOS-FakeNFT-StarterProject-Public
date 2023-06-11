@@ -17,6 +17,59 @@ final class CollectionDetailsView: UIViewController {
         return collectionView
     }()
     
+    // MARK: - Layout Element Properties
+    
+    private lazy var coverImage: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        imageView.layer.cornerRadius = 12
+        imageView.clipsToBounds = true
+        imageView.kf.indicatorType = .activity
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
+    private lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .asset(.main(.primary))
+        label.font = .asset(.bold22)
+        label.textAlignment = .natural
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private lazy var authorLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .asset(.main(.primary))
+        label.font = .asset(.regular13)
+        label.textAlignment = .natural
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private lazy var authorLinkLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .asset(.additional(.blue))
+        label.font = .asset(.regular15)
+        label.textAlignment = .natural
+        label.isUserInteractionEnabled = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private lazy var text: UILabel = {
+        let label = UILabel()
+        label.font = .asset(.regular13)
+        label.textColor = .asset(.main(.primary))
+        label.textAlignment = .natural
+        label.numberOfLines = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    // MARK: - Initializers
+    
     init(viewModel: CollectionDetailsViewModel) {
         self.collectionViewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -26,12 +79,14 @@ final class CollectionDetailsView: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - UIViewController Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .asset(.additional(.white))
         collectionViewModel.loadCollection(with: collectionViewModel.collectionID) { [weak self] in
             DispatchQueue.main.async {
-                self?.setupUI()
+                self?.initializeUserInterface()
                 self?.collectionView.reloadData()
             }
         }
@@ -47,62 +102,18 @@ final class CollectionDetailsView: UIViewController {
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
-    private func setupUI() {
-        
-        // MARK: - Layout Element Properties
-        
-        lazy var coverImage: UIImageView = {
-            let imageView = UIImageView()
-            imageView.contentMode = .scaleAspectFill
-            imageView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-            imageView.layer.cornerRadius = 12
-            imageView.clipsToBounds = true
-            imageView.kf.indicatorType = .activity
-            imageView.translatesAutoresizingMaskIntoConstraints = false
-            return imageView
-        }()
-        
-        lazy var titleLabel: UILabel = {
-            let label = UILabel()
-            label.textColor = .asset(.main(.primary))
-            label.font = .asset(.bold22)
-            label.textAlignment = .natural
-            label.translatesAutoresizingMaskIntoConstraints = false
-            return label
-        }()
-        
-        lazy var authorLabel: UILabel = {
-            let label = UILabel()
-            label.textColor = .asset(.main(.primary))
-            label.font = .asset(.regular13)
-            label.textAlignment = .natural
-            label.translatesAutoresizingMaskIntoConstraints = false
-            return label
-        }()
-        
-        lazy var authorLinkLabel: UILabel = {
-            let label = UILabel()
-            label.textColor = .asset(.additional(.blue))
-            label.font = .asset(.regular15)
-            label.textAlignment = .natural
-            label.isUserInteractionEnabled = true
-            label.translatesAutoresizingMaskIntoConstraints = false
-            return label
-        }()
-        
-        lazy var text: UILabel = {
-            let label = UILabel()
-            label.font = .asset(.regular13)
-            label.textColor = .asset(.main(.primary))
-            label.textAlignment = .natural
-            label.numberOfLines = 0
-            label.translatesAutoresizingMaskIntoConstraints = false
-            return label
-        }()
-        
-        // MARK: - Stacks
-        
-        lazy var hStack: UIStackView = {
+    // MARK: - Setup UI
+    
+    private func initializeUserInterface() {
+        initializeStackViewElements()
+        initializeCollectionView()
+        fillInterfaceElementsWithData()
+    }
+    
+    // Stacks
+
+    private func initializeStackViewElements() {
+        let hStack: UIStackView = {
             let stack = UIStackView(arrangedSubviews: [authorLabel, authorLinkLabel])
             stack.axis = .horizontal
             stack.spacing = 4
@@ -112,7 +123,7 @@ final class CollectionDetailsView: UIViewController {
             return stack
         }()
         
-        lazy var vStackInside: UIStackView = {
+        let vStackInside: UIStackView = {
             let stack = UIStackView(arrangedSubviews: [titleLabel, hStack])
             stack.axis = .vertical
             stack.spacing = 8
@@ -122,7 +133,7 @@ final class CollectionDetailsView: UIViewController {
             return stack
         }()
         
-        lazy var vStackMain: UIStackView = {
+        let _: UIStackView = {
             let stack = UIStackView(arrangedSubviews: [vStackInside, text])
             stack.axis = .vertical
             stack.spacing = 0
@@ -130,12 +141,15 @@ final class CollectionDetailsView: UIViewController {
             stack.translatesAutoresizingMaskIntoConstraints = false
             return stack
         }()
-        
-        // MARK: - Collection View Setup
-        
+    }
+
+    // Collection View Setup
+    
+    private func initializeCollectionView() {
+
         collectionView.backgroundColor = .clear
         collectionView.contentInsetAdjustmentBehavior = .never
-        
+
         collectionView.register(
             CollectionDetailsCoverCellView.self,
             forCellWithReuseIdentifier: CollectionDetailsCoverCellView.identifier
@@ -148,30 +162,30 @@ final class CollectionDetailsView: UIViewController {
             CollectionDetailsNftListCellView.self,
             forCellWithReuseIdentifier: CollectionDetailsNftListCellView.identifier
         )
-        
+
         collectionView.delegate = self
         collectionView.dataSource = self
-        
+
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        
-        // MARK: - Layout constraints
-        
+
+        // Layout constraints
         view.addSubview(collectionView)
-        
+
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.topAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
-        
-        // MARK: - Filling interface elements with data
-        
+    }
+
+    private func fillInterfaceElementsWithData() {
+        // Filling interface elements with data
         titleLabel.text = collectionViewModel.viewModel?.title
         authorLabel.text = "Автор коллекции"
         authorLinkLabel.text = collectionViewModel.viewModel?.author
         text.text = collectionViewModel.viewModel?.description
-        
+
         let placeholder = UIImage(named: "placeholder")
         let imageURL = collectionViewModel.viewModel?.cover
         coverImage.kf.setImage(
@@ -184,7 +198,6 @@ final class CollectionDetailsView: UIViewController {
         )
     }
 }
-
 
 // MARK: - Delegate
 

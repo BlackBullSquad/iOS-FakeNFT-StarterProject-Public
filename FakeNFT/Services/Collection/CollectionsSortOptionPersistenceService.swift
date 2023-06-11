@@ -8,7 +8,7 @@ protocol CollectionsSortOptionPersistenceServiceProtocol {
 final class CollectionsSortOptionPersistenceService {
     
     private let userDefaults: UserDefaults
-    private let sortOptionKey = "SortOptionKey"
+    private let sortOptionKey = "nftCollectionScreen.sortOption"
     private let encoder = JSONEncoder()
     private let decoder = JSONDecoder()
     
