@@ -40,12 +40,16 @@ final class CollectionDetailsCoverCellView: UICollectionViewCell {
         contentView.addSubview(coverImage)
         contentView.addSubview(backButton)
         
+        let buttonSize: CGFloat = 24
+        
         NSLayoutConstraint.activate([
             coverImage.topAnchor.constraint(equalTo: contentView.topAnchor),
             coverImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             coverImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             coverImage.heightAnchor.constraint(equalTo: coverImage.widthAnchor, multiplier: 0.83),
             
+            backButton.widthAnchor.constraint(equalToConstant: buttonSize),
+            backButton.heightAnchor.constraint(equalToConstant: buttonSize),
             backButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 55),
             backButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 9)
         ])

@@ -86,8 +86,12 @@ final class CollectionDetailsView: UIViewController {
         view.backgroundColor = .asset(.additional(.white))
         collectionViewModel.loadCollection(with: collectionViewModel.collectionID) { [weak self] in
             DispatchQueue.main.async {
-                self?.initializeUserInterface()
-                self?.collectionView.reloadData()
+                if let errorMessage = self?.collectionViewModel.errorMessage {
+                    self?.didFailWithError(errorMessage)
+                } else {
+                    self?.initializeUserInterface()
+                    self?.collectionView.reloadData()
+                }
             }
         }
     }
@@ -271,6 +275,23 @@ extension CollectionDetailsView: UICollectionViewDataSource {
                 collectionCell.configure(with: item)
             }
             return cell
+        }
+    }
+}
+
+
+// MARK: - Error Alert
+
+extension CollectionDetailsView {
+    func didFailWithError(_ error: Error) {
+        let alertController = UIAlertController(
+            title: "Error",
+            message: error.localizedDescription,
+            preferredStyle: .alert
+        )
+        alertController.addAction(UIAlertAction(title: "OK", style: .default))
+        DispatchQueue.main.async { [weak self] in
+            self?.present(alertController, animated: true)
         }
     }
 }

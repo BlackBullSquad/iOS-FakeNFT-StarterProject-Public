@@ -144,9 +144,18 @@ extension CatalogueView: CatalogueViewModelUpdateListener {
         updateSnapshot()
     }
 
+    // Error Alert
     func didFailWithError(_ error: Error) {
-        let alert = UIAlertController(title: "Error", message: "Failed to load data: \(error.localizedDescription)", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        let alert = UIAlertController(
+            title: "Error",
+            message: "Failed to load data: \(error.localizedDescription)",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(
+            title: "OK",
+            style: .default,
+            handler: nil)
+        )
         self.present(alert, animated: true, completion: nil)
     }
 }

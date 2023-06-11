@@ -17,8 +17,8 @@ final class CollectionDetailsNftListCellView: UICollectionViewCell {
     
     // Constants
     
-    let stackSpacingHalf: CGFloat = 4
-    let stackSpacing: CGFloat = 8
+    private let stackSpacingHalf: CGFloat = 4
+    private let stackSpacing: CGFloat = 8
     
     // Properties
     
@@ -126,7 +126,10 @@ final class CollectionDetailsNftListCellView: UICollectionViewCell {
             avatarView.heightAnchor.constraint(equalTo: avatarSize),
             
             cartButton.widthAnchor.constraint(equalToConstant: cartIconSize),
-            cartButton.heightAnchor.constraint(equalToConstant: cartIconSize)
+            cartButton.heightAnchor.constraint(equalToConstant: cartIconSize),
+            
+            vStackMain.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            vStackMain.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         ])
     }
     

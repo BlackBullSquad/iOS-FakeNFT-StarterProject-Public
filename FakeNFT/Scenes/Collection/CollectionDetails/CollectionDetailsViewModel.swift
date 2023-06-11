@@ -2,12 +2,12 @@ import Foundation
 
 final class CollectionDetailsViewModel {
     
-    private let dataService: CollectionProviderProtocol
     let collectionID: Int
-    
-    weak var coordinator: CollectionsCoordinatorProtocol?
+    var errorMessage: Error?
     
     var viewModel: CollectionDetailsCellViewModel?
+    weak var coordinator: CollectionsCoordinatorProtocol?
+    private let dataService: CollectionProviderProtocol
     
     init(
         dataService: CollectionProviderProtocol,
@@ -17,7 +17,6 @@ final class CollectionDetailsViewModel {
         self.dataService = dataService
         self.coordinator = coordinator
         self.collectionID = collectionID
-        print(collectionID)
     }
     
     // MARK: - Public methods
@@ -33,15 +32,17 @@ final class CollectionDetailsViewModel {
                     completion()
                 }
             case .failure(let error):
-                assertionFailure("\(error)")
+                self.errorMessage = error
+                DispatchQueue.main.async {
+                    completion()
+                }
             }
         }
     }
-    
+
     // MARK: - Private Methods
     
     private func handleAuthorLinkTap(url: URL) {
-        print("Hello Cell I see you. CollectionViewModel")
         coordinator?.openAuthorLink(url: url)
     }
 

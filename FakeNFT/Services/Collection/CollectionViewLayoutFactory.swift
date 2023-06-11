@@ -16,33 +16,43 @@ struct CollectionViewLayoutFactory {
             let inset: CGFloat = 16
             
             switch sectionType {
+            
+            // Collection cover image
             case .cover:
-                // Collection cover image
+                
                 let itemSize = NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(1.0),
                     heightDimension: .fractionalWidth(0.83)
                 )
+                
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                
                 let group = NSCollectionLayoutGroup.horizontal(
                     layoutSize: itemSize,
                     subitem: item,
                     count: 1
                 )
+               
                 let section = NSCollectionLayoutSection(group: group)
+               
                 return section
                 
+            // Collection text description
             case .description:
-                // Collection text description
+                
                 let itemSize = NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(1.0),
                     heightDimension: .estimated(100)
                 )
+                
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                
                 let group = NSCollectionLayoutGroup.horizontal(
                     layoutSize: itemSize,
                     subitem: item,
                     count: 1
                 )
+                
                 let section = NSCollectionLayoutSection(group: group)
                 section.contentInsets = NSDirectionalEdgeInsets(
                     top: inset,
@@ -50,15 +60,19 @@ struct CollectionViewLayoutFactory {
                     bottom: 21,
                     trailing: inset
                 )
+                
                 return section
                 
+            // Collection NFT list
             case .collection:
-                // Collection NFT list
+                
                 let itemSize = NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(1/3),
                     heightDimension: .estimated(192)
                 )
+               
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                
                 let groupSize = NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(1.0),
                     heightDimension: .estimated(192)
@@ -69,6 +83,7 @@ struct CollectionViewLayoutFactory {
                     count: 3
                 )
                 group.interItemSpacing = .fixed(10)
+                
                 let section = NSCollectionLayoutSection(group: group)
                 section.contentInsets = NSDirectionalEdgeInsets(
                     top: 0,
@@ -77,6 +92,7 @@ struct CollectionViewLayoutFactory {
                     trailing: inset
                 )
                 section.interGroupSpacing = 20 + 8
+                
                 return section
             }
         }
