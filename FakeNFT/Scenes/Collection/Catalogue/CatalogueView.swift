@@ -20,13 +20,13 @@ final class CatalogueView: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .asset(.additional(.white))
         setupTableView()
-        setupNavBar()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         catalogueViewModel.updateListener = self
         catalogueViewModel.loadCollections()
+        setupNavBar()
     }
 
     private func setupTableView() {
