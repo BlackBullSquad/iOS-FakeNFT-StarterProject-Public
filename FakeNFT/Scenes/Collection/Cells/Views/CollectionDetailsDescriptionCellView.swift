@@ -99,7 +99,6 @@ final class CollectionDetailsDescriptionCellView: UICollectionViewCell {
     }
     
     @objc private func handleAuthorTap() {
-        print("AuthorLink Tapped")
         guard let authorURL = viewModel?.authorURL else { return }
         viewModel?.authorLinkTapped(authorURL)
     }

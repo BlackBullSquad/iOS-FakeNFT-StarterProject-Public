@@ -25,7 +25,7 @@ final class CatalogueView: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         catalogueViewModel.updateListener = self
-        catalogueViewModel.loadCollections()
+        catalogueViewModel.didLoadCollections()
         setupNavBar()
     }
 

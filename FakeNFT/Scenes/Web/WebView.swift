@@ -36,7 +36,8 @@ private extension WebView {
     
     func setupViews() {
         let navigationBarAppearance = UINavigationBarAppearance()
-        navigationBarAppearance.configureWithDefaultBackground()
+        navigationBarAppearance.shadowColor = .none
+        navigationBarAppearance.backgroundColor = .asset(.additional(.white))
         navigationController?.navigationBar.scrollEdgeAppearance = navigationBarAppearance
 
         let backItem = UIBarButtonItem()

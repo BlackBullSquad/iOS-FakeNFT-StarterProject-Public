@@ -10,7 +10,7 @@ struct CollectionDetailsCellViewModel {
     let nfts: [NftCellViewModel]
     let nftsCount: Int
 
-    var authorLinkTapped: ((URL) -> Void)
+    let authorLinkTapped: ((URL) -> Void)
 
     init(_ model: Collection, authorLinkTapped: @escaping ((URL) -> Void)) {
         self.collectionId = model.id

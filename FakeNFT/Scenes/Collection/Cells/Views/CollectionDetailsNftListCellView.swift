@@ -157,10 +157,6 @@ final class CollectionDetailsNftListCellView: UICollectionViewCell {
     }
     
     private func updateCartButtonImage() {
-        if isInCart {
-            cartButton.image = UIImage(named: "deleteFromCart")
-        } else {
-            cartButton.image = UIImage(named: "addToCart")
-        }
+        cartButton.image = isInCart ? UIImage(named: "deleteFromCart") : UIImage(named: "addToCart")
     }
 }

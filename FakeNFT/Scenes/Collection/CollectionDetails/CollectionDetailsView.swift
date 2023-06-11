@@ -84,7 +84,7 @@ final class CollectionDetailsView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .asset(.additional(.white))
-        collectionViewModel.loadCollection(with: collectionViewModel.collectionID) { [weak self] in
+        collectionViewModel.didLoadCollection(with: collectionViewModel.collectionID) { [weak self] in
             DispatchQueue.main.async {
                 if let errorMessage = self?.collectionViewModel.errorMessage {
                     self?.didFailWithError(errorMessage)

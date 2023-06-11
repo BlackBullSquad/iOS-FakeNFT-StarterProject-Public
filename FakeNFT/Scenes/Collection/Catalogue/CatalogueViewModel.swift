@@ -32,7 +32,7 @@ final class CatalogueViewModel {
 
     // MARK: - Public methods
     
-    func loadCollections() {
+    func didLoadCollections() {
         dataService.getCollections { [weak self] result in
             guard let self = self else { return }
             

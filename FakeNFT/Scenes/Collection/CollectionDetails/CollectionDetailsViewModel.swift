@@ -21,7 +21,7 @@ final class CollectionDetailsViewModel {
     
     // MARK: - Public methods
     
-    func loadCollection(with id: Int, completion: @escaping () -> Void) {
+    func didLoadCollection(with id: Int, completion: @escaping () -> Void) {
         dataService.getCollection(id: id) { [weak self] result in
             guard let self = self else { return }
 
