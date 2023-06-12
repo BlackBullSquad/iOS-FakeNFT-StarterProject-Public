@@ -3,9 +3,12 @@ import UIKit
 struct TabBarControllerBuilder {
 
     static func makeRootVC() -> UITabBarController {
-
+        let nftApi: NftAPI = FakeNftAPI()
+        let profileService = ProfileServiceImpl(nftApi: nftApi)
+        let settingsStorage = SettingsStorage()
+        
         // MARK: - View Controllers
-        let profileVC = ProfileVC()
+        let profileVC = ProfileVC(profileService: profileService, settingsStorage: settingsStorage)
 
         let catalogueViewModel = CatalogueViewModel(dataService: CollectionProvider(api: FakeNftAPI()))
         let catalogueVC = CatalogueViewController(viewModel: catalogueViewModel)

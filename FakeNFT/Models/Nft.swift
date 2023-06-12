@@ -8,3 +8,14 @@ struct Nft: Identifiable {
     let images: [URL?]
     let price: Float
 }
+
+extension Nft {
+    init(nftDTO: NftDTO) {
+        self.id = Int(nftDTO.id) ?? 0
+        self.name = nftDTO.name
+        self.description = nftDTO.description
+        self.price = nftDTO.price
+        self.rating = nftDTO.rating
+        self.images = nftDTO.images.map { URL(string: $0) }
+    }
+}
