@@ -1,18 +1,35 @@
 import UIKit
 import Kingfisher
 
+enum CartState {
+    case added, removed
+    
+    var image: UIImage? {
+        switch self {
+        case .added:
+            return UIImage(named: "deleteFromCart")
+        case .removed:
+            return UIImage(named: "addToCart")
+        }
+    }
+}
+
 final class CollectionDetailsNftListCellView: UICollectionViewCell {
     
     static let identifier = "CollectionCell"
+    
+    private var cartState: CartState = .removed {
+        didSet {
+            updateCartButtonImage()
+        }
+    }
     
     var viewModel: NftCellViewModel? {
         didSet {
             didUpdateViewModel()
         }
     }
-    
-    private var isInCart: Bool = false
-    
+        
     // MARK: - Layout Element Properties
     
     // Constants
@@ -149,14 +166,19 @@ final class CollectionDetailsNftListCellView: UICollectionViewCell {
         rating.rating = viewModel?.rating
         titleLabel.text = viewModel?.name
         priceLabel.text = viewModel?.price
+        updateCartState()
     }
 
-    @objc private func cartButtonTapped() {
-        isInCart.toggle()
-        updateCartButtonImage()
+    private func updateCartState() {
+        cartState = viewModel?.isInCart == true ? .added : .removed
     }
     
+    @objc private func cartButtonTapped() {
+        viewModel?.toggleCartStatus()
+        updateCartState()
+    }
+
     private func updateCartButtonImage() {
-        cartButton.image = isInCart ? UIImage(named: "deleteFromCart") : UIImage(named: "addToCart")
+        cartButton.image = cartState.image
     }
 }
