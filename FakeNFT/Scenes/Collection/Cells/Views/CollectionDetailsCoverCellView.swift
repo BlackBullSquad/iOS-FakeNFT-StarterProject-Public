@@ -5,7 +5,7 @@ final class CollectionDetailsCoverCellView: UICollectionViewCell {
     
     static let identifier = "CoverCell"
     
-    var viewModel: CollectionDetailsCellViewModel? {
+    var viewModel: CoverAndDescriptionCellsViewModel? {
         didSet {
             didUpdateViewModel()
         }
@@ -72,7 +72,7 @@ final class CollectionDetailsCoverCellView: UICollectionViewCell {
         onBackButtonTap?()
     }
     
-    func configure(with viewModel: CollectionDetailsCellViewModel) {
+    func configure(with viewModel: CoverAndDescriptionCellsViewModel) {
         self.viewModel = viewModel
     }
 }

@@ -115,7 +115,7 @@ final class CollectionDetailsView: UIViewController {
     }
     
     // Stacks
-
+    
     private func initializeStackViewElements() {
         let hStack: UIStackView = {
             let stack = UIStackView(arrangedSubviews: [authorLabel, authorLinkLabel])
@@ -146,14 +146,14 @@ final class CollectionDetailsView: UIViewController {
             return stack
         }()
     }
-
+    
     // Collection View Setup
     
     private func initializeCollectionView() {
-
+        
         collectionView.backgroundColor = .clear
         collectionView.contentInsetAdjustmentBehavior = .never
-
+        
         collectionView.register(
             CollectionDetailsCoverCellView.self,
             forCellWithReuseIdentifier: CollectionDetailsCoverCellView.identifier
@@ -166,15 +166,15 @@ final class CollectionDetailsView: UIViewController {
             CollectionDetailsNftListCellView.self,
             forCellWithReuseIdentifier: CollectionDetailsNftListCellView.identifier
         )
-
+        
         collectionView.delegate = self
         collectionView.dataSource = self
-
+        
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-
+        
         // Layout constraints
         view.addSubview(collectionView)
-
+        
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.topAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
@@ -182,16 +182,16 @@ final class CollectionDetailsView: UIViewController {
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
     }
-
+    
     private func fillInterfaceElementsWithData() {
         // Filling interface elements with data
-        titleLabel.text = collectionViewModel.viewModel?.title
+        titleLabel.text = collectionViewModel.coverAndDescriptionCellsViewModel?.title
         authorLabel.text = "Автор коллекции"
-        authorLinkLabel.text = collectionViewModel.viewModel?.author
-        text.text = collectionViewModel.viewModel?.description
-
+        authorLinkLabel.text = collectionViewModel.coverAndDescriptionCellsViewModel?.author
+        text.text = collectionViewModel.coverAndDescriptionCellsViewModel?.description
+        
         let placeholder = UIImage(named: "placeholder")
-        let imageURL = collectionViewModel.viewModel?.cover
+        let imageURL = collectionViewModel.coverAndDescriptionCellsViewModel?.cover
         coverImage.kf.setImage(
             with: imageURL,
             placeholder: placeholder,
@@ -218,7 +218,7 @@ extension CollectionDetailsView: UICollectionViewDelegate {
         switch sectionType {
         case .cover: return 1
         case .description: return 1
-        case .collection: return collectionViewModel.viewModel?.nftsCount ?? 0
+        case .collection: return collectionViewModel.coverAndDescriptionCellsViewModel?.nftsCount ?? 0
         }
     }
 }
@@ -241,7 +241,7 @@ extension CollectionDetailsView: UICollectionViewDataSource {
             )
             if
                 let coverCell = cell as? CollectionDetailsCoverCellView,
-                let item = collectionViewModel.viewModel {
+                let item = collectionViewModel.coverAndDescriptionCellsViewModel {
                 coverCell.configure(with: item)
                 
                 coverCell.onBackButtonTap = { [weak self] in
@@ -250,7 +250,7 @@ extension CollectionDetailsView: UICollectionViewDataSource {
                 }
             }
             return cell
-
+            
             
         case .description:
             let cell = collectionView.dequeueReusableCell(
@@ -259,7 +259,7 @@ extension CollectionDetailsView: UICollectionViewDataSource {
             )
             if
                 let descriptionCell = cell as? CollectionDetailsDescriptionCellView,
-                let item = collectionViewModel.viewModel {
+                let item = collectionViewModel.coverAndDescriptionCellsViewModel {
                 descriptionCell.configure(with: item)
             }
             return cell
@@ -271,9 +271,10 @@ extension CollectionDetailsView: UICollectionViewDataSource {
             )
             if
                 let collectionCell = cell as? CollectionDetailsNftListCellView,
-                let item = collectionViewModel.viewModel?.nfts[indexPath.item] {
-                collectionCell.configure(with: item)
-            }
+                let nftListViewModel = collectionViewModel.nftListViewModel {
+                    let item = nftListViewModel.nfts[indexPath.item]
+                    collectionCell.configure(with: item)
+                }
             return cell
         }
     }
