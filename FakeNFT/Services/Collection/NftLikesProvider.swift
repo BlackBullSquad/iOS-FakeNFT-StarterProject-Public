@@ -20,7 +20,7 @@ final class NftLikesProvider {
             case .success(let profile):
                 completion(.success(profile.likes))
             case.failure(let error):
-                print("Failed to fetch likes: \(error)")
+                LogService.shared.log("Failed to fetch likes: \(error)", level: .error)
                 completion(.failure(.networkError(.requestFailed)))
             }
         }
@@ -43,12 +43,12 @@ final class NftLikesProvider {
                     case .success(_):
                         completion(.success(()))
                     case .failure(let error):
-                        print("Failed to update likes: \(error)")
+                        LogService.shared.log("Failed to update likes: \(error)", level: .error)
                         completion(.failure(.networkError(.updateError)))
                     }
                 }
             case .failure(let error):
-                print("Failed to fetch profile for updating likes: \(error)")
+                LogService.shared.log("Failed to fetch profile for updating likes: \(error)", level: .error)
                 completion(.failure(.networkError(.updateError)))
             }
         }

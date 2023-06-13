@@ -23,7 +23,7 @@ final class CollectionProvider {
             case .success(let nftsData):
                 self.handleNftData(nftsData, completion: completion)
             case .failure(let error):
-                print("Failed to fetch nftsData: \(error)")
+                LogService.shared.log("Failed to fetch nftsData: \(error)", level: .error)
                 completion(.failure(.networkError(.requestFailed)))
             }
         }
@@ -45,7 +45,7 @@ final class CollectionProvider {
             case .success(let collectionData):
                 self.processSuccessfulResponse(nftsData: nftsData, collectionData: collectionData, completion: completion)
             case .failure(let error):
-                print("Failed to fetch collectionData: \(error)")
+                LogService.shared.log("Failed to fetch collectionData: \(error)", level: .error)
                 completion(.failure(.networkError(.requestFailed)))
             }
         }
@@ -81,10 +81,10 @@ final class CollectionProvider {
     private func handleCollectionFailure(_ error: ApplicationError, completion: (Result<Collection, ApplicationError>) -> Void) {
         switch error {
         case .networkError(let networkError):
-            print("Failed to fetch collections: \(networkError)")
+            LogService.shared.log("Failed to fetch collections: \(networkError)", level: .error)
             completion(.failure(.networkError(.requestFailed)))
         case .dataError(let dataError):
-            print("Failed to fetch collections: \(dataError)")
+            LogService.shared.log("Failed to fetch collections: \(dataError)", level: .error)
             completion(.failure(.dataError(.decodingError)))
         }
     }

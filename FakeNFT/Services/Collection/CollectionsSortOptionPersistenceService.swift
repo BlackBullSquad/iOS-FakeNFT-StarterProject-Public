@@ -21,7 +21,7 @@ final class CollectionsSortOptionPersistenceService {
             let encoded = try encoder.encode(option)
             userDefaults.set(encoded, forKey: sortOptionKey)
         } catch {
-            print("Failed to save sort option: \(error)")
+            LogService.shared.log("Failed to save sort option: \(error)", level: .error)
         }
     }
     
@@ -30,7 +30,7 @@ final class CollectionsSortOptionPersistenceService {
         do {
             return try decoder.decode(CollectionsSortOption.self, from: savedData)
         } catch {
-            print("Failed to load sort option: \(error)")
+            LogService.shared.log("Failed to load sort option: \(error)", level: .error)
             return nil
         }
     }

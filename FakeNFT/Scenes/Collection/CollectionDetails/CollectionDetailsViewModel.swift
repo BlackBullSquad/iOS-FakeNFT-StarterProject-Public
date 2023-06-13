@@ -105,9 +105,9 @@ final class CollectionDetailsViewModel {
                 self?.likeService.updateLikes(userID: self?.userID ?? 0, likes: likes) { result in
                     switch result {
                     case .success():
-                        print("Likes updated successfully.")
+                        LogService.shared.log("Likes updated successfully.", level: .info)
                     case .failure(let error):
-                        print("Failed to update likes: \(error)")
+                        LogService.shared.log("Failed to update likes: \(error).", level: .error)
                         self?.errorMessage = error
                     }
                 }
