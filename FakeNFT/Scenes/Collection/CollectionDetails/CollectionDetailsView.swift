@@ -155,12 +155,12 @@ final class CollectionDetailsView: UIViewController {
         collectionView.contentInsetAdjustmentBehavior = .never
         
         collectionView.register(
-            CollectionDetailsCoverCellView.self,
-            forCellWithReuseIdentifier: CollectionDetailsCoverCellView.identifier
+            CoverCellView.self,
+            forCellWithReuseIdentifier: CoverCellView.identifier
         )
         collectionView.register(
-            CollectionDetailsDescriptionCellView.self,
-            forCellWithReuseIdentifier: CollectionDetailsDescriptionCellView.identifier
+            DescriptionCellView.self,
+            forCellWithReuseIdentifier: DescriptionCellView.identifier
         )
         collectionView.register(
             NftListView.self,
@@ -236,11 +236,11 @@ extension CollectionDetailsView: UICollectionViewDataSource {
         switch sectionType {
         case .cover:
             let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: CollectionDetailsCoverCellView.identifier,
+                withReuseIdentifier: CoverCellView.identifier,
                 for: indexPath
             )
             if
-                let coverCell = cell as? CollectionDetailsCoverCellView,
+                let coverCell = cell as? CoverCellView,
                 let item = collectionViewModel.coverAndDescriptionCellsViewModel {
                 coverCell.configure(with: item)
                 
@@ -254,11 +254,11 @@ extension CollectionDetailsView: UICollectionViewDataSource {
             
         case .description:
             let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: CollectionDetailsDescriptionCellView.identifier,
+                withReuseIdentifier: DescriptionCellView.identifier,
                 for: indexPath
             )
             if
-                let descriptionCell = cell as? CollectionDetailsDescriptionCellView,
+                let descriptionCell = cell as? DescriptionCellView,
                 let item = collectionViewModel.coverAndDescriptionCellsViewModel {
                 descriptionCell.configure(with: item)
             }

@@ -1,6 +1,6 @@
 import UIKit
 
-final class CollectionDetailsDescriptionCellView: UICollectionViewCell {
+final class DescriptionCellView: UICollectionViewCell {
     
     static let identifier = "DescriptionCell"
     

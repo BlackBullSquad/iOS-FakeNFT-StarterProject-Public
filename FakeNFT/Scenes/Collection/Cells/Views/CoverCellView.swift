@@ -1,7 +1,7 @@
 import UIKit
 import Kingfisher
 
-final class CollectionDetailsCoverCellView: UICollectionViewCell {
+final class CoverCellView: UICollectionViewCell {
     
     static let identifier = "CoverCell"
     
