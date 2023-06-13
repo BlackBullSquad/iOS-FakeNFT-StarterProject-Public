@@ -14,7 +14,7 @@ enum CartState {
     }
 }
 
-final class CollectionDetailsNftListCellView: UICollectionViewCell {
+final class NftListView: UICollectionViewCell {
     
     static let identifier = "CollectionCell"
     
@@ -154,14 +154,27 @@ final class CollectionDetailsNftListCellView: UICollectionViewCell {
         self.viewModel = viewModel
     }
     
+    // MARK: - Reuse Preparation
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        titleLabel.text = nil
+        priceLabel.text = nil
+        avatarView.viewModel = nil
+        rating.rating = 0
+        cartButton.image = nil
+        viewModel = nil
+    }
+
     // MARK: - Private Methods
     
     private func didUpdateViewModel() {
         avatarView.viewModel = .init(
             imageSize: .large,
             imageURL: viewModel?.imageURL,
-            isLiked: false,
-            likeButtonAction: { return }
+            isLiked: viewModel?.isLiked ?? false,
+            likeButtonAction: { [weak self] in self?.likeButtonTapped() }
         )
         rating.rating = viewModel?.rating
         titleLabel.text = viewModel?.name
@@ -180,5 +193,10 @@ final class CollectionDetailsNftListCellView: UICollectionViewCell {
 
     private func updateCartButtonImage() {
         cartButton.image = cartState.image
+    }
+    
+    private func likeButtonTapped() {
+        viewModel?.toggleLike()
+        didUpdateViewModel()
     }
 }

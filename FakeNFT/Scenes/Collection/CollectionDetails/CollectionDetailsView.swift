@@ -163,8 +163,8 @@ final class CollectionDetailsView: UIViewController {
             forCellWithReuseIdentifier: CollectionDetailsDescriptionCellView.identifier
         )
         collectionView.register(
-            CollectionDetailsNftListCellView.self,
-            forCellWithReuseIdentifier: CollectionDetailsNftListCellView.identifier
+            NftListView.self,
+            forCellWithReuseIdentifier: NftListView.identifier
         )
         
         collectionView.delegate = self
@@ -266,13 +266,13 @@ extension CollectionDetailsView: UICollectionViewDataSource {
             
         case .collection:
             let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: CollectionDetailsNftListCellView.identifier,
+                withReuseIdentifier: NftListView.identifier,
                 for: indexPath
             )
             if
-                let collectionCell = cell as? CollectionDetailsNftListCellView,
+                let collectionCell = cell as? NftListView,
                 let nftListViewModel = collectionViewModel.nftListViewModel {
-                    let item = nftListViewModel.nfts[indexPath.item]
+                    let item = nftListViewModel.nftCellViewModels[indexPath.item]
                     collectionCell.configure(with: item)
                 }
             return cell

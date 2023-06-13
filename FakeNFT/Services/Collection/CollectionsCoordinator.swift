@@ -13,12 +13,14 @@ final class CollectionsCoordinator {
     private let api: NftAPI
     private let dataService: CollectionProviderProtocol
     private let shoppingCartService: ShoppingCart
+    private let likeService: NftLikesProviderProtocol
 
     init(api: NftAPI, navigationController: UINavigationController, dataService: CollectionProviderProtocol) {
         self.api = api
         self.navigationController = navigationController
         self.dataService = dataService
         self.shoppingCartService = FakeShoppingCart()
+        self.likeService = NftLikesProvider(api: api)
     }
 
     func start() {
@@ -32,7 +34,8 @@ final class CollectionsCoordinator {
             dataService: dataService,
             coordinator: self,
             collectionID: id,
-            shoppingCartService: shoppingCartService
+            shoppingCartService: shoppingCartService,
+            likeService: likeService
         )
         let collectionViewController = CollectionDetailsView(viewModel: collectionViewModel)
         collectionViewController.hidesBottomBarWhenPushed = true

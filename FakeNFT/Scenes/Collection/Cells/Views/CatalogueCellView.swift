@@ -68,6 +68,15 @@ final class CatalogueCellView: UITableViewCell {
             titleLabel.heightAnchor.constraint(equalToConstant: 22)
         ])
     }
+    
+    // MARK: - Reuse Preparation
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        titleLabel.text = nil
+        coverImage.kf.cancelDownloadTask()
+        coverImage.image = nil
+    }
 }
 
 extension CatalogueCellView {

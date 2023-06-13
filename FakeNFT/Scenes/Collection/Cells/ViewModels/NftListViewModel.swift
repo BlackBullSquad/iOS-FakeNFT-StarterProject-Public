@@ -1,9 +1,28 @@
-import Foundation
-
 struct NftListViewModel {
-    let nfts: [NftCellViewModel]
+    let nftCellViewModels: [NftCellViewModel]
     
-    init(nfts: [Nft], shoppingCart: ShoppingCart) {
-        self.nfts = nfts.map { NftCellViewModel($0, shoppingCartService: shoppingCart) }
+    init(
+        nfts: [Nft],
+        fetchedLikes: [Int],
+        shoppingCart: ShoppingCart,
+        updateLikesAction: @escaping ([Int]) -> Void
+    ) {
+        var likes = fetchedLikes
+        self.nftCellViewModels = nfts.map { nft -> NftCellViewModel in
+            let isLiked = likes.contains(nft.id)
+            return NftCellViewModel(
+                nft,
+                isLiked: isLiked,
+                shoppingCartService: shoppingCart,
+                didUpdateLike: { id in
+                    if likes.contains(id) {
+                        likes.removeAll(where: { $0 == id })
+                    } else {
+                        likes.append(id)
+                    }
+                    updateLikesAction(likes)
+                }
+            )
+        }
     }
 }
