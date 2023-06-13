@@ -2,7 +2,7 @@ import Foundation
 
 protocol NftLikesProviderProtocol {
     func getLikes(userID: Int, completion: @escaping (Result<[Int], ApplicationError>) -> Void)
-    func updateLikes(userID: Int, likes: [Int], completion: @escaping (Result<Void, ApplicationError>) -> Void)
+    func updateLikes(userID: Int, likes: [Nft.ID], completion: @escaping (Result<Void, ApplicationError>) -> Void)
 }
 
 final class NftLikesProvider {
@@ -14,8 +14,8 @@ final class NftLikesProvider {
     }
     
     func getLikes(userID: Int, completion: @escaping (Result<[Int], ApplicationError>) -> Void) {
-        api.getProfile(id: userID) { [weak self] result in
-            guard self != nil else { return }
+        api.getProfile(id: userID) { result in
+
             switch result {
             case .success(let profile):
                 completion(.success(profile.likes))
@@ -27,7 +27,9 @@ final class NftLikesProvider {
     }
     
     func updateLikes(userID: Int, likes: [Int], completion: @escaping (Result<Void, ApplicationError>) -> Void) {
-        api.getProfile(id: userID) { result in
+        api.getProfile(id: userID) { [weak self] result in
+            guard let self = self else { return }
+            
             switch result {
             case .success(let profile):
                 self.api.updateProfile(
