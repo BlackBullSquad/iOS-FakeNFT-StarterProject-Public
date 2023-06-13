@@ -31,7 +31,7 @@ final class NftCellViewModel {
         self.shoppingCartService = shoppingCartService
         
         self.isLiked = isLiked
-        LogService.shared.log("isLiked id: \(model.id) — \(isLiked)")
+        //LogService.shared.log("isLiked id: \(model.id) — \(isLiked)")
         
         self.didUpdateLike = didUpdateLike
     }
