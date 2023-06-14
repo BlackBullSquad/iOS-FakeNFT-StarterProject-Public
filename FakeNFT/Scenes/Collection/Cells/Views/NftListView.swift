@@ -1,17 +1,8 @@
 import UIKit
 import Kingfisher
 
-enum CartState {
+private enum CartState {
     case added, removed
-
-    var image: UIImage? {
-        switch self {
-        case .added:
-            return UIImage(named: "deleteFromCart")
-        case .removed:
-            return UIImage(named: "addToCart")
-        }
-    }
 }
 
 final class NftListView: UICollectionViewCell {
@@ -198,5 +189,16 @@ final class NftListView: UICollectionViewCell {
     private func likeButtonTapped() {
         viewModel?.toggleLike()
         didUpdateViewModel()
+    }
+}
+
+private extension CartState {
+    var image: UIImage {
+        switch self {
+        case .added:
+            return UIImage(named: "deleteFromCart")!
+        case .removed:
+            return UIImage(named: "addToCart")!
+        }
     }
 }

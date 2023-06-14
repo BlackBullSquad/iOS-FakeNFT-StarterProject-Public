@@ -9,7 +9,7 @@ final class LogService {
     }
 
     static let shared = LogService()
-    
+
     private init() {}
 
     func log(_ message: String, level: LogLevel = .info) {
