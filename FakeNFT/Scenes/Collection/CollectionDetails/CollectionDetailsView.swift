@@ -185,13 +185,13 @@ final class CollectionDetailsView: UIViewController {
 
     private func fillInterfaceElementsWithData() {
         // Filling interface elements with data
-        titleLabel.text = collectionViewModel.coverAndDescriptionCellsViewModel?.title
+        titleLabel.text = collectionViewModel.descriptionCellViewModel?.title
         authorLabel.text = "Автор коллекции"
-        authorLinkLabel.text = collectionViewModel.coverAndDescriptionCellsViewModel?.author
-        text.text = collectionViewModel.coverAndDescriptionCellsViewModel?.description
+        authorLinkLabel.text = collectionViewModel.descriptionCellViewModel?.author
+        text.text = collectionViewModel.descriptionCellViewModel?.description
 
         let placeholder = UIImage(named: "placeholder")
-        let imageURL = collectionViewModel.coverAndDescriptionCellsViewModel?.cover
+        let imageURL = collectionViewModel.coverCellViewModel?.cover
         coverImage.kf.setImage(
             with: imageURL,
             placeholder: placeholder,
@@ -216,9 +216,9 @@ extension CollectionDetailsView: UICollectionViewDelegate {
         }
 
         switch sectionType {
-        case .cover: return 1
-        case .description: return 1
-        case .collection: return collectionViewModel.coverAndDescriptionCellsViewModel?.nftsCount ?? 0
+        case .cover: return collectionViewModel.coverCellViewModel == nil ? 0 : 1
+        case .description: return collectionViewModel.descriptionCellViewModel == nil ? 0 : 1
+        case .collection: return collectionViewModel.nftListViewModel?.nftCellViewModels.count ?? 0
         }
     }
 }
@@ -242,7 +242,7 @@ extension CollectionDetailsView: UICollectionViewDataSource {
             )
             if
                 let coverCell = cell as? CoverCellView,
-                let item = collectionViewModel.coverAndDescriptionCellsViewModel {
+                let item = collectionViewModel.coverCellViewModel {
                 coverCell.configure(with: item)
 
                 coverCell.onBackButtonTap = { [weak self] in
@@ -259,7 +259,7 @@ extension CollectionDetailsView: UICollectionViewDataSource {
             )
             if
                 let descriptionCell = cell as? DescriptionCellView,
-                let item = collectionViewModel.coverAndDescriptionCellsViewModel {
+                let item = collectionViewModel.descriptionCellViewModel {
                 descriptionCell.configure(with: item)
             }
             return cell

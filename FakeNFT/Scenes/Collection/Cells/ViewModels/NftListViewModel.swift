@@ -8,7 +8,7 @@ struct NftListViewModel {
         updateLikesAction: @escaping ([Int]) -> Void
     ) {
         var likes = fetchedLikes
-        self.nftCellViewModels = nfts.map { nft -> NftCellViewModel in
+        self.nftCellViewModels = nfts.map { nft in
             let isLiked = likes.contains(nft.id)
             return NftCellViewModel(
                 nft,

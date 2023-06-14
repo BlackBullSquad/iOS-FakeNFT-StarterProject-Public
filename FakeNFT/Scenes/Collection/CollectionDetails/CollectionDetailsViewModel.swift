@@ -5,7 +5,8 @@ final class CollectionDetailsViewModel {
     let collectionID: Int
     var errorMessage: Error?
 
-    var coverAndDescriptionCellsViewModel: CoverAndDescriptionCellsViewModel?
+    var coverCellViewModel: CoverCellViewModel?
+    var descriptionCellViewModel: DescriptionCellViewModel?
     var nftListViewModel: NftListViewModel?
 
     weak var coordinator: CollectionsCoordinatorProtocol?
@@ -73,9 +74,10 @@ final class CollectionDetailsViewModel {
         dataService.getCollection(id: id) { result in
             defer { dispatchGroup.leave() }
 
-            if case .success(let collection) = result {
+            switch result {
+            case .success(let collection):
                 completion(collection)
-            } else {
+            case .failure:
                 completion(nil)
             }
         }
@@ -95,7 +97,8 @@ final class CollectionDetailsViewModel {
     }
 
     private func processFetchedData(collection: Collection, likes: [Int]) {
-        self.coverAndDescriptionCellsViewModel = self.convertToCoverAndDescriptionCellsViewModel(from: collection)
+        self.coverCellViewModel = self.convertToCoverCellViewModel(from: collection)
+        self.descriptionCellViewModel = self.convertToDescriptionCellViewModel(from: collection)
 
         self.nftListViewModel = NftListViewModel(
             nfts: collection.nfts,
@@ -119,9 +122,12 @@ final class CollectionDetailsViewModel {
         coordinator?.openAuthorLink(url: url)
     }
 
-    private func convertToCoverAndDescriptionCellsViewModel(
-        from collection: Collection) -> CoverAndDescriptionCellsViewModel {
-        return CoverAndDescriptionCellsViewModel(collection) { [weak self] url in
+    private func convertToCoverCellViewModel(from collection: Collection) -> CoverCellViewModel {
+        return CoverCellViewModel(collection)
+    }
+
+    private func convertToDescriptionCellViewModel(from collection: Collection) -> DescriptionCellViewModel {
+        return DescriptionCellViewModel(collection) { [weak self] url in
             self?.handleAuthorLinkTap(url: url)
         }
     }

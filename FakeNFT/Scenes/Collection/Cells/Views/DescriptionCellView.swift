@@ -4,7 +4,7 @@ final class DescriptionCellView: UICollectionViewCell {
 
     static let identifier = "DescriptionCell"
 
-    var viewModel: CoverAndDescriptionCellsViewModel? {
+    var viewModel: DescriptionCellViewModel? {
         didSet {
             didUpdateViewModel()
         }
@@ -87,7 +87,7 @@ final class DescriptionCellView: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(with viewModel: CoverAndDescriptionCellsViewModel) {
+    func configure(with viewModel: DescriptionCellViewModel) {
         self.viewModel = viewModel
     }
 
