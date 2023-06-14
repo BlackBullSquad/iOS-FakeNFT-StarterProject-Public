@@ -8,7 +8,7 @@ protocol CollectionsCoordinatorProtocol: AnyObject {
 }
 
 final class CollectionsCoordinator {
-   
+
     var navigationController: UINavigationController
     private let api: NftAPI
     private let dataService: CollectionProviderProtocol
@@ -28,7 +28,7 @@ final class CollectionsCoordinator {
         let catalogueViewController = CatalogueView(viewModel: catalogueViewModel)
         navigationController.viewControllers = [catalogueViewController]
     }
-    
+
     func openCollectionDetail(withId id: Int) {
         let collectionViewModel = CollectionDetailsViewModel(
             dataService: dataService,
@@ -41,13 +41,13 @@ final class CollectionsCoordinator {
         collectionViewController.hidesBottomBarWhenPushed = true
         navigationController.pushViewController(collectionViewController, animated: true)
     }
-    
+
     func openAuthorLink(url: URL) {
         let webViewController = WebView(url: url)
         webViewController.hidesBottomBarWhenPushed = true
         navigationController.pushViewController(webViewController, animated: true)
     }
-    
+
     func goBack() {
         navigationController.popViewController(animated: true)
     }

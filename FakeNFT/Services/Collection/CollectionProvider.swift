@@ -38,12 +38,17 @@ final class CollectionProvider {
 
     // MARK: - Private methods
 
-    private func handleNftData(_ nftsData: [NftDTO], completion: @escaping (Result<Collections, ApplicationError>) -> Void) {
+    private func handleNftData(
+        _ nftsData: [NftDTO],
+        completion: @escaping (Result<Collections, ApplicationError>) -> Void
+    ) {
         api.getCollections { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let collectionData):
-                self.processSuccessfulResponse(nftsData: nftsData, collectionData: collectionData, completion: completion)
+                self.processSuccessfulResponse(nftsData: nftsData,
+                                               collectionData: collectionData,
+                                               completion: completion)
             case .failure(let error):
                 LogService.shared.log("Failed to fetch collectionData: \(error)", level: .error)
                 completion(.failure(.networkError(.requestFailed)))
@@ -51,7 +56,11 @@ final class CollectionProvider {
         }
     }
 
-    private func processSuccessfulResponse(nftsData: [NftDTO], collectionData: [CollectionDTO], completion: (Result<Collections, ApplicationError>) -> Void) {
+    private func processSuccessfulResponse(
+        nftsData: [NftDTO],
+        collectionData: [CollectionDTO],
+        completion: (Result<Collections, ApplicationError>) -> Void
+    ) {
         let nfts = nftsData.compactMap(Nft.init)
         let collections = collectionData.compactMap { Collection($0, nfts: nfts) }
         completion(.success(collections))
@@ -70,7 +79,11 @@ final class CollectionProvider {
         }
     }
 
-    private func handleCollectionsSuccess(_ collections: Collections, for id: Int, completion: (Result<Collection, ApplicationError>) -> Void) {
+    private func handleCollectionsSuccess(
+        _ collections: Collections,
+        for id: Int,
+        completion: (Result<Collection, ApplicationError>) -> Void
+    ) {
         if let collection = collections.filter({ $0.id == id }).first {
             completion(.success(collection))
         } else {
@@ -78,7 +91,10 @@ final class CollectionProvider {
         }
     }
 
-    private func handleCollectionFailure(_ error: ApplicationError, completion: (Result<Collection, ApplicationError>) -> Void) {
+    private func handleCollectionFailure(
+        _ error: ApplicationError,
+        completion: (Result<Collection, ApplicationError>) -> Void
+    ) {
         switch error {
         case .networkError(let networkError):
             LogService.shared.log("Failed to fetch collections: \(networkError)", level: .error)
@@ -95,7 +111,10 @@ final class CollectionProvider {
 private extension Nft {
     init?(_ dto: NftDTO) {
         guard let id = Int(dto.id) else { return nil }
-        let imageUrls = dto.images.compactMap { URL(string: $0.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "") }
+        let imageUrls = dto.images.compactMap { URL(
+            string: $0.addingPercentEncoding(
+                withAllowedCharacters: .urlQueryAllowed) ?? ""
+        ) }
 
         self.init(
             id: id,

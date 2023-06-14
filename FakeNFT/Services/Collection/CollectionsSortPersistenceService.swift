@@ -1,21 +1,21 @@
 import Foundation
 
-protocol CollectionsSortOptionPersistenceServiceProtocol {
+protocol CollectionsSortPersistence {
     func saveSortOption(_ option: CollectionsSortOption)
     func getSortOption() -> CollectionsSortOption?
 }
 
-final class CollectionsSortOptionPersistenceService {
-    
+final class CollectionsSortPersistenceService {
+
     private let userDefaults: UserDefaults
     private let sortOptionKey = "nftCollectionScreen.sortOption"
     private let encoder = JSONEncoder()
     private let decoder = JSONDecoder()
-    
+
     init(userDeafaults: UserDefaults = .standard) {
         self.userDefaults = userDeafaults
     }
-    
+
     func saveSortOption(_ option: CollectionsSortOption) {
         do {
             let encoded = try encoder.encode(option)
@@ -24,7 +24,7 @@ final class CollectionsSortOptionPersistenceService {
             LogService.shared.log("Failed to save sort option: \(error)", level: .error)
         }
     }
-    
+
     func getSortOption() -> CollectionsSortOption? {
         guard let savedData = userDefaults.object(forKey: sortOptionKey) as? Data else { return nil }
         do {
@@ -36,4 +36,4 @@ final class CollectionsSortOptionPersistenceService {
     }
 }
 
-extension CollectionsSortOptionPersistenceService: CollectionsSortOptionPersistenceServiceProtocol {}
+extension CollectionsSortPersistenceService: CollectionsSortPersistence {}

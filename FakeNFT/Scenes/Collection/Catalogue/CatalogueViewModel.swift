@@ -11,19 +11,19 @@ protocol CatalogueViewModelUpdateListener: AnyObject {
 }
 
 final class CatalogueViewModel {
-    
+
     private let dataService: CollectionProviderProtocol
-    private let sortStateService: CollectionsSortOptionPersistenceServiceProtocol
+    private let sortStateService: CollectionsSortPersistence
     private let loadingService: LoadingHUDServiceProtocol
 
     weak var coordinator: CollectionsCoordinatorProtocol?
     weak var updateListener: CatalogueViewModelUpdateListener?
-    
+
     var viewModels: [CatalogueCellViewModel]?
-    
+
     init(
         dataService: CollectionProviderProtocol,
-        sortStateService: CollectionsSortOptionPersistenceServiceProtocol = CollectionsSortOptionPersistenceService(),
+        sortStateService: CollectionsSortPersistence = CollectionsSortPersistenceService(),
         coordinator: CollectionsCoordinatorProtocol?
     ) {
         self.dataService = dataService
@@ -33,21 +33,21 @@ final class CatalogueViewModel {
     }
 
     // MARK: - Public methods
-    
+
     func didLoadCollections() {
-        
+
         loadingService.showLoading()
 
         dataService.getCollections { [weak self] result in
             guard let self = self else { return }
-            
+
             DispatchQueue.main.async {
                 self.loadingService.hideLoading()
-                
+
                 switch result {
                 case .success(let collection):
                     self.viewModels = collection.map { CatalogueCellViewModel($0) }
-                    
+
                     let sortOption = self.loadSortOption()
                     self.sortModels(sortOption)
 
@@ -58,26 +58,26 @@ final class CatalogueViewModel {
             }
         }
     }
-    
+
     func sortModels(_ option: CollectionsSortOption) {
         guard var viewModels = viewModels, let updateListener = updateListener else { return }
-        
+
         switch option {
         case .byName:
             viewModels.sort { $0.title < $1.title }
         case .byNftCount:
             viewModels.sort { $0.nftsCount > $1.nftsCount }
         }
-        
+
         self.viewModels = viewModels
         updateListener.didUpdateCollections()
         sortStateService.saveSortOption(option)
     }
-    
+
     func didSelectItem(at id: Int) {
         coordinator?.openCollectionDetail(withId: id)
     }
-    
+
     // MARK: - Private methods
 
     private func loadSortOption() -> CollectionsSortOption {

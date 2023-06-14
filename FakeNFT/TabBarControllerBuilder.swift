@@ -1,7 +1,7 @@
 import UIKit
 
 struct TabBarControllerBuilder {
-    
+
     static var collectionsCoordinator: CollectionsCoordinator = {
         let api: NftAPI = FakeNftAPI()
         let catalogueDataService: CollectionProviderProtocol = CollectionProvider(api: api)
@@ -17,8 +17,12 @@ struct TabBarControllerBuilder {
 
     static func makeRootVC() -> UITabBarController {
         let profileVC = ProfileVC()
-        let profileNavController = UINavigationController(rootViewController: profileVC, title: "Профиль", imageName: "person.crop.circle.fill")
-        
+        let profileNavController = UINavigationController(
+            rootViewController: profileVC,
+            title: "Профиль",
+            imageName: "person.crop.circle.fill"
+        )
+
         let catalogueNavController = collectionsCoordinator.navigationController
         catalogueNavController.tabBarItem = UITabBarItem(
             title: "Каталог",
@@ -27,7 +31,11 @@ struct TabBarControllerBuilder {
         )
 
         let cartVC = CartVC()
-        let cartNavController = UINavigationController(rootViewController: cartVC, title: "Корзина", imageName: "bag.fill")
+        let cartNavController = UINavigationController(
+            rootViewController: cartVC,
+            title: "Корзина",
+            imageName: "bag.fill"
+        )
 
         let tabBarController = UITabBarController()
         tabBarController.viewControllers = [

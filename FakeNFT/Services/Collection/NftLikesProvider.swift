@@ -6,13 +6,13 @@ protocol NftLikesProviderProtocol {
 }
 
 final class NftLikesProvider {
-    
+
     let api: NftAPI
 
     init(api: NftAPI) {
         self.api = api
     }
-    
+
     func getLikes(userID: Int, completion: @escaping (Result<[Int], ApplicationError>) -> Void) {
         api.getProfile(id: userID) { result in
 
@@ -25,11 +25,11 @@ final class NftLikesProvider {
             }
         }
     }
-    
+
     func updateLikes(userID: Int, likes: [Int], completion: @escaping (Result<Void, ApplicationError>) -> Void) {
         api.getProfile(id: userID) { [weak self] result in
             guard let self = self else { return }
-            
+
             switch result {
             case .success(let profile):
                 self.api.updateProfile(
@@ -40,7 +40,7 @@ final class NftLikesProvider {
                     likes: likes
                 ) { result in
                     switch result {
-                    case .success(_):
+                    case .success:
                         completion(.success(()))
                     case .failure(let error):
                         LogService.shared.log("Failed to update likes: \(error)", level: .error)

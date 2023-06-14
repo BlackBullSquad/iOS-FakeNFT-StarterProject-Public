@@ -1,6 +1,6 @@
 struct NftListViewModel {
     let nftCellViewModels: [NftCellViewModel]
-    
+
     init(
         nfts: [Nft],
         fetchedLikes: [Int],

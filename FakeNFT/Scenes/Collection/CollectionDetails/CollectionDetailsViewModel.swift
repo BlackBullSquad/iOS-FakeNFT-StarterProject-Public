@@ -1,23 +1,23 @@
 import Foundation
 
 final class CollectionDetailsViewModel {
-    
+
     let collectionID: Int
     var errorMessage: Error?
-    
+
     var coverAndDescriptionCellsViewModel: CoverAndDescriptionCellsViewModel?
     var nftListViewModel: NftListViewModel?
-    
+
     weak var coordinator: CollectionsCoordinatorProtocol?
-    
+
     // Mock user ID
     private let userID: Int = 1
-    
+
     private let dataService: CollectionProviderProtocol
     private let loadingService: LoadingHUDServiceProtocol
     private let shoppingCartService: ShoppingCart
     private let likeService: NftLikesProviderProtocol
-    
+
     init(
         dataService: CollectionProviderProtocol,
         coordinator: CollectionsCoordinatorProtocol?,
@@ -32,11 +32,11 @@ final class CollectionDetailsViewModel {
         self.shoppingCartService = shoppingCartService
         self.likeService = likeService
     }
-    
+
     // MARK: - Public methods
 
     func didLoadCollection(with id: Int, completion: @escaping () -> Void) {
-        
+
         loadingService.showLoading() // Show ProgressHUD
 
         let dispatchGroup = DispatchGroup()
@@ -104,7 +104,7 @@ final class CollectionDetailsViewModel {
             updateLikesAction: { [weak self] likes in
                 self?.likeService.updateLikes(userID: self?.userID ?? 0, likes: likes) { result in
                     switch result {
-                    case .success():
+                    case .success:
                         LogService.shared.log("Likes updated successfully.", level: .info)
                     case .failure(let error):
                         LogService.shared.log("Failed to update likes: \(error).", level: .error)
@@ -114,12 +114,13 @@ final class CollectionDetailsViewModel {
             }
         )
     }
-    
+
     private func handleAuthorLinkTap(url: URL) {
         coordinator?.openAuthorLink(url: url)
     }
-    
-    private func convertToCoverAndDescriptionCellsViewModel(from collection: Collection) -> CoverAndDescriptionCellsViewModel {
+
+    private func convertToCoverAndDescriptionCellsViewModel(
+        from collection: Collection) -> CoverAndDescriptionCellsViewModel {
         return CoverAndDescriptionCellsViewModel(collection) { [weak self] url in
             self?.handleAuthorLinkTap(url: url)
         }

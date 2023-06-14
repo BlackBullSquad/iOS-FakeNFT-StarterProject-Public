@@ -30,7 +30,7 @@ final class CatalogueView: UIViewController {
     }
 
     private func setupTableView() {
-        
+
         tableView.dataSource = dataSource
         tableView.delegate = self
         tableView.register(CatalogueCellView.self, forCellReuseIdentifier: CatalogueCellView.identifier)
@@ -122,17 +122,17 @@ final class CatalogueView: UIViewController {
 }
 
 extension CatalogueView: UITableViewDelegate {
-    
+
     // MARK: Footer
-    
+
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat { 21 }
-    
+
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? { UIView() }
-    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat { 140 + 4 + 22 }
-        
+
     // MARK: User Interaction
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let selectedCollectionID = catalogueViewModel.viewModels?[indexPath.section].collectionId else { return }
         catalogueViewModel.didSelectItem(at: selectedCollectionID)

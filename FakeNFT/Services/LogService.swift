@@ -1,7 +1,7 @@
 import Foundation
 
 final class LogService {
-    
+
     enum LogLevel: String {
         case info = "=== INFO ==="
         case warning = "=== WARNING ==="

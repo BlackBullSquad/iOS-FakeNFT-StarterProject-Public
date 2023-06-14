@@ -3,7 +3,7 @@ import Kingfisher
 
 enum CartState {
     case added, removed
-    
+
     var image: UIImage? {
         switch self {
         case .added:
@@ -15,33 +15,33 @@ enum CartState {
 }
 
 final class NftListView: UICollectionViewCell {
-    
+
     static let identifier = "CollectionCell"
-    
+
     private var cartState: CartState = .removed {
         didSet {
             updateCartButtonImage()
         }
     }
-    
+
     var viewModel: NftCellViewModel? {
         didSet {
             didUpdateViewModel()
         }
     }
-        
+
     // MARK: - Layout Element Properties
-    
+
     // Constants
-    
+
     private let stackSpacingHalf: CGFloat = 4
     private let stackSpacing: CGFloat = 8
-    
+
     // Properties
-    
+
     private lazy var avatarView = NftAvatarView()
     private lazy var rating = RatingView()
-    
+
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.font = .asset(.bold17)
@@ -52,7 +52,7 @@ final class NftListView: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     private lazy var priceLabel: UILabel = {
         let label = UILabel()
         label.font = .asset(.medium10)
@@ -63,7 +63,7 @@ final class NftListView: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     private lazy var cartButton: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "addToCart")
@@ -74,16 +74,16 @@ final class NftListView: UICollectionViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
-        
+
     // MARK: - Stacks
-    
+
     private lazy var vStackRating: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [rating])
         stack.axis = .vertical
         stack.alignment = .leading
         return stack
     }()
-    
+
     private lazy var vStackTitlePrice: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [titleLabel, priceLabel ])
         stack.axis = .vertical
@@ -92,7 +92,7 @@ final class NftListView: UICollectionViewCell {
         stack.spacing = stackSpacingHalf
         return stack
     }()
-    
+
     private lazy var hStackTitlePriceCart: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [vStackTitlePrice, cartButton])
         stack.axis = .horizontal
@@ -100,14 +100,14 @@ final class NftListView: UICollectionViewCell {
         stack.distribution = .fillProportionally
         return stack
     }()
-    
+
     private lazy var vStackRateTitlePriceCart: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [vStackRating, hStackTitlePriceCart])
         stack.axis = .vertical
         stack.spacing = stackSpacingHalf
         return stack
     }()
-    
+
     private lazy var vStackMain: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [avatarView, vStackRateTitlePriceCart])
         stack.axis = .vertical
@@ -116,46 +116,46 @@ final class NftListView: UICollectionViewCell {
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
     }()
-    
+
     // MARK: - Initialization
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupSubviews()
     }
-    
+
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupSubviews()
     }
-    
+
     // MARK: - Setup
-    
+
     private func setupSubviews() {
         contentView.addSubview(vStackMain)
         avatarView.translatesAutoresizingMaskIntoConstraints = false
-        
+
         let avatarSize = contentView.widthAnchor
         let cartIconSize: CGFloat = 40
-        
+
         NSLayoutConstraint.activate([
             avatarView.widthAnchor.constraint(equalTo: avatarSize),
             avatarView.heightAnchor.constraint(equalTo: avatarSize),
-            
+
             cartButton.widthAnchor.constraint(equalToConstant: cartIconSize),
             cartButton.heightAnchor.constraint(equalToConstant: cartIconSize),
-            
+
             vStackMain.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             vStackMain.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         ])
     }
-    
+
     func configure(with viewModel: NftCellViewModel) {
         self.viewModel = viewModel
     }
-    
+
     // MARK: - Reuse Preparation
-    
+
     override func prepareForReuse() {
         super.prepareForReuse()
 
@@ -168,7 +168,7 @@ final class NftListView: UICollectionViewCell {
     }
 
     // MARK: - Private Methods
-    
+
     private func didUpdateViewModel() {
         avatarView.viewModel = .init(
             imageSize: .large,
@@ -185,7 +185,7 @@ final class NftListView: UICollectionViewCell {
     private func updateCartState() {
         cartState = viewModel?.isInCart == true ? .added : .removed
     }
-    
+
     @objc private func cartButtonTapped() {
         viewModel?.toggleCartStatus()
         updateCartState()
@@ -194,7 +194,7 @@ final class NftListView: UICollectionViewCell {
     private func updateCartButtonImage() {
         cartButton.image = cartState.image
     }
-    
+
     private func likeButtonTapped() {
         viewModel?.toggleLike()
         didUpdateViewModel()
