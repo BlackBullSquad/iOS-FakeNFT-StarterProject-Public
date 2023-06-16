@@ -118,7 +118,7 @@ final class EditProfileViewController: UIViewController {
 
         //Grab the value from the text field, and print it when the user clicks OK.
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak self] (_) in
-            if let text = alert.textFields?[0].text, let url = URL(string: text) {
+            if let text = alert.textFields?[0].text, let url = URL(string: text), let valid = self?.verifyUrl(urlString: text), valid {
                 self?.viewModel.updateAvatar(url)
             }
         }))
@@ -136,6 +136,10 @@ final class EditProfileViewController: UIViewController {
     }
     
     @objc private func saveProfile() {
+        guard verifyUrl(urlString: urlTextField.text) else {
+            showErrorAlert()
+            return
+        }
         viewModel.saveProfile(name: nameTextField.text, descript: descriptionTextField.text, websiteString: urlTextField.text)
         dismiss(animated: true)
     }
@@ -151,6 +155,28 @@ final class EditProfileViewController: UIViewController {
         profileImage.kf.setImage(with: profile.avatar)
     }
 
+    func verifyUrl (urlString: String?) -> Bool {
+        if let urlString = urlString {
+            if let url = NSURL(string: urlString) {
+                return UIApplication.shared.canOpenURL(url as URL)
+            }
+        }
+        return false
+    }
+    
+    private func showErrorAlert() {
+        let alert = UIAlertController(
+            title: "Что-то пошло не так(",
+            message: "Ссылка на сайт не валидна",
+            preferredStyle: .alert)
+
+        let action = UIAlertAction(title: "Ок", style: .default)
+
+        alert.addAction(action)
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
     private func layout() {
         [nameLabel,
          nameTextField,

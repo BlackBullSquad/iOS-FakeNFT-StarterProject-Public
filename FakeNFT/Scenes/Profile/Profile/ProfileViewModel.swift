@@ -82,6 +82,9 @@ final class ProfileViewModelImpl: ProfileViewModel {
     func getEditProfileVC() -> EditProfileViewController? {
         guard let profile = profile else { return nil }
         let viewModel = EditProfileViewModelImpl(profile: profile, profileService: profileService)
+        viewModel.updateProfile = { [weak self] profile in
+            self?.profile = profile
+        }
         let vc = EditProfileViewController(viewModel: viewModel)
         return vc
     }

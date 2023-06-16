@@ -26,18 +26,12 @@ final class EditProfileViewModelImpl: EditProfileViewModel {
     private let profileService: ProfileService
     private(set) var profile: Profile
 
+    var updateProfile: ((Profile) -> Void)?
+    
     private var name: String
     private var descript: String
     private var avatar: URL
     private var website: URL
-
-//    private(set) var profile: Profile? {
-//        didSet {
-//            profileDidChange?()
-//        }
-//    }
-//
-//    var profileDidChange: (() -> Void)?
 
     // MARK: - Initialiser
     init(profile: Profile, profileService: ProfileService) {
@@ -77,5 +71,6 @@ final class EditProfileViewModelImpl: EditProfileViewModel {
         let newProfile = Profile(id: profile.id, name: name, description: descript, avatar: avatar, website: website, nfts: profile.nfts, likes: profile.likes)
         
         profileService.updateProfile(newProfile)
+        updateProfile?(newProfile)
     }
 }
