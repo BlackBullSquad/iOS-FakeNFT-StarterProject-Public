@@ -3,9 +3,7 @@ import Kingfisher
 
 final class ProfileVC: UIViewController {
     
-    private let profileService: ProfileService
-    private let settingsStorage: SettingsStorageProtocol
-    private var profile: Profile?
+    private var viewModel: ProfileViewModel
     
     private let nameLabel: UILabel = {
         let label = UILabel()
@@ -49,9 +47,8 @@ final class ProfileVC: UIViewController {
     }()
 
     // MARK: - Initialiser
-    init(profileService: ProfileService, settingsStorage: SettingsStorageProtocol) {
-        self.profileService = profileService
-        self.settingsStorage = settingsStorage
+    init(viewModel: ProfileViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -63,13 +60,14 @@ final class ProfileVC: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         setNavBar()
-        getProfile()
+        initialization()
+        bind()
         layout()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        getProfile()
+        viewModel.getProfile()
     }
     
     private func setNavBar() {
@@ -79,28 +77,36 @@ final class ProfileVC: UIViewController {
         navigationItem.setRightBarButtonItems([button], animated: true)
     }
     
+    private func initialization() {
+        guard let profile = viewModel.profile else { return }
+        setupView(profile: profile)
+    }
+
+    private func bind() {
+        viewModel.profileDidChange = { [weak self] in
+            guard let profile = self?.viewModel.profile else { return }
+            self?.setupView(profile: profile)
+        }
+        viewModel.showErrorAlertStateDidChange = { [weak self] in
+            if let needShow = self?.viewModel.showErrorAlertState, needShow {
+                self?.showErrorAlert {
+                    self?.viewModel.getProfile()
+                }
+            }
+        }
+    }
+    
+    
     @objc private func showWebView() {
-        guard let url = profile?.website else { return }
+        guard let url = viewModel.profile?.website else { return }
         let webView = WebView(url: url)
         present(webView, animated: true)
     }
     
     @objc private func editProfile() {
-        guard let profile = profile else { return }
-        let editProfileVC = UINavigationController(rootViewController: EditProfileViewController(profile: profile, profileService: profileService))
+        guard let vc = viewModel.getEditProfileVC() else { return }
+        let editProfileVC = UINavigationController(rootViewController: vc)
         present(editProfileVC, animated: true)
-    }
-    
-    private func getProfile() {
-        profileService.getUser { [weak self] result in
-            switch result{
-            case .success(let profile):
-                self?.profile = profile
-                self?.setupView(profile: profile)
-            case .failure:
-                return
-            }
-        }
     }
     
     private func setupView(profile: Profile) {
@@ -111,6 +117,21 @@ final class ProfileVC: UIViewController {
         profileTableView.reloadData()
     }
 
+    private func showErrorAlert(action: @escaping () -> Void) {
+        let alert = UIAlertController(
+            title: "Что-то пошло не так(",
+            message: "Ошибка загрузки данных",
+            preferredStyle: .alert)
+
+        let action = UIAlertAction(title: "Ок", style: .default) { _ in
+            action()
+        }
+
+        alert.addAction(action)
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
     private func layout() {
         [nameLabel,
          profileImage,
@@ -157,15 +178,8 @@ extension ProfileVC: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ProfileTableViewCell.identifier, for: indexPath) as! ProfileTableViewCell
-        var labelString = ""
-        switch indexPath.row {
-        case 0: labelString = "Мои NFT (\(profile?.nfts.count ?? 0))"
-        case 1: labelString = "Избранные NFT (\(profile?.likes.count ?? 0))"
-        case 2: labelString = "О разработчике"
-        default:
-            labelString = ""
-        }
-        cell.setupCell(label: labelString)
+        let titleCell = viewModel.fetchViewTitleForCell(with: indexPath)
+        cell.setupCell(label: titleCell)
         return cell
     }
 
@@ -179,16 +193,15 @@ extension ProfileVC: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row {
-        case 0: showMyNftVC()
-        case 1: navigationController?.pushViewController(FavoritesNftViewController(profileService: profileService), animated: true)
+        case 0: guard let vc = viewModel.getMyNftVC() else { return }
+            navigationController?.pushViewController(vc, animated: true)
+        case 1: let vc = viewModel.getFavoritesNftVC()
+            navigationController?.pushViewController(vc, animated: true)
         default:
             return
         }
     }
     
-    private func showMyNftVC() {
-        guard let profile = profile else { return }
-        navigationController?.pushViewController(MyNftViewController(profileService: profileService, profile: profile, settingsStorage: settingsStorage), animated: true)
-    }
+    
 }
     

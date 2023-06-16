@@ -35,7 +35,9 @@ final class ProfileServiceImpl: ProfileService {
                     completion(.success(profile))
                 }
             case .failure(let error):
-                completion(.failure(error))
+                DispatchQueue.main.async {
+                    completion(.failure(error))
+                }
             }
         }
     }
@@ -108,7 +110,9 @@ final class ProfileServiceImpl: ProfileService {
                     completion(.success(nftsFiltered))
                 }
             case .failure(let error):
-                completion(.failure(error))
+                DispatchQueue.main.async {
+                    completion(.failure(error))
+                }
             }
         }
     }

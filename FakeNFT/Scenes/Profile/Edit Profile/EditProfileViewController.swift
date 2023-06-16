@@ -11,13 +11,7 @@ import Kingfisher
 final class EditProfileViewController: UIViewController {
   
     // MARK: - Properties
-    private let profileService: ProfileService
-    private let profile: Profile
-    
-    private var name: String
-    private var descript: String
-    private var avatar: URL
-    private var website: URL
+    private let viewModel: EditProfileViewModel
     
     private let nameLabel: UILabel = {
         let label = UILabel()
@@ -87,18 +81,13 @@ final class EditProfileViewController: UIViewController {
         button.backgroundColor = UIColor.asset(Asset.main(.background))
         button.layer.cornerRadius = 70/2
         button.clipsToBounds = true
-        button.addTarget(EditProfileViewController.self, action: #selector(changeAvatarButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(changeAvatarButtonTapped), for: .touchUpInside)
         return button
     }()
     
     // MARK: - Initialiser
-    init(profile: Profile, profileService: ProfileService) {
-        self.profile = profile
-        self.profileService = profileService
-        self.name = profile.name
-        self.descript = profile.description
-        self.avatar = profile.avatar
-        self.website = profile.website
+    init(viewModel: EditProfileViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -111,7 +100,7 @@ final class EditProfileViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         setNavBar()
-        setupView(profile: profile)
+        setupView(profile: viewModel.profile)
         layout()
     }
 
@@ -121,22 +110,19 @@ final class EditProfileViewController: UIViewController {
     }
     
     private func showAlert() {
-        //1. Create the alert controller.
         let alert = UIAlertController(title: "Сменить автар", message: "Введите новый URL", preferredStyle: .alert)
 
-        //2. Add the text field. You can configure it however you need.
         alert.addTextField { (textField) in
             textField.text = ""
         }
 
-        // 3. Grab the value from the text field, and print it when the user clicks OK.
+        //Grab the value from the text field, and print it when the user clicks OK.
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak self] (_) in
             if let text = alert.textFields?[0].text, let url = URL(string: text) {
-                self?.avatar = url
+                self?.viewModel.updateAvatar(url)
             }
         }))
 
-        // 4. Present the alert.
         self.present(alert, animated: true, completion: nil)
     }
     
@@ -150,14 +136,7 @@ final class EditProfileViewController: UIViewController {
     }
     
     @objc private func saveProfile() {
-        name = nameTextField.text ?? ""
-        descript = descriptionTextField.text ?? ""
-        if let text = urlTextField.text, let url = URL(string: text) {
-            website = url
-        }
-        let newProfile = Profile(id: profile.id, name: name, description: descript, avatar: avatar, website: website, nfts: profile.nfts, likes: profile.likes)
-        
-        profileService.updateProfile(newProfile)
+        viewModel.saveProfile(name: nameTextField.text, descript: descriptionTextField.text, websiteString: urlTextField.text)
         dismiss(animated: true)
     }
     

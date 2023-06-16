@@ -10,8 +10,7 @@ import UIKit
 class FavoritesNftViewController: UIViewController {
     
     // MARK: - Properties
-    private let profileService: ProfileService
-    private var favoriteNfts: [Nft] = []
+    private var viewModel: FavoritesNftViewModel
     
     private lazy var nftCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -32,8 +31,8 @@ class FavoritesNftViewController: UIViewController {
     }()
     
     // MARK: - Initialiser
-    init(profileService: ProfileService) {
-        self.profileService = profileService
+    init(viewModel: FavoritesNftViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -47,33 +46,53 @@ class FavoritesNftViewController: UIViewController {
         title = "Избранные NFT"
         view.backgroundColor = .systemBackground
         setNavBar()
-        getFavoritesNfts()
         layout()
-        updateView()
+        bind()
+        initialization()
     }
     
     // MARK: - Methods
-    private func getFavoritesNfts() {
-        profileService.getFavoritesNft { [weak self] result in
-            switch result{
-            case .success(let myNfts):
-                self?.favoriteNfts = myNfts
-                self?.updateView()
-            case .failure:
-                return
-            }
-        }
-    }
-    
     private func setNavBar() {
         navigationController?.navigationBar.tintColor = .label
         navigationController?.navigationBar.topItem?.title = " "
     }
     
+    private func initialization() {
+        updateView()
+    }
+    
+    private func bind() {
+        viewModel.favoriteNftsDidChange = { [weak self] in
+            self?.updateView()
+        }
+        viewModel.showErrorAlertStateDidChange = { [weak self] in
+            if let needShow = self?.viewModel.showErrorAlertState, needShow {
+                self?.showErrorAlert {
+                    self?.viewModel.initialization()
+                }
+            }
+        }
+    }
+    
     private func updateView() {
         nftCollectionView.reloadData()
-        nftCollectionView.isHidden = favoriteNfts.isEmpty
-        placeholderLabel.isHidden = !favoriteNfts.isEmpty
+        nftCollectionView.isHidden = viewModel.favoriteNfts.isEmpty
+        placeholderLabel.isHidden = !viewModel.favoriteNfts.isEmpty
+    }
+    
+    private func showErrorAlert(action: @escaping () -> Void) {
+        let alert = UIAlertController(
+            title: "Что-то пошло не так(",
+            message: "Ошибка загрузки данных",
+            preferredStyle: .alert)
+
+        let action = UIAlertAction(title: "Ок", style: .default) { _ in
+            action()
+        }
+
+        alert.addAction(action)
+        
+        present(alert, animated: true, completion: nil)
     }
     
     private func layout() {
@@ -101,25 +120,18 @@ extension FavoritesNftViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        favoriteNfts.count
+        viewModel.favoriteNfts.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FavoritesNftCollectionViewCell.identifier, for: indexPath) as! FavoritesNftCollectionViewCell
-        let nft = favoriteNfts[indexPath.row]
+        let nft = viewModel.favoriteNfts[indexPath.row]
         cell.setupCell(with: nft)
         cell.likeButtonAction = { [weak self] in
-            self?.likeButtonHandle(indexPath: indexPath)
+            self?.viewModel.likeButtonHandle(indexPath: indexPath)
         }
         return cell
     }
-    
-    private func likeButtonHandle(indexPath: IndexPath) {
-        favoriteNfts.remove(at: indexPath.row)
-        nftCollectionView.reloadData()
-        profileService.updateFavoritesNft(likes: favoriteNfts)
-    }
-    
 }
 
 //MARK: - UICollectionViewDelegateFlowLayout

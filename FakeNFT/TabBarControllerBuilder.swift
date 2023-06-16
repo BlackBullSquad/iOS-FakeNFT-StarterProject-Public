@@ -8,7 +8,8 @@ struct TabBarControllerBuilder {
         let settingsStorage = SettingsStorage()
         
         // MARK: - View Controllers
-        let profileVC = ProfileVC(profileService: profileService, settingsStorage: settingsStorage)
+        let profileViewModel = ProfileViewModelImpl(profileService: profileService, settingsStorage: settingsStorage)
+        let profileVC = ProfileVC(viewModel: profileViewModel)
 
         let catalogueViewModel = CatalogueViewModel(dataService: CollectionProvider(api: FakeNftAPI()))
         let catalogueVC = CatalogueViewController(viewModel: catalogueViewModel)

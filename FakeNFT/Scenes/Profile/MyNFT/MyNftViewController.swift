@@ -16,11 +16,7 @@ enum SortDescriptor: String {
 class MyNftViewController: UIViewController {
     
     // MARK: - Properties
-    private let profileService: ProfileService
-    private let settingsStorage: SettingsStorageProtocol
-    private let profile: Profile
-    private var myNfts: [Nft] = []
-    private var likes: [Int] = []
+    private var viewModel: MyNftViewModel
     
     private lazy var nftTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
@@ -32,11 +28,8 @@ class MyNftViewController: UIViewController {
     }()
     
     // MARK: - Initialiser
-    init(profileService: ProfileService, profile: Profile, settingsStorage: SettingsStorageProtocol) {
-        self.profileService = profileService
-        self.profile = profile
-        self.settingsStorage = settingsStorage
-        self.likes = profile.likes
+    init(viewModel: MyNftViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -50,39 +43,38 @@ class MyNftViewController: UIViewController {
         title = "Мои NFT"
         view.backgroundColor = .systemBackground
         setNavBar()
-        getMyNfts(with: profile)
+        bind()
         layout()
     }
     
-        // MARK: - Methods
-        private func getMyNfts(with: Profile) {
-            profileService.getMyNft(with: profile) { [weak self] result in
-                switch result{
-                case .success(let myNfts):
-                    self?.myNfts = myNfts
-                    self?.sortInit()
-                    self?.nftTableView.reloadData()
-                case .failure:
-                    return
+    // MARK: - Methods
+    private func bind() {
+        viewModel.myNftsDidChange = { [weak self] in
+            self?.nftTableView.reloadData()
+        }
+        viewModel.likesDidChange = { [weak self] in
+            self?.nftTableView.reloadData()
+        }
+        viewModel.showErrorAlertStateDidChange = { [weak self] in
+            if let needShow = self?.viewModel.showErrorAlertState, needShow {
+                self?.showErrorAlert {
+                    self?.viewModel.initialization()
                 }
             }
         }
+    }
+    
+    
     private func setNavBar() {
         // Additional bar button items
         navigationController?.navigationBar.tintColor = .label
         navigationController?.navigationBar.topItem?.title = " "
-        let button = UIBarButtonItem(image: UIImage(named: "sortIcon"), style: .plain, target: self, action: #selector(sortNft))
-        navigationItem.setRightBarButtonItems([button], animated: true)
+        let sortButton = UIBarButtonItem(image: UIImage(named: "sortIcon"), style: .plain, target: self, action: #selector(sortNft))
+        navigationItem.setRightBarButtonItems([sortButton], animated: true)
     }
     
     @objc private func sortNft() {
         showAlert()
-    }
-    
-    private func sortInit() {
-        if let descriptor = settingsStorage.fetchSorting() {
-            sort(by: descriptor)
-        }
     }
     
     private func showAlert() {
@@ -92,15 +84,15 @@ class MyNftViewController: UIViewController {
             preferredStyle: .actionSheet)
         
         let actionFirst = UIAlertAction(title: "По цене", style: .default) { [weak self] (_) in
-            self?.sort(by: .price)
+            self?.viewModel.sort(by: .price)
         }
         alert.addAction(actionFirst)
         let actionSecond = UIAlertAction(title: "По Рейтингу", style: .default) { [weak self] (_) in
-            self?.sort(by: .rating)
+            self?.viewModel.sort(by: .rating)
         }
         alert.addAction(actionSecond)
         let actionThird = UIAlertAction(title: "По Названию", style: .default) { [weak self] (_) in
-            self?.sort(by: .name)
+            self?.viewModel.sort(by: .name)
         }
         alert.addAction(actionThird)
         let actionCancel = UIAlertAction(title: "Закрыть", style: .cancel)
@@ -109,17 +101,19 @@ class MyNftViewController: UIViewController {
         navigationController?.present(alert, animated: true, completion: nil)
     }
     
-    private func sort(by descriptor: SortDescriptor) {
-        switch descriptor {
-        case .price:
-            myNfts.sort(by: { $0.price < $1.price } )
-        case .name:
-            myNfts.sort(by: { $0.name < $1.name } )
-        case .rating:
-            myNfts.sort(by: { $0.rating < $1.rating } )
+    private func showErrorAlert(action: @escaping () -> Void) {
+        let alert = UIAlertController(
+            title: "Что-то пошло не так(",
+            message: "Ошибка загрузки данных",
+            preferredStyle: .alert)
+
+        let action = UIAlertAction(title: "Ок", style: .default) { _ in
+            action()
         }
-        settingsStorage.saveSorting(descriptor)
-        nftTableView.reloadData()
+
+        alert.addAction(action)
+        
+        present(alert, animated: true, completion: nil)
     }
     
     private func layout() {
@@ -140,50 +134,25 @@ class MyNftViewController: UIViewController {
 // MARK: - UITableViewDataSource
 extension MyNftViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        myNfts.count
+        viewModel.myNfts.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: MyNftTableViewCell.identifier, for: indexPath) as! MyNftTableViewCell
-        let myNft = myNfts[indexPath.row]
-        let isLiked = likes.contains(myNft.id)
+        let myNft = viewModel.myNfts[indexPath.row]
+        let isLiked = viewModel.likes.contains(myNft.id)
         cell.setupCell(with: myNft, isLiked: isLiked)
         cell.likeButtonAction = { [weak self] in
-            self?.likeButtonHandle(indexPath: indexPath)
+            self?.viewModel.likeButtonHandle(indexPath: indexPath)
         }
         return cell
     }
-    
-    private func likeButtonHandle(indexPath: IndexPath) {
-        let idNftLikeChange = myNfts[indexPath.row].id
-        if likes.contains(idNftLikeChange) {
-            likes.removeAll { $0 == idNftLikeChange }
-        } else {
-            likes.append(idNftLikeChange)
-        }
-        let newProfile = Profile(
-            id: profile.id,
-            name: profile.name,
-            description: profile.description,
-            avatar: profile.avatar,
-            website: profile.website,
-            nfts: profile.nfts,
-            likes: likes
-        )
-        nftTableView.reloadData()
-        profileService.updateProfile(newProfile)
-    }
-    
 }
 
 // MARK: - UITableViewDelegate
 extension MyNftViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 140
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //
     }
 }
 
