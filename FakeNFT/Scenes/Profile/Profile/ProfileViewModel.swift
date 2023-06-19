@@ -11,13 +11,13 @@ protocol ProfileViewModel {
 
     var profile: Profile? { get }
     var showErrorAlertState: Bool { get }
-    
+
     func getProfile()
     func fetchViewTitleForCell(with indexPath: IndexPath) -> String
     func getMyNftVC() -> MyNftViewController?
     func getFavoritesNftVC() -> FavoritesNftViewController
     func getEditProfileVC() -> EditProfileViewController?
-    //binding
+    // binding
     var profileDidChange: (() -> Void)? { get set }
     var showErrorAlertStateDidChange: (() -> Void)? { get set }
 }
@@ -41,7 +41,7 @@ final class ProfileViewModelImpl: ProfileViewModel {
 
     var profileDidChange: (() -> Void)?
     var showErrorAlertStateDidChange: (() -> Void)?
-    
+
     // MARK: - Initialiser
     init(profileService: ProfileService, settingsStorage: SettingsStorageProtocol) {
         self.profileService = profileService
@@ -53,7 +53,7 @@ final class ProfileViewModelImpl: ProfileViewModel {
     private func initialization() {
         getProfile()
     }
-    
+
     func fetchViewTitleForCell(with indexPath: IndexPath) -> String {
         var labelString = ""
         switch indexPath.row {
@@ -65,33 +65,35 @@ final class ProfileViewModelImpl: ProfileViewModel {
         }
         return labelString
     }
-    
+
     func getMyNftVC() -> MyNftViewController? {
         guard let profile = profile else { return nil }
-        let viewModel = MyNftViewModelImpl(profileService: profileService, profile: profile, settingsStorage: settingsStorage)
-        let vc = MyNftViewController(viewModel: viewModel)
-        return vc
+        let viewModel = MyNftViewModelImpl(profileService: profileService,
+                                           profile: profile,
+                                           settingsStorage: settingsStorage)
+        let viewController = MyNftViewController(viewModel: viewModel)
+        return viewController
     }
-    
+
     func getFavoritesNftVC() -> FavoritesNftViewController {
         let viewModel = FavoritesNftViewModelImpl(profileService: profileService)
-        let vc = FavoritesNftViewController(viewModel: viewModel)
-        return vc
+        let viewController = FavoritesNftViewController(viewModel: viewModel)
+        return viewController
     }
-    
+
     func getEditProfileVC() -> EditProfileViewController? {
         guard let profile = profile else { return nil }
         let viewModel = EditProfileViewModelImpl(profile: profile, profileService: profileService)
         viewModel.updateProfile = { [weak self] profile in
             self?.profile = profile
         }
-        let vc = EditProfileViewController(viewModel: viewModel)
-        return vc
+        let viewController = EditProfileViewController(viewModel: viewModel)
+        return viewController
     }
-    
+
     func getProfile() {
         profileService.getUser { [weak self] result in
-            switch result{
+            switch result {
             case .success(let profile):
                 self?.showErrorAlertState = false
                 self?.profile = profile

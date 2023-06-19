@@ -18,7 +18,7 @@ struct Profile {
 
     let nfts: [Int]
     let likes: [Int]
-    
+
     init(id: String, name: String, description: String, avatar: URL, website: URL, nfts: [Int], likes: [Int]) {
         self.id = id
         self.name = name
@@ -28,7 +28,7 @@ struct Profile {
         self.nfts = nfts
         self.likes = likes
     }
-    
+
     init(profileDTO: ProfileDTO) {
         id = profileDTO.id
         name = profileDTO.name

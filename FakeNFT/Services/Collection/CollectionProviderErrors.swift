@@ -22,10 +22,12 @@ enum ApplicationError: Error {
 
 enum NetworkError: Error {
     case requestFailed
+    case updateError
 }
 
 enum DataError: Error {
     case invalidData
     case decodingError
     case collectionNotFound
+    case updateProfileError
 }

@@ -8,20 +8,21 @@
 import UIKit
 
 class FavoritesNftViewController: UIViewController {
-    
+
     // MARK: - Properties
     private var viewModel: FavoritesNftViewModel
-    
+
     private lazy var nftCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
 
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.register(FavoritesNftCollectionViewCell.self, forCellWithReuseIdentifier: FavoritesNftCollectionViewCell.identifier)
+        collectionView.register(FavoritesNftCollectionViewCell.self,
+                                forCellWithReuseIdentifier: FavoritesNftCollectionViewCell.identifier)
         collectionView.dataSource = self
         collectionView.delegate = self
         return collectionView
     }()
-    
+
     private let placeholderLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 17, weight: .bold)
@@ -29,17 +30,17 @@ class FavoritesNftViewController: UIViewController {
         label.text = "У Вас ещё нет избранных NFT"
         return label
     }()
-    
+
     // MARK: - Initialiser
     init(viewModel: FavoritesNftViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     // MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,17 +51,17 @@ class FavoritesNftViewController: UIViewController {
         bind()
         initialization()
     }
-    
+
     // MARK: - Methods
     private func setNavBar() {
         navigationController?.navigationBar.tintColor = .label
         navigationController?.navigationBar.topItem?.title = " "
     }
-    
+
     private func initialization() {
         updateView()
     }
-    
+
     private func bind() {
         viewModel.favoriteNftsDidChange = { [weak self] in
             self?.updateView()
@@ -73,13 +74,13 @@ class FavoritesNftViewController: UIViewController {
             }
         }
     }
-    
+
     private func updateView() {
         nftCollectionView.reloadData()
         nftCollectionView.isHidden = viewModel.favoriteNfts.isEmpty
         placeholderLabel.isHidden = !viewModel.favoriteNfts.isEmpty
     }
-    
+
     private func showErrorAlert(action: @escaping () -> Void) {
         let alert = UIAlertController(
             title: "Что-то пошло не так(",
@@ -91,22 +92,22 @@ class FavoritesNftViewController: UIViewController {
         }
 
         alert.addAction(action)
-        
+
         present(alert, animated: true, completion: nil)
     }
-    
+
     private func layout() {
         [nftCollectionView, placeholderLabel].forEach { view in
             view.translatesAutoresizingMaskIntoConstraints = false
             self.view.addSubview(view)
         }
-        
+
         NSLayoutConstraint.activate([
             nftCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             nftCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             nftCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             nftCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            
+
             placeholderLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             placeholderLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
@@ -123,8 +124,14 @@ extension FavoritesNftViewController: UICollectionViewDataSource {
         viewModel.favoriteNfts.count
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FavoritesNftCollectionViewCell.identifier, for: indexPath) as! FavoritesNftCollectionViewCell
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: FavoritesNftCollectionViewCell.identifier,
+            for: indexPath) as? FavoritesNftCollectionViewCell else {
+            assertionFailure("Could not cast cell to FavoritesNftCollectionViewCell")
+            return UICollectionViewCell()
+        }
         let nft = viewModel.favoriteNfts[indexPath.row]
         cell.setupCell(with: nft)
         cell.likeButtonAction = { [weak self] in
@@ -134,25 +141,33 @@ extension FavoritesNftViewController: UICollectionViewDataSource {
     }
 }
 
-//MARK: - UICollectionViewDelegateFlowLayout
+// MARK: - UICollectionViewDelegateFlowLayout
 extension FavoritesNftViewController: UICollectionViewDelegateFlowLayout {
     private var lineSpacing: CGFloat { return 20 }
     private var interitemSpacing: CGFloat { return 7 }
     private var sideInset: CGFloat { return 16 }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = (collectionView.frame.width - interitemSpacing - 2 * sideInset) / 2
         return CGSize(width: width, height: 80)
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         lineSpacing
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         interitemSpacing
     }
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        insetForSectionAt section: Int) -> UIEdgeInsets {
         UIEdgeInsets(top: 20, left: sideInset, bottom: 20, right: sideInset)
     }
 }

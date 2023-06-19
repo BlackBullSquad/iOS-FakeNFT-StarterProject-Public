@@ -10,13 +10,13 @@ import Foundation
 protocol EditProfileViewModel {
 
     var profile: Profile { get }
-    
+
     func updateName(_ newName: String)
     func updateDescript(_ newDescript: String)
     func updateAvatar(_ newAvatar: URL)
     func updateWebsite(_ newWebsite: URL)
     func saveProfile(name: String?, descript: String?, websiteString: String?)
-    //binding
+    // binding
 //    var profileDidChange: (() -> Void)? { get set }
 }
 
@@ -27,7 +27,7 @@ final class EditProfileViewModelImpl: EditProfileViewModel {
     private(set) var profile: Profile
 
     var updateProfile: ((Profile) -> Void)?
-    
+
     private var name: String
     private var descript: String
     private var avatar: URL
@@ -46,9 +46,9 @@ final class EditProfileViewModelImpl: EditProfileViewModel {
 
     // MARK: - Methods
     private func initialization() {
-        
+
     }
-    
+
     func updateName(_ newName: String) {
         name = newName
     }
@@ -61,15 +61,21 @@ final class EditProfileViewModelImpl: EditProfileViewModel {
     func updateWebsite(_ newWebsite: URL) {
         website = newWebsite
     }
-    
+
     func saveProfile(name: String?, descript: String?, websiteString: String?) {
         if let url = URL(string: websiteString ?? "") {
             website = url
         }
         let name = name ?? profile.name
         let descript = descript ?? profile.description
-        let newProfile = Profile(id: profile.id, name: name, description: descript, avatar: avatar, website: website, nfts: profile.nfts, likes: profile.likes)
-        
+        let newProfile = Profile(id: profile.id,
+                                 name: name,
+                                 description: descript,
+                                 avatar: avatar,
+                                 website: website,
+                                 nfts: profile.nfts,
+                                 likes: profile.likes)
+
         profileService.updateProfile(newProfile)
         updateProfile?(newProfile)
     }

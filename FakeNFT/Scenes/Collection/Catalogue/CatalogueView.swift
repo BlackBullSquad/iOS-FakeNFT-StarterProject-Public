@@ -1,14 +1,14 @@
 import UIKit
 
-final class CatalogueViewController: UIViewController {
+final class CatalogueView: UIViewController {
 
-    private let collectionViewModels: CatalogueViewModel
+    private let catalogueViewModel: CatalogueViewModel
     private let tableView = UITableView()
 
     private lazy var dataSource = makeDataSource()
 
     init(viewModel: CatalogueViewModel) {
-        self.collectionViewModels = viewModel
+        self.catalogueViewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -18,28 +18,30 @@ final class CatalogueViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .asset(.additional(.white))
         setupTableView()
-        setupNavBar()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        collectionViewModels.updateListener = self
-        collectionViewModels.loadCollections()
+        catalogueViewModel.updateListener = self
+        catalogueViewModel.didLoadCollections()
+        setupNavBar()
     }
 
     private func setupTableView() {
+
         tableView.dataSource = dataSource
         tableView.delegate = self
-        tableView.register(CatalogueCell.self, forCellReuseIdentifier: CatalogueCell.identifier)
+        tableView.register(CatalogueCellView.self, forCellReuseIdentifier: CatalogueCellView.identifier)
         tableView.translatesAutoresizingMaskIntoConstraints = false
 
         let guide = view.safeAreaLayoutGuide
         let hInset: CGFloat = 16
 
+        tableView.backgroundColor = .asset(.additional(.white))
         tableView.separatorStyle = .none
-        tableView.allowsSelection = false
+        tableView.allowsSelection = true
         tableView.layer.masksToBounds = false
         tableView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -hInset)
 
@@ -54,16 +56,27 @@ final class CatalogueViewController: UIViewController {
     }
 
     private func setupNavBar() {
-        let sortButton: UIBarButtonItem = {
-            let button = UIBarButtonItem()
-            button.tintColor = .asset(.main(.primary))
-            button.style = .plain
-            button.image = UIImage(named: "sortIcon")
-            button.target = self
-            button.action = #selector(didTapSortButton)
-            return button
-        }()
+        navigationItem.backBarButtonItem = UIBarButtonItem(
+            title: "",
+            style: .plain,
+            target: nil,
+            action: nil
+        )
 
+        let sortButton = UIBarButtonItem(
+            image: UIImage(named: "sortIcon"),
+            style: .plain,
+            target: self,
+            action: #selector(didTapSortButton)
+        )
+        sortButton.tintColor = .asset(.main(.primary))
+
+        let navBarAppearance = UINavigationBarAppearance()
+        navBarAppearance.backgroundColor = .asset(.additional(.white))
+        navBarAppearance.shadowColor = .none
+
+        navigationController?.navigationBar.tintColor = .asset(.main(.primary))
+        navigationController?.navigationBar.standardAppearance = navBarAppearance
         navigationItem.rightBarButtonItem = sortButton
     }
 
@@ -73,13 +86,14 @@ final class CatalogueViewController: UIViewController {
 
             guard
                 let cell = tableView.dequeueReusableCell(
-                    withIdentifier: CatalogueCell.identifier,
+                    withIdentifier: CatalogueCellView.identifier,
                     for: indexPath
-                ) as? CatalogueCell
+                ) as? CatalogueCellView
             else {
                 return UITableViewCell()
             }
 
+            cell.selectionStyle = .none
             cell.configure(title: viewModel.title, coverURL: viewModel.cover, nftCount: viewModel.nftsCount)
             return cell
         }
@@ -87,7 +101,7 @@ final class CatalogueViewController: UIViewController {
 
     private func updateSnapshot() {
         var snapshot = NSDiffableDataSourceSnapshot<CatalogueCellViewModel, CatalogueCellViewModel>()
-        for collectionViewModel in collectionViewModels.viewModels ?? [] {
+        for collectionViewModel in catalogueViewModel.viewModels ?? [] {
             snapshot.appendSections([collectionViewModel])
             snapshot.appendItems([collectionViewModel], toSection: collectionViewModel)
         }
@@ -97,29 +111,51 @@ final class CatalogueViewController: UIViewController {
     @objc private func didTapSortButton() {
         let alert = UIAlertController(title: "Сортировать", message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "По названию", style: .default, handler: { _ in
-            self.collectionViewModels.sortModels(.byName)
+            self.catalogueViewModel.sortModels(.byName)
         }))
         alert.addAction(UIAlertAction(title: "По количеству NFT", style: .default, handler: { _ in
-            self.collectionViewModels.sortModels(.byNftCount)
+            self.catalogueViewModel.sortModels(.byNftCount)
         }))
         alert.addAction(UIAlertAction(title: "Закрыть", style: .cancel, handler: nil))
         present(alert, animated: true)
     }
 }
 
-extension CatalogueViewController: UITableViewDelegate {
+extension CatalogueView: UITableViewDelegate {
+
+    // MARK: Footer
+
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat { 21 }
+
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? { UIView() }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat { 140 + 4 + 22 }
+
+    // MARK: User Interaction
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let selectedCollectionID = catalogueViewModel.viewModels?[indexPath.section].collectionId else { return }
+        catalogueViewModel.didSelectItem(at: selectedCollectionID)
+    }
 }
 
-extension CatalogueViewController: CatalogueViewModelUpdateListener {
+extension CatalogueView: CatalogueViewModelUpdateListener {
     func didUpdateCollections() {
         updateSnapshot()
     }
 
+    // Error Alert
     func didFailWithError(_ error: Error) {
-        let alert = UIAlertController(title: "Error", message: "Failed to load data: \(error.localizedDescription)", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        let alert = UIAlertController(
+            title: "Error",
+            message: "Failed to load data: \(error.localizedDescription)",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(
+            title: "OK",
+            style: .default,
+            handler: nil)
+        )
         self.present(alert, animated: true, completion: nil)
     }
 }

@@ -23,7 +23,7 @@ final class CollectionProvider {
             case .success(let nftsData):
                 self.handleNftData(nftsData, completion: completion)
             case .failure(let error):
-                print("Failed to fetch nftsData: \(error)")
+                LogService.shared.log("Failed to fetch nftsData: \(error)", level: .error)
                 completion(.failure(.networkError(.requestFailed)))
             }
         }
@@ -38,20 +38,29 @@ final class CollectionProvider {
 
     // MARK: - Private methods
 
-    private func handleNftData(_ nftsData: [NftDTO], completion: @escaping (Result<Collections, ApplicationError>) -> Void) {
+    private func handleNftData(
+        _ nftsData: [NftDTO],
+        completion: @escaping (Result<Collections, ApplicationError>) -> Void
+    ) {
         api.getCollections { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let collectionData):
-                self.processSuccessfulResponse(nftsData: nftsData, collectionData: collectionData, completion: completion)
+                self.processSuccessfulResponse(nftsData: nftsData,
+                                               collectionData: collectionData,
+                                               completion: completion)
             case .failure(let error):
-                print("Failed to fetch collectionData: \(error)")
+                LogService.shared.log("Failed to fetch collectionData: \(error)", level: .error)
                 completion(.failure(.networkError(.requestFailed)))
             }
         }
     }
 
-    private func processSuccessfulResponse(nftsData: [NftDTO], collectionData: [CollectionDTO], completion: (Result<Collections, ApplicationError>) -> Void) {
+    private func processSuccessfulResponse(
+        nftsData: [NftDTO],
+        collectionData: [CollectionDTO],
+        completion: (Result<Collections, ApplicationError>) -> Void
+    ) {
         let nfts = nftsData.compactMap(Nft.init)
         let collections = collectionData.compactMap { Collection($0, nfts: nfts) }
         completion(.success(collections))
@@ -68,10 +77,13 @@ final class CollectionProvider {
         case .failure(let error):
             handleCollectionFailure(error, completion: completion)
         }
-
     }
 
-    private func handleCollectionsSuccess(_ collections: Collections, for id: Int, completion: (Result<Collection, ApplicationError>) -> Void) {
+    private func handleCollectionsSuccess(
+        _ collections: Collections,
+        for id: Int,
+        completion: (Result<Collection, ApplicationError>) -> Void
+    ) {
         if let collection = collections.filter({ $0.id == id }).first {
             completion(.success(collection))
         } else {
@@ -79,13 +91,16 @@ final class CollectionProvider {
         }
     }
 
-    private func handleCollectionFailure(_ error: ApplicationError, completion: (Result<Collection, ApplicationError>) -> Void) {
+    private func handleCollectionFailure(
+        _ error: ApplicationError,
+        completion: (Result<Collection, ApplicationError>) -> Void
+    ) {
         switch error {
         case .networkError(let networkError):
-            print("Failed to fetch collections: \(networkError)")
+            LogService.shared.log("Failed to fetch collections: \(networkError)", level: .error)
             completion(.failure(.networkError(.requestFailed)))
         case .dataError(let dataError):
-            print("Failed to fetch collections: \(dataError)")
+            LogService.shared.log("Failed to fetch collections: \(dataError)", level: .error)
             completion(.failure(.dataError(.decodingError)))
         }
     }
@@ -96,7 +111,10 @@ final class CollectionProvider {
 private extension Nft {
     init?(_ dto: NftDTO) {
         guard let id = Int(dto.id) else { return nil }
-        let imageUrls = dto.images.compactMap { URL(string: $0.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "") }
+        let imageUrls = dto.images.compactMap { URL(
+            string: $0.addingPercentEncoding(
+                withAllowedCharacters: .urlQueryAllowed) ?? ""
+        ) }
 
         self.init(
             id: id,
