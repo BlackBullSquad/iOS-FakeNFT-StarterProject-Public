@@ -51,7 +51,7 @@ extension FakeNftAPI: NftAPI {
                 description: description,
                 website: website,
                 likes: likes
-            ),
+            ).request,
             type: ProfileDTO.self,
             onResponse: onResponse
         )
@@ -62,7 +62,7 @@ extension FakeNftAPI: NftAPI {
         onResponse: @escaping (Result<ProfileDTO, Error>) -> Void
     ) -> NetworkTask? {
         networkClient.send(
-            request: FakeAPIRequest.getProfile(id: id),
+            request: FakeAPIRequest.getProfile(id: id).request,
             type: ProfileDTO.self,
             onResponse: onResponse
         )
@@ -70,7 +70,7 @@ extension FakeNftAPI: NftAPI {
 
     func updateOrder(id: Int, nfts: [Int], onResponse: @escaping (Result<OrderDTO, Error>) -> Void) -> NetworkTask? {
         networkClient.send(
-            request: FakeAPIRequest.updateOrder(id: id, nfts: nfts),
+            request: FakeAPIRequest.updateOrder(id: id, nfts: nfts).request,
             type: OrderDTO.self,
             onResponse: onResponse
         )
@@ -82,7 +82,7 @@ extension FakeNftAPI: NftAPI {
         onResponse: @escaping (Result<OrderDTO, Error>) -> Void
     ) -> NetworkTask? {
         networkClient.send(
-            request: FakeAPIRequest.payOrder(id: id, currencyId: currencyId),
+            request: FakeAPIRequest.payOrder(id: id, currencyId: currencyId).request,
             type: OrderDTO.self,
             onResponse: onResponse
         )
@@ -93,7 +93,7 @@ extension FakeNftAPI: NftAPI {
         onResponse: @escaping (Result<OrderDTO, Error>) -> Void
     ) -> NetworkTask? {
         networkClient.send(
-            request: FakeAPIRequest.getOrder(id: id),
+            request: FakeAPIRequest.getOrder(id: id).request,
             type: OrderDTO.self,
             onResponse: onResponse
         )
@@ -104,7 +104,7 @@ extension FakeNftAPI: NftAPI {
         onResponse: @escaping (Result<CollectionDTO, Error>) -> Void
     ) -> NetworkTask? {
         networkClient.send(
-            request: FakeAPIRequest.getCollection(id: id),
+            request: FakeAPIRequest.getCollection(id: id).request,
             type: CollectionDTO.self,
             onResponse: onResponse
         )
@@ -114,7 +114,7 @@ extension FakeNftAPI: NftAPI {
         onResponse: @escaping (Result<[CollectionDTO], Error>) -> Void
     ) -> NetworkTask? {
         networkClient.send(
-            request: FakeAPIRequest.getCollections,
+            request: FakeAPIRequest.getCollections.request,
             type: [CollectionDTO].self,
             onResponse: onResponse
         )
@@ -125,7 +125,7 @@ extension FakeNftAPI: NftAPI {
         onResponse: @escaping (Result<NftDTO, Error>) -> Void
     ) -> NetworkTask? {
         networkClient.send(
-            request: FakeAPIRequest.getNft(id: id),
+            request: FakeAPIRequest.getNft(id: id).request,
             type: NftDTO.self,
             onResponse: onResponse
         )
@@ -135,7 +135,7 @@ extension FakeNftAPI: NftAPI {
         onResponse: @escaping (Result<[NftDTO], Error>) -> Void
     ) -> NetworkTask? {
         networkClient.send(
-            request: FakeAPIRequest.getNfts,
+            request: FakeAPIRequest.getNfts.request,
             type: [NftDTO].self,
             onResponse: onResponse
         )
@@ -146,7 +146,7 @@ extension FakeNftAPI: NftAPI {
         onResponse: @escaping (Result<CurrencyDTO, Error>) -> Void
     ) -> NetworkTask? {
         networkClient.send(
-            request: FakeAPIRequest.getCurrency(id: id),
+            request: FakeAPIRequest.getCurrency(id: id).request,
             type: CurrencyDTO.self,
             onResponse: onResponse
         )
@@ -156,7 +156,7 @@ extension FakeNftAPI: NftAPI {
         onResponse: @escaping (Result<[CurrencyDTO], Error>) -> Void
     ) -> NetworkTask? {
         networkClient.send(
-            request: FakeAPIRequest.getCurrencies,
+            request: FakeAPIRequest.getCurrencies.request,
             type: [CurrencyDTO].self,
             onResponse: onResponse
         )
@@ -166,7 +166,7 @@ extension FakeNftAPI: NftAPI {
         onResponse: @escaping (Result<[UserDTO], Error>) -> Void
     ) -> NetworkTask? {
         networkClient.send(
-            request: FakeAPIRequest.getUsers,
+            request: FakeAPIRequest.getUsers.request,
             type: [UserDTO].self,
             onResponse: onResponse
         )
@@ -177,7 +177,7 @@ extension FakeNftAPI: NftAPI {
         onResponse: @escaping (Result<UserDTO, Error>) -> Void
     ) -> NetworkTask? {
         networkClient.send(
-            request: FakeAPIRequest.getUser(id: id),
+            request: FakeAPIRequest.getUser(id: id).request,
             type: UserDTO.self,
             onResponse: onResponse
         )

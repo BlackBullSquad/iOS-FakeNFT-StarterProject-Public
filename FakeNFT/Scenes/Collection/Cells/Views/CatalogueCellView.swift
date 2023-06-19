@@ -1,9 +1,17 @@
 import UIKit
 import Kingfisher
 
-final class CatalogueCell: UITableViewCell {
+final class CatalogueCellView: UITableViewCell {
 
     static let identifier = "CatalogueCell"
+
+    // MARK: - Layout Element Properties
+
+    // Constants
+
+    private let stackSpacingHalf: CGFloat = 4
+
+    // Properties
 
     private lazy var coverImage: UIImageView = {
         let imageView = UIImageView()
@@ -20,16 +28,19 @@ final class CatalogueCell: UITableViewCell {
         label.textColor = .asset(.main(.primary))
         label.font = .asset(.bold17)
         label.textAlignment = .natural
+        label.numberOfLines = 1
+        label.lineBreakMode = .byTruncatingTail
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
 
+    // MARK: - Stack
+
     private lazy var vStack: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [
-            coverImage, titleLabel
-        ])
+        let stack = UIStackView(arrangedSubviews: [coverImage, titleLabel])
         stack.axis = .vertical
-        stack.spacing = 4
+        stack.spacing = stackSpacingHalf
+        stack.backgroundColor = .asset(.additional(.white))
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
     }()
@@ -51,23 +62,38 @@ final class CatalogueCell: UITableViewCell {
         contentView.addSubview(vStack)
 
         NSLayoutConstraint.activate([
+            coverImage.widthAnchor.constraint(equalTo: contentView.widthAnchor),
             coverImage.heightAnchor.constraint(equalToConstant: 140),
 
-            vStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            vStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            vStack.topAnchor.constraint(equalTo: contentView.topAnchor),
-            vStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            titleLabel.heightAnchor.constraint(equalToConstant: 22)
         ])
+    }
+
+    // MARK: - Reuse Preparation
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        titleLabel.text = nil
+        coverImage.kf.cancelDownloadTask()
+        coverImage.image = nil
     }
 }
 
-extension CatalogueCell {
+extension CatalogueCellView {
 
     func configure(title: String, coverURL imageURL: URL?, nftCount: Int) {
         titleLabel.text = "\(title) (\(nftCount))"
 
         let placeholder = UIImage(named: "placeholder")
 
-        coverImage.kf.setImage(with: imageURL, placeholder: placeholder, options: [.scaleFactor(UIScreen.main.scale), .transition(.fade(1))])
+        coverImage.kf.setImage(
+            with: imageURL,
+            placeholder: placeholder,
+            options: [.scaleFactor(UIScreen.main.scale),
+                      .transition(.fade(1))]) { result in
+                          ImageCacheService.shared.checkCacheStatus(
+                            for: result
+                          )
+                      }
     }
 }

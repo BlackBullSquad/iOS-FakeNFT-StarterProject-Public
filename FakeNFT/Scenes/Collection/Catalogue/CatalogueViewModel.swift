@@ -1,5 +1,10 @@
 import Foundation
 
+enum CollectionsSortOption: String, Codable {
+    case byName
+    case byNftCount
+}
+
 protocol CatalogueViewModelUpdateListener: AnyObject {
     func didUpdateCollections()
     func didFailWithError(_ error: Error)
@@ -8,37 +13,53 @@ protocol CatalogueViewModelUpdateListener: AnyObject {
 final class CatalogueViewModel {
 
     private let dataService: CollectionProviderProtocol
-    var viewModels: [CatalogueCellViewModel]?
+    private let sortStateService: CollectionsSortPersistence
+    private let loadingService: LoadingHUDServiceProtocol
 
+    weak var coordinator: CollectionsCoordinatorProtocol?
     weak var updateListener: CatalogueViewModelUpdateListener?
 
-    init(dataService: CollectionProviderProtocol) {
+    var viewModels: [CatalogueCellViewModel]?
+
+    init(
+        dataService: CollectionProviderProtocol,
+        sortStateService: CollectionsSortPersistence = CollectionsSortPersistenceService(),
+        coordinator: CollectionsCoordinatorProtocol?
+    ) {
         self.dataService = dataService
+        self.sortStateService = sortStateService
+        self.coordinator = coordinator
+        self.loadingService = LoadingHUDService.shared
     }
 
-    func loadCollections() {
+    // MARK: - Public methods
+
+    func didLoadCollections() {
+
+        loadingService.showLoading()
+
         dataService.getCollections { [weak self] result in
-            switch result {
-            case .success(let collection):
-                DispatchQueue.main.async {
-                    self?.viewModels = collection.map { CatalogueCellViewModel($0) }
-                    self?.updateListener?.didUpdateCollections()
-                }
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    self?.updateListener?.didFailWithError(error)
+            guard let self = self else { return }
+
+            DispatchQueue.main.async {
+                self.loadingService.hideLoading()
+
+                switch result {
+                case .success(let collection):
+                    self.viewModels = collection.map { CatalogueCellViewModel($0) }
+
+                    let sortOption = self.loadSortOption()
+                    self.sortModels(sortOption)
+
+                    self.updateListener?.didUpdateCollections()
+                case .failure(let error):
+                    self.updateListener?.didFailWithError(error)
                 }
             }
         }
     }
 
-    enum SortOption {
-        case byName
-        case byNftCount
-    }
-
-    func sortModels(_ option: SortOption) {
-
+    func sortModels(_ option: CollectionsSortOption) {
         guard var viewModels = viewModels, let updateListener = updateListener else { return }
 
         switch option {
@@ -50,5 +71,16 @@ final class CatalogueViewModel {
 
         self.viewModels = viewModels
         updateListener.didUpdateCollections()
+        sortStateService.saveSortOption(option)
+    }
+
+    func didSelectItem(at id: Int) {
+        coordinator?.openCollectionDetail(withId: id)
+    }
+
+    // MARK: - Private methods
+
+    private func loadSortOption() -> CollectionsSortOption {
+        return sortStateService.getSortOption() ?? .byName
     }
 }

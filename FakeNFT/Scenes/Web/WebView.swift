@@ -35,15 +35,16 @@ extension WebView {
 private extension WebView {
     func setupViews() {
         let navigationBarAppearance = UINavigationBarAppearance()
-        navigationBarAppearance.configureWithDefaultBackground()
+        navigationBarAppearance.shadowColor = .none
+        navigationBarAppearance.backgroundColor = .asset(.additional(.white))
         navigationController?.navigationBar.scrollEdgeAppearance = navigationBarAppearance
 
         let backItem = UIBarButtonItem()
         backItem.title = nil
-        backItem.tintColor = .asset(.black)
+        backItem.tintColor = .asset(.main(.primary))
         navigationController?.navigationBar.topItem?.backBarButtonItem = backItem
 
-        view.backgroundColor = .asset(.white)
+        view.backgroundColor = .asset(.additional(.white))
 
         webView.navigationDelegate = self
         webView.load(URLRequest(url: url))

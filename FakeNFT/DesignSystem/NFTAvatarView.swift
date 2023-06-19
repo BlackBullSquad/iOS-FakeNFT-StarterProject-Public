@@ -40,7 +40,6 @@ final class NftAvatarView: UIView {
         likeButton.tintColor = .asset(.main(.primary))
         likeButton.setImage(UIImage(systemName: "hear.fill"), for: .normal)
     }
-
 }
 
 // MARK: - Setup
@@ -113,5 +112,6 @@ extension NftAvatarView {
         } else {
             likeButton.isHidden = true
         }
+
     }
 }
