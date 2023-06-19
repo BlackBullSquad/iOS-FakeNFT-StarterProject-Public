@@ -16,13 +16,23 @@ struct TabBarControllerBuilder {
     }()
 
     static func makeRootVC() -> UITabBarController {
-        let profileVC = ProfileVC()
+
+        let nftApi: NftAPI = FakeNftAPI()
+
+        // Profile:
+        let profileService = ProfileServiceImpl(nftApi: nftApi)
+        let settingsStorage = SettingsStorage()
+
+        let profileViewModel = ProfileViewModelImpl(profileService: profileService, settingsStorage: settingsStorage)
+                let profileVC = ProfileVC(viewModel: profileViewModel)
+
         let profileNavController = UINavigationController(
             rootViewController: profileVC,
             title: "Профиль",
             imageName: "person.crop.circle.fill"
         )
 
+        // Catalogue
         let catalogueNavController = collectionsCoordinator.navigationController
         catalogueNavController.tabBarItem = UITabBarItem(
             title: "Каталог",
@@ -30,6 +40,7 @@ struct TabBarControllerBuilder {
             tag: 1
         )
 
+        // Cart
         let cartVC = CartVC()
         let cartNavController = UINavigationController(
             rootViewController: cartVC,

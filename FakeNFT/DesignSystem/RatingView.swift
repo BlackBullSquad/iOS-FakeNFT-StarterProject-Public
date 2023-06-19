@@ -9,9 +9,9 @@ final class RatingView: UIView {
     // MARK: - Initializers
 
     override init(frame: CGRect) {
-        self.stars = (1...5).map { _ in
+        stars = (1...5).map { _ in
             let view = UIImageView()
-            view.image = UIImage(named: "ratingStar")
+            view.image = .asset(.ratingStar)
             return view
         }
 
@@ -30,6 +30,7 @@ extension RatingView {
     private func setupViews() {
         let stack = UIStackView(arrangedSubviews: stars)
         stack.axis = .horizontal
+        stack.alignment = .center
         stack.spacing = 2
         stack.translatesAutoresizingMaskIntoConstraints = false
 

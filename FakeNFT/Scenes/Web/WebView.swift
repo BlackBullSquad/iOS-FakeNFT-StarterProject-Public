@@ -20,6 +20,7 @@ final class WebView: UIViewController, WKNavigationDelegate {
 
 extension WebView {
     override func viewDidLoad() {
+        super.viewDidLoad()
         setupViews()
     }
 
