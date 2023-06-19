@@ -11,10 +11,10 @@ protocol FavoritesNftViewModel {
 
     var favoriteNfts: [Nft] { get }
     var showErrorAlertState: Bool { get }
-    
+
     func likeButtonHandle(indexPath: IndexPath)
     func initialization()
-    //binding
+    // binding
     var favoriteNftsDidChange: (() -> Void)? { get set }
     var showErrorAlertStateDidChange: (() -> Void)? { get set }
 }
@@ -23,7 +23,7 @@ final class FavoritesNftViewModelImpl: FavoritesNftViewModel {
 
     // MARK: - Properties
     private let profileService: ProfileService
-    
+
     private(set) var favoriteNfts: [Nft] = [] {
         didSet {
             favoriteNftsDidChange?()
@@ -34,7 +34,7 @@ final class FavoritesNftViewModelImpl: FavoritesNftViewModel {
             showErrorAlertStateDidChange?()
         }
     }
-    
+
     var favoriteNftsDidChange: (() -> Void)?
     var showErrorAlertStateDidChange: (() -> Void)?
 
@@ -48,15 +48,15 @@ final class FavoritesNftViewModelImpl: FavoritesNftViewModel {
     func initialization() {
         getFavoritesNfts()
     }
-    
+
     func likeButtonHandle(indexPath: IndexPath) {
         favoriteNfts.remove(at: indexPath.row)
         profileService.updateFavoritesNft(likes: favoriteNfts)
     }
-    
+
     private func getFavoritesNfts() {
         profileService.getFavoritesNft { [weak self] result in
-            switch result{
+            switch result {
             case .success(let myNfts):
                 self?.showErrorAlertState = false
                 self?.favoriteNfts = myNfts
@@ -65,5 +65,5 @@ final class FavoritesNftViewModelImpl: FavoritesNftViewModel {
             }
         }
     }
-   
+
 }

@@ -9,17 +9,17 @@ import UIKit
 
 class MyNftTableViewCell: UITableViewCell {
     static let identifier = "MyNftTableViewCell"
-    
+
     // MARK: - Properties
-    private let nftView: NFTAvatarView = NFTAvatarView()
-    
+    private let nftView: NftAvatarView = NftAvatarView()
+
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 17, weight: .bold)
         label.textColor = .label
         return label
     }()
-    
+
     private let authorLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
@@ -27,7 +27,7 @@ class MyNftTableViewCell: UITableViewCell {
         label.text = "от John Doe"
         return label
     }()
-    
+
     private let priceLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
@@ -35,16 +35,16 @@ class MyNftTableViewCell: UITableViewCell {
         label.text = "Цена"
         return label
     }()
-    
+
     private let priceValueLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 17, weight: .bold)
         label.textColor = .label
         return label
     }()
-    
+
     private let ratingView = RatingView()
-    
+
     private lazy var firstVerticalStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [nameLabel,
                                                        ratingView,
@@ -61,9 +61,9 @@ class MyNftTableViewCell: UITableViewCell {
         stackView.spacing = 2
         return stackView
     }()
-    
+
     var likeButtonAction: (() -> Void)?
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = .systemBackground
@@ -74,47 +74,47 @@ class MyNftTableViewCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func setupCell(with nft: Nft, isLiked: Bool) {
-        nftView.viewModel = NFTAvatarViewModel(imageSize: .large, imageURL: nft.images.first as? URL, isLiked: isLiked) { [weak self] in
+        nftView.viewModel = NftAvatarViewModel(
+            imageSize: .large,
+            imageURL: nft.images.first as? URL,
+            isLiked: isLiked
+        ) { [weak self] in
             self?.likeButtonAction?()
         }
         nameLabel.text = nft.name
         ratingView.rating = nft.rating
         priceValueLabel.text = "\(nft.price) ETH"
     }
-    
+
     private func layout() {
-        [nameLabel,
-         ratingView,
-         authorLabel
-        ].forEach { view in
+        [nameLabel, ratingView, authorLabel].forEach { view in
             view.translatesAutoresizingMaskIntoConstraints = false
             firstVerticalStackView.addArrangedSubview(view)
         }
-        
-        [priceLabel,
-         priceValueLabel
-        ].forEach { view in
+
+        [priceLabel, priceValueLabel].forEach { view in
             view.translatesAutoresizingMaskIntoConstraints = false
             priceVerticalStackView.addArrangedSubview(view)
         }
-        
-        [nftView,
-         firstVerticalStackView,
-         priceVerticalStackView
-        ].forEach { view in
+
+        [nftView, firstVerticalStackView, priceVerticalStackView].forEach { view in
             view.translatesAutoresizingMaskIntoConstraints = false
             self.contentView.addSubview(view)
         }
-        
+
+        let nftViewSize: CGFloat = 108
+
         NSLayoutConstraint.activate([
             nftView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
             nftView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            
+            nftView.widthAnchor.constraint(equalToConstant: nftViewSize),
+            nftView.heightAnchor.constraint(equalToConstant: nftViewSize),
+
             firstVerticalStackView.centerYAnchor.constraint(equalTo: nftView.centerYAnchor),
             firstVerticalStackView.leadingAnchor.constraint(equalTo: nftView.trailingAnchor, constant: 20),
-            
+
             priceVerticalStackView.centerYAnchor.constraint(equalTo: nftView.centerYAnchor),
             priceVerticalStackView.leadingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -114),
             priceVerticalStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)

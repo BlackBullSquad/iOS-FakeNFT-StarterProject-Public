@@ -17,7 +17,7 @@ final class SettingsStorage: SettingsStorageProtocol {
     // MARK: - Properties
     private let storage = UserDefaults.standard
     private let sortingKey = "sortingKey"
-    
+
     // MARK: - Methods
     func saveSorting(_ descriptor: SortDescriptor) {
         storage.set(descriptor.rawValue, forKey: sortingKey)
@@ -34,4 +34,3 @@ final class SettingsStorage: SettingsStorageProtocol {
         return nil
     }
 }
-

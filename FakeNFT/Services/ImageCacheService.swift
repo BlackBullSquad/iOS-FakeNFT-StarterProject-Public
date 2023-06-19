@@ -31,7 +31,7 @@ class ImageCacheService {
             switch result {
             case .success(let size):
                 let sizeInMB = Double(size) / 1024 / 1024
-                LogService.shared.log("Disk cache size: \(sizeInMB) MB")
+                 LogService.shared.log("Disk cache size: \(sizeInMB) MB")
             case .failure(let error):
                 LogService.shared.log("Error calculating disk cache size: \(error)", level: .error)
             }

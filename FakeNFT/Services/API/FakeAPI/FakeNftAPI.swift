@@ -36,13 +36,12 @@ struct FakeNftAPI {
 }
 
 extension FakeNftAPI: NftAPI {
-    func updateProfile(
-        id: Int,
-        name: String,
-        description: String,
-        website: URL,
-        likes: [Int],
-        onResponse: @escaping (Result<ProfileDTO, Error>) -> Void
+    func updateProfile(id: Int,
+                       name: String,
+                       description: String,
+                       website: URL,
+                       likes: [Int],
+                       onResponse: @escaping (Result<ProfileDTO, Error>) -> Void
     ) -> NetworkTask? {
         networkClient.send(
             request: FakeAPIRequest.updateProfile(

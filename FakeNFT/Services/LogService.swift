@@ -13,7 +13,7 @@ final class LogService {
     private init() {}
 
     func log(_ message: String, level: LogLevel = .info) {
-        let logMessage = "[\(level.rawValue)] \(message)"
-        print(logMessage)
+        _ = "[\(level.rawValue)] \(message)"
+        // print(logMessage)
     }
 }

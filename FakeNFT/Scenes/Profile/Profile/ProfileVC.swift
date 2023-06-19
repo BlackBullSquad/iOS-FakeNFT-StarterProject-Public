@@ -2,9 +2,9 @@ import UIKit
 import Kingfisher
 
 final class ProfileVC: UIViewController {
-    
+
     private var viewModel: ProfileViewModel
-    
+
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 22, weight: .bold)
@@ -26,8 +26,8 @@ final class ProfileVC: UIViewController {
         image.clipsToBounds = true
         return image
     }()
-    
-    private let urlTextButton: UIButton = {
+
+    private lazy var urlTextButton: UIButton = {
         let button = UIButton()
         button.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .regular)
         button.contentHorizontalAlignment = .left
@@ -35,7 +35,7 @@ final class ProfileVC: UIViewController {
         button.addTarget(self, action: #selector(showWebView), for: .touchUpInside)
         return button
     }()
-    
+
     private lazy var profileTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.register(ProfileTableViewCell.self, forCellReuseIdentifier: ProfileTableViewCell.identifier)
@@ -51,11 +51,11 @@ final class ProfileVC: UIViewController {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -69,14 +69,17 @@ final class ProfileVC: UIViewController {
         super.viewWillAppear(animated)
         viewModel.getProfile()
     }
-    
+
     private func setNavBar() {
         // Additional bar button items
-        let button = UIBarButtonItem(image: UIImage(named: "editProfile"), style: .plain, target: self, action: #selector(editProfile))
+        let button = UIBarButtonItem(image: UIImage(named: "editProfile"),
+                                     style: .plain,
+                                     target: self,
+                                     action: #selector(editProfile))
         button.tintColor = .label
         navigationItem.setRightBarButtonItems([button], animated: true)
     }
-    
+
     private func initialization() {
         guard let profile = viewModel.profile else { return }
         setupView(profile: profile)
@@ -95,20 +98,19 @@ final class ProfileVC: UIViewController {
             }
         }
     }
-    
-    
+
     @objc private func showWebView() {
         guard let url = viewModel.profile?.website else { return }
         let webView = WebView(url: url)
         present(webView, animated: true)
     }
-    
+
     @objc private func editProfile() {
-        guard let vc = viewModel.getEditProfileVC() else { return }
-        let editProfileVC = UINavigationController(rootViewController: vc)
+        guard let viewController = viewModel.getEditProfileVC() else { return }
+        let editProfileVC = UINavigationController(rootViewController: viewController)
         present(editProfileVC, animated: true)
     }
-    
+
     private func setupView(profile: Profile) {
         nameLabel.text = profile.name
         descriptionLabel.text = profile.description
@@ -128,10 +130,10 @@ final class ProfileVC: UIViewController {
         }
 
         alert.addAction(action)
-        
+
         present(alert, animated: true, completion: nil)
     }
-    
+
     private func layout() {
         [nameLabel,
          profileImage,
@@ -165,7 +167,7 @@ final class ProfileVC: UIViewController {
             profileTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             profileTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             profileTableView.topAnchor.constraint(equalTo: urlTextButton.bottomAnchor, constant: 44),
-            profileTableView.heightAnchor.constraint(equalToConstant: 375*3),
+            profileTableView.heightAnchor.constraint(equalToConstant: 375*3)
         ])
     }
 }
@@ -175,9 +177,16 @@ extension ProfileVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         3
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: ProfileTableViewCell.identifier, for: indexPath) as! ProfileTableViewCell
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: ProfileTableViewCell.identifier,
+            for: indexPath
+        ) as? ProfileTableViewCell else {
+            assertionFailure("Could not cast cell to ProfileTableViewCell")
+
+            return UITableViewCell()
+        }
         let titleCell = viewModel.fetchViewTitleForCell(with: indexPath)
         cell.setupCell(label: titleCell)
         return cell
@@ -190,18 +199,16 @@ extension ProfileVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 54
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row {
-        case 0: guard let vc = viewModel.getMyNftVC() else { return }
-            navigationController?.pushViewController(vc, animated: true)
-        case 1: let vc = viewModel.getFavoritesNftVC()
-            navigationController?.pushViewController(vc, animated: true)
+        case 0: guard let viewController = viewModel.getMyNftVC() else { return }
+            navigationController?.pushViewController(viewController, animated: true)
+        case 1: let viewController = viewModel.getFavoritesNftVC()
+            navigationController?.pushViewController(viewController, animated: true)
         default:
             return
         }
     }
-    
-    
+
 }
-    
