@@ -162,7 +162,6 @@ final class NftListView: UICollectionViewCell {
 
     private func didUpdateViewModel() {
         avatarView.viewModel = .init(
-            imageSize: .large,
             imageURL: viewModel?.imageURL,
             isLiked: viewModel?.isLiked ?? false,
             likeButtonAction: { [weak self] in self?.likeButtonTapped() }

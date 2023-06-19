@@ -27,15 +27,17 @@ final class NftAvatarView: UIView {
     // MARK: - Actions
 
     @objc private func likeButtonTapped() {
-        viewModel?.isLiked.toggle()
-        viewModel?.likeButtonAction()
+        guard let isLiked = viewModel?.isLiked else { return }
+
+        viewModel?.isLiked = !isLiked
+        viewModel?.likeButtonAction?()
     }
 
     // MARK: - Reset to default
 
     private func reset() {
         imageView.image = nil
-        likeButton.tintColor = .asset(.main(.primary))
+        likeButton.tintColor = .asset(.whiteUniversal)
         likeButton.setImage(UIImage(systemName: "hear.fill"), for: .normal)
     }
 }
@@ -88,13 +90,20 @@ extension NftAvatarView {
             return
         }
 
-        let placeholder = UIImage(named: "placeholder")
+        let placeholder = UIImage.asset(.placeholder)
 
-        imageView.kf.setImage(with: viewModel.imageURL,
-                              placeholder: placeholder,
-                              options: [.scaleFactor(UIScreen.main.scale), .transition(.fade(1))])
+        imageView.kf.setImage(
+            with: viewModel.imageURL,
+            placeholder: placeholder,
+            options: [.scaleFactor(UIScreen.main.scale), .transition(.fade(1))]
+        )
 
-        likeButton.tintColor = viewModel.isLiked ? .asset(.main(.red)) : .asset(.additional(.white))
-        likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+        if let isLiked = viewModel.isLiked {
+            likeButton.isHidden = false
+            likeButton.tintColor = isLiked ? .asset(.redUniversal) : .asset(.whiteUniversal)
+            likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+        } else {
+            likeButton.isHidden = true
+        }
     }
 }

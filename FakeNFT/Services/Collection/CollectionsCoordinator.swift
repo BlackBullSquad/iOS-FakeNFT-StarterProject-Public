@@ -10,16 +10,20 @@ protocol CollectionsCoordinatorProtocol: AnyObject {
 final class CollectionsCoordinator {
 
     var navigationController: UINavigationController
-    private let api: NftAPI
+    let api: NftAPI
+    let shoppingCartService: ShoppingCart
+
     private let dataService: CollectionProviderProtocol
-    private let shoppingCartService: ShoppingCart
     private let likeService: NftLikesProviderProtocol
 
-    init(api: NftAPI, navigationController: UINavigationController, dataService: CollectionProviderProtocol) {
+    init(api: NftAPI,
+         navigationController: UINavigationController,
+         dataService: CollectionProviderProtocol,
+         shoppingCart: ShoppingCart) {
         self.api = api
         self.navigationController = navigationController
         self.dataService = dataService
-        self.shoppingCartService = FakeShoppingCart()
+        self.shoppingCartService = shoppingCart
         self.likeService = NftLikesProvider(api: api)
     }
 

@@ -54,7 +54,7 @@ extension RatingView {
         let rating = rating ?? 0
 
         stars.enumerated().forEach { offset, star in
-            star.tintColor = rating > offset ? .asset(.additional(.yellow)) : .asset(.main(.lightGray))
+            star.tintColor = rating > offset ? .asset(.yellowUniversal) : .asset(.lightGrey)
         }
     }
 }

@@ -5,7 +5,7 @@ struct Nft: Identifiable {
     let name: String
     let description: String
     let rating: Int
-    let images: [URL?]
+    let images: [URL]
     let price: Float
 }
 
@@ -16,6 +16,6 @@ extension Nft {
         self.description = nftDTO.description
         self.price = nftDTO.price
         self.rating = nftDTO.rating
-        self.images = nftDTO.images.map { URL(string: $0) }
+        self.images = nftDTO.images.compactMap { URL(string: $0) }
     }
 }

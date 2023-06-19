@@ -5,8 +5,7 @@ final class ExampleUnitTests: XCTestCase {
     func testExample() {
         let api: NftAPI = FakeNftAPI()
         let expectation = XCTestExpectation(description: "wait for result")
-        api.getNfts {
-            dump($0)
+        api.getNfts { _ in
             expectation.fulfill()
         }
 

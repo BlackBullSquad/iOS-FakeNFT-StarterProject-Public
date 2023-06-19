@@ -33,7 +33,6 @@ extension WebView {
 // MARK: - Initial Setup
 
 private extension WebView {
-
     func setupViews() {
         let navigationBarAppearance = UINavigationBarAppearance()
         navigationBarAppearance.shadowColor = .none
