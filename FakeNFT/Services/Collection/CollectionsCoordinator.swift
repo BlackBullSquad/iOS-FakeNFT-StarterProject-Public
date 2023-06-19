@@ -16,7 +16,10 @@ final class CollectionsCoordinator {
     private let dataService: CollectionProviderProtocol
     private let likeService: NftLikesProviderProtocol
 
-    init(api: NftAPI, navigationController: UINavigationController, dataService: CollectionProviderProtocol, shoppingCart: ShoppingCart) {
+    init(api: NftAPI,
+         navigationController: UINavigationController,
+         dataService: CollectionProviderProtocol,
+         shoppingCart: ShoppingCart) {
         self.api = api
         self.navigationController = navigationController
         self.dataService = dataService
