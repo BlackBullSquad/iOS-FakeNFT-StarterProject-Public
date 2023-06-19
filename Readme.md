@@ -2,7 +2,10 @@
 
 # Ссылки
 
-[Дизайн Figma](https://www.figma.com/file/k1LcgXHGTHIeiCv4XuPbND/FakeNFT-(YP)?node-id=96-5542&t=YdNbOI8EcqdYmDeg-0)
+- [Дизайн Figma](https://www.figma.com/file/k1LcgXHGTHIeiCv4XuPbND/FakeNFT-(YP)?node-id=96-5542&t=YdNbOI8EcqdYmDeg-0)
+- [Демонстрация Профиля](https://practicum.yandex.ru/profile/ios-developer/)
+- [Демонстрация Каталога](https://practicum.yandex.ru/profile/ios-developer/)
+- [Демонстрация корзины](https://practicum.yandex.ru/profile/ios-developer/)
 
 # Назначение и цели приложения
 
