@@ -2,8 +2,7 @@ import UIKit
 
 struct TabBarControllerBuilder {
 
-    static func collectionsCoordinator(shoppingCart: ShoppingCart) -> CollectionsCoordinator {
-        let api: NftAPI = FakeNftAPI()
+    static func collectionsCoordinator(shoppingCart: ShoppingCart, api: NftAPI) -> CollectionsCoordinator {
         let catalogueDataService: CollectionProviderProtocol = CollectionProvider(api: api)
         let collectionsNavController = UINavigationController()
         let collectionsCoordinator = CollectionsCoordinator(
@@ -50,7 +49,7 @@ struct TabBarControllerBuilder {
         )
 
         // Catalogue
-        let catalogueNavController = collectionsCoordinator(shoppingCart: shoppingCart).navigationController
+        let catalogueNavController = collectionsCoordinator(shoppingCart: shoppingCart, api: nftApi).navigationController
         catalogueNavController.tabBarItem = UITabBarItem(
             title: "Каталог",
             image: UIImage(systemName: "rectangle.stack.fill"),
