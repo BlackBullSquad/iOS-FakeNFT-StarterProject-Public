@@ -1,27 +1,47 @@
 import UIKit
 
 struct TabBarControllerBuilder {
-
-    static func collectionsCoordinator(shoppingCart: ShoppingCart, api: NftAPI) -> CollectionsCoordinator {
+    static var collectionsCoordinator: CollectionsCoordinator = {
+        let api = FakeNftAPI()
         let catalogueDataService: CollectionProviderProtocol = CollectionProvider(api: api)
         let collectionsNavController = UINavigationController()
         let collectionsCoordinator = CollectionsCoordinator(
             api: api,
             navigationController: collectionsNavController,
             dataService: catalogueDataService,
-            shoppingCart: shoppingCart
+            shoppingCart: FakeShoppingCart(defaults: .standard)
         )
         collectionsCoordinator.start()
         return collectionsCoordinator
-    }
+    }()
 
     static func makeRootVC() -> UITabBarController {
+        // Catalogue
+        let collectionsNavController = collectionsCoordinator.navigationController
 
-        let nftApi: NftAPI = FakeNftAPI()
+        collectionsNavController.tabBarItem = UITabBarItem(
+            title: "Каталог",
+            image: UIImage(systemName: "rectangle.stack.fill"),
+            tag: 1
+        )
 
-        let api = FakeNftAPI()
-        let shoppingCart = FakeShoppingCart(defaults: .standard)
+        let api = collectionsCoordinator.api
+        let shoppingCart = collectionsCoordinator.shoppingCartService
 
+        // Profile:
+        let profileService = ProfileServiceImpl(nftApi: api)
+        let settingsStorage = SettingsStorage()
+
+        let profileViewModel = ProfileViewModelImpl(profileService: profileService, settingsStorage: settingsStorage)
+        let profileVC = ProfileVC(viewModel: profileViewModel)
+
+        let profileNavController = UINavigationController(
+            rootViewController: profileVC,
+            title: "Профиль",
+            imageName: "person.crop.circle.fill"
+        )
+
+        // Cart
         let purchaseCoordinator = PurchaseCoordinator(deps: .init(
             currencyProvider: FakeCurrencyProvider(api: api),
             shoppingCart: shoppingCart,
@@ -35,27 +55,6 @@ struct TabBarControllerBuilder {
         )
         let cartView = ShoppingCartView(cartViewModel)
 
-        // Profile:
-        let profileService = ProfileServiceImpl(nftApi: nftApi)
-        let settingsStorage = SettingsStorage()
-
-        let profileViewModel = ProfileViewModelImpl(profileService: profileService, settingsStorage: settingsStorage)
-                let profileVC = ProfileVC(viewModel: profileViewModel)
-
-        let profileNavController = UINavigationController(
-            rootViewController: profileVC,
-            title: "Профиль",
-            imageName: "person.crop.circle.fill"
-        )
-
-        // Catalogue
-        let catalogueNavController = collectionsCoordinator(shoppingCart: shoppingCart, api: nftApi).navigationController
-        catalogueNavController.tabBarItem = UITabBarItem(
-            title: "Каталог",
-            image: UIImage(systemName: "rectangle.stack.fill"),
-            tag: 1
-        )
-        // Cart
         let cartNavController = UINavigationController(
             rootViewController: cartView,
             title: "Корзина",
@@ -68,7 +67,7 @@ struct TabBarControllerBuilder {
 
         tabBarController.viewControllers = [
             profileNavController,
-            catalogueNavController,
+            collectionsNavController,
             cartNavController]
         tabBarController.selectedIndex = 1
 
