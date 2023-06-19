@@ -90,13 +90,6 @@ extension NftAvatarView {
             return
         }
 
-        let imageSize = viewModel.imageSize.rawValue
-
-        NSLayoutConstraint.activate([
-            widthAnchor.constraint(equalToConstant: imageSize),
-            heightAnchor.constraint(equalToConstant: imageSize)
-        ])
-
         let placeholder = UIImage.asset(.placeholder)
 
         imageView.kf.setImage(
@@ -112,6 +105,5 @@ extension NftAvatarView {
         } else {
             likeButton.isHidden = true
         }
-
     }
 }

@@ -77,7 +77,6 @@ class MyNftTableViewCell: UITableViewCell {
 
     func setupCell(with nft: Nft, isLiked: Bool) {
         nftView.viewModel = NftAvatarViewModel(
-            imageSize: .large,
             imageURL: nft.images.first as? URL,
             isLiked: isLiked
         ) { [weak self] in

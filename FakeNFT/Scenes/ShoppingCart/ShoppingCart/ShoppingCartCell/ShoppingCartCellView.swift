@@ -97,8 +97,7 @@ extension ShoppingCartCellView {
 
         titleLabel.text = viewModel.name
         priceLabel.text = viewModel.priceLabel
-        avatar.viewModel = .init(imageSize: .large,
-                                 imageURL: viewModel.avatarUrl,
+        avatar.viewModel = .init(imageURL: viewModel.avatarUrl,
                                  likeButtonAction: nil)
         ratingView.rating = viewModel.rating
     }
@@ -106,8 +105,7 @@ extension ShoppingCartCellView {
     private func resetView() {
         titleLabel.text = nil
         priceLabel.text = nil
-        avatar.viewModel = .init(imageSize: .large,
-                                 imageURL: nil,
+        avatar.viewModel = .init(imageURL: nil,
                                  likeButtonAction: nil)
         ratingView.rating = nil
     }

@@ -53,8 +53,7 @@ class FavoritesNftCollectionViewCell: UICollectionViewCell {
 
     func setupCell(with nft: Nft) {
         nftView.viewModel = NftAvatarViewModel(
-            imageSize: .small,
-            imageURL: nft.images.first as? URL,
+            imageURL: nft.images.first,
             isLiked: true
         ) { [weak self] in
             self?.likeButtonAction?()
