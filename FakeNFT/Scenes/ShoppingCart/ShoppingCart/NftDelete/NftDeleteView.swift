@@ -104,6 +104,8 @@ private extension NftDeleteView {
         view.addSubview(panel)
 
         NSLayoutConstraint.activate([
+            avatar.heightAnchor.constraint(equalToConstant: 108),
+            avatar.widthAnchor.constraint(equalToConstant: 108),
             panel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             panel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             cancelButton.widthAnchor.constraint(equalToConstant: 127),

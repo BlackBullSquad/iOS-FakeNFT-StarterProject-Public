@@ -120,6 +120,8 @@ private extension ShoppingCartCellView {
         contentView.addSubview(hStack)
 
         NSLayoutConstraint.activate([
+            avatar.heightAnchor.constraint(equalToConstant: 108),
+            avatar.widthAnchor.constraint(equalToConstant: 108),
             hStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             hStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             hStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
