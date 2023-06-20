@@ -3,7 +3,7 @@
 # Ссылки
 
 - [Дизайн Figma](https://www.figma.com/file/k1LcgXHGTHIeiCv4XuPbND/FakeNFT-(YP)?node-id=96-5542&t=YdNbOI8EcqdYmDeg-0)
-- [Демонстрация Профиля](https://practicum.yandex.ru/profile/ios-developer/)
+- [Демонстрация Профиля](https://disk.yandex.ru/i/WggX75ctlEWyRA)
 - [Демонстрация Каталога](https://disk.yandex.ru/i/oXGf2GTYHxK_-A)
 - [Демонстрация Корзины](https://www.youtube.com/shorts/f8LNNJ03no0)
 
