@@ -27,6 +27,13 @@ final class EditProfileViewController: UIViewController {
         textField.textColor = .label
         textField.backgroundColor = UIColor.asset(Asset.main(.lightGray))
         textField.layer.cornerRadius = 12
+
+        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: textField.frame.height))
+        textField.leftView = paddingView
+        textField.rightView = paddingView
+        textField.leftViewMode = .always
+        textField.rightViewMode = .always
+
         return textField
     }()
 
@@ -44,6 +51,13 @@ final class EditProfileViewController: UIViewController {
         textField.textColor = .label
         textField.backgroundColor = UIColor.asset(Asset.main(.lightGray))
         textField.layer.cornerRadius = 12
+
+        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: textField.frame.height))
+        textField.leftView = paddingView
+        textField.rightView = paddingView
+        textField.leftViewMode = .always
+        textField.rightViewMode = .always
+
         return textField
     }()
 
@@ -68,6 +82,13 @@ final class EditProfileViewController: UIViewController {
         textField.textColor = .label
         textField.backgroundColor = UIColor.asset(Asset.main(.lightGray))
         textField.layer.cornerRadius = 12
+
+        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: textField.frame.height))
+        textField.leftView = paddingView
+        textField.rightView = paddingView
+        textField.leftViewMode = .always
+        textField.rightViewMode = .always
+
         return textField
     }()
 
@@ -230,13 +251,15 @@ final class EditProfileViewController: UIViewController {
             descriptionTextField.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 19),
             descriptionTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             descriptionTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            descriptionTextField.heightAnchor.constraint(equalToConstant: 44),
 
             urlLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             urlLabel.topAnchor.constraint(equalTo: descriptionTextField.bottomAnchor, constant: 24),
 
             urlTextField.topAnchor.constraint(equalTo: urlLabel.bottomAnchor, constant: 8),
             urlTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            urlTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
+            urlTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            urlTextField.heightAnchor.constraint(equalToConstant: 44)
         ])
     }
 }
